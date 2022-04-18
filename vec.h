@@ -25,4 +25,10 @@ Vec* listMultVec(double* t, Vec* vec, int dim);
 
 Vec* listMultVecs(double* t, Vec* vecs, int dim);
 
+Vec* getRandVec();
+
+Vec* getRandVecOnCube();
+
+double getDist(Vec* v1, Vec* v2);
+
 #endif //EXTREMEIMAGESEGMENTATION_VEC_H

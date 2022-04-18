@@ -2,11 +2,15 @@
 // Created by Erik Nikulski on 10.04.22.
 //
 
-#include <memory.h>
 #include "vec.h"
 
+#include "utility.h"
+
+#include "math.h"
+#include "memory.h"
 #include "stdlib.h"
 #include "stdio.h"
+#include "time.h"
 
 void printVec(Vec* v) {
     printf("Vec { .x = %lf , .y = %lf, .z = %lf }\n", v->x, v->y, v->z);
@@ -59,4 +63,42 @@ Vec* listMultVecs(double* t, Vec* vecs, int dim) {
         multVecs(t[i], &vecs[i], &res[i]);
     }
     return res;
+}
+
+Vec* getRandVec() {
+    Vec* vec = malloc(sizeof(Vec));
+
+    vec->x = getRand();
+    vec->y = getRand();
+    vec->z = getRand();
+
+    return vec;
+}
+
+Vec* getRandVecOnCube() {
+    Vec* vec = malloc(sizeof(Vec));
+    int fix =  rand() % 6;
+
+    vec->x = getRand();
+    vec->y = getRand();
+    vec->z = getRand();
+
+    if (fix == 0) {
+        vec->x = 0;
+    } else if(fix == 1) {
+        vec->x = 1;
+    } else if(fix == 2) {
+        vec->y = 0;
+    } else if(fix == 3) {
+        vec->y = 1;
+    } else if(fix == 4) {
+        vec->z = 0;
+    } else if(fix == 5) {
+        vec->z = 1;
+    }
+    return vec;
+}
+
+double getDist(Vec* v1, Vec* v2) {
+    return sqrt(pow(v2->x - v1->x, 2) + pow(v2->y - v1->y, 2) + pow(v2->z - v1->z, 2));
 }
