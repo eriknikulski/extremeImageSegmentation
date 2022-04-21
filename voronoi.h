@@ -24,4 +24,10 @@ Cell** readCells(int n, char* fname);
 
 Cell** getCells(int n, char* fname);
 
+void discretizeCell(Cell* cell, int size);
+
+void discretizeCells(Cell** cells, int n, int size);
+
+double voronoiDist(Vec* v, Cell** cells, int nCells);
+
 #endif //EXTREMEIMAGESEGMENTATION_VORONOI_H

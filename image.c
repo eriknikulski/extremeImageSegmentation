@@ -6,6 +6,7 @@
 
 #include "utility.h"
 #include "spline.h"
+#include "voronoi.h"
 
 #include "math.h"
 #include "stdio.h"
@@ -35,7 +36,7 @@ static void writeImage(int size, void* image, char* fname) {
     fclose(fp);
 }
 
-void createImage(Vec** splines, int nSplines, int dim, int imageSize,
+void createSplineImage(Vec** splines, int nSplines, int dim, int imageSize,
                  double theta_0, double theta_1, double sigma_b, double mu_b, double sigma_c, double mu_c,
                  char* fname) {
     discretizeSplines(splines, nSplines, dim, imageSize);
@@ -60,5 +61,34 @@ void createImage(Vec** splines, int nSplines, int dim, int imageSize,
     }
 
     writeImage(imageSize, &image, fname);
-    printf("Created image!\n");
+    printf("Created spline image!\n");
+}
+
+void createVoronoiImage(Cell** cells, int nCells, int imageSize,
+                        double theta_0, double theta_1, double sigma_b, double mu_b, double sigma_c, double mu_c,
+                        char* fname) {
+    Vec p;
+    double dist;
+    double value;
+
+    unsigned char image[imageSize][imageSize][imageSize];
+
+    discretizeCells(cells, nCells, imageSize);
+
+    for (int i = 0; i < imageSize; ++i) {
+        for (int j = 0; j < imageSize; ++j) {
+            for (int k = 0; k < imageSize; ++k) {
+                p.x = (double) i;
+                p.y = (double) j;
+                p.z = (double) k;
+
+                dist = voronoiDist(&p, cells, nCells);
+                value = getPixelValue(dist, theta_0, theta_1, sigma_b, mu_b, sigma_c, mu_c);
+                image[i][j][k] = to8Bit(value);
+            }
+        }
+    }
+
+    writeImage(imageSize, &image, fname);
+    printf("Created voronoi image!\n");
 }

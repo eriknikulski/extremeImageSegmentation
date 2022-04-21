@@ -31,4 +31,8 @@ Vec* getRandVecOnCube();
 
 double getDist(Vec* v1, Vec* v2);
 
+double getLength(Vec* v);
+
+double getDistLine(Vec* lv1, Vec* lv2, Vec* v);
+
 #endif //EXTREMEIMAGESEGMENTATION_VEC_H

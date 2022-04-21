@@ -6,9 +6,14 @@
 #define EXTREMEIMAGESEGMENTATION_IMAGE_H
 
 #include "vec.h"
+#include "voronoi.h"
 
-void createImage(Vec** splines, int nSplines, int dim, int imageSize,
+void createSplineImage(Vec** splines, int nSplines, int dim, int imageSize,
                  double theta_0, double theta_1, double sigma_b, double mu_b, double sigma_c, double mu_c,
                  char* fname);
+
+void createVoronoiImage(Cell** cells, int nCells, int imageSize,
+                        double theta_0, double theta_1, double sigma_b, double mu_b, double sigma_c, double mu_c,
+                        char* fname);
 
 #endif //EXTREMEIMAGESEGMENTATION_IMAGE_H

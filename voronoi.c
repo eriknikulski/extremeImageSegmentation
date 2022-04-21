@@ -6,6 +6,9 @@
 
 #include "utility.h"
 
+#include "assert.h"
+#include "float.h"
+#include "math.h"
 #include "stdlib.h"
 #include "stdio.h"
 #include "string.h"
@@ -112,4 +115,33 @@ Cell** getCells(int n, char* fname) {
     Cell** cells = readCells(n, fout);
     free(fout);
     return cells;
+}
+
+void discretizeCell(Cell* cell, int size) {
+    assert(size % 10 == 0);
+    for (int i = 0; i < cell->count; ++i) {
+        cell->nodes[i].x = round(cell->nodes[i].x * (double)size);
+        cell->nodes[i].y = round(cell->nodes[i].y * (double)size);
+        cell->nodes[i].z = round(cell->nodes[i].z * (double)size);
+    }
+}
+
+void discretizeCells(Cell** cells, int n, int size) {
+    assert(size % 10 == 0);
+    for (int i = 0; i < n; ++i) {
+        discretizeCell(cells[i], size);
+    }
+}
+
+double voronoiDist(Vec* v, Cell** cells, int nCells) {
+    double sDist = DBL_MAX;
+    double cDist;
+    for (int i = 0; i < nCells; ++i) {
+        for (int j = 0; j < cells[i]->count - 1; ++j) {
+            cDist = getDistLine(&cells[i]->nodes[j], &cells[i]->nodes[j + 1], v);
+            if (cDist < sDist) sDist = cDist;
+            if (sDist == 0.0) return 0.0;
+        }
+    }
+    return sDist;
 }
