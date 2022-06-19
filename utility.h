@@ -5,7 +5,15 @@
 #ifndef EXTREMEIMAGESEGMENTATION_UNTIL_H
 #define EXTREMEIMAGESEGMENTATION_UNTIL_H
 
-double getRand();
+double getRandD();
+
+int getRand(int lower, int upper);
+
+int* getRandPair(int lower, int upper);
+
+int* getNRandExc(int n, int lower, int upper);
+
+int getRandFrom(int* l, int n);
 
 double normDist(double sigma, double mu);
 

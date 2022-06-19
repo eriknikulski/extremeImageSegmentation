@@ -1,6 +1,7 @@
-#include "spline.h"
-
 #include "image.h"
+#include "spline.h"
+#include "voronoi.h"
+#include "utility.h"
 
 #include "stdlib.h"
 #include "stdio.h"
@@ -24,15 +25,36 @@ int main() {
     double sigma_c = 0.1;
     double mu_c = 0.9;
 
+    int mCells = 4;
+    int nCells = 4 * mCells;
+
 
     clock_t begin = clock();
 
     Vec** s = getNSplines(nSplines, alpha, minDist, nPoints);
-    createImage(s, nSplines, nPoints, imageSize,
-                theta_0, theta_1, sigma_b, mu_b, sigma_c, mu_c, "image");
+    createSplineImage(s, nSplines, nPoints, imageSize,
+                theta_0, theta_1, sigma_b, mu_b, sigma_c, mu_c, "image_spline");
 
     clock_t end = clock();
     double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
-    printf("TIME: %lf", time_spent);
+    printf("TIME splines: %lf", time_spent);
+
+
+    begin = clock();
+
+    Cell** cells = getCells(nCells, "test");
+    printf("Created cells\n");
+
+    cells = mergeCells(cells, nCells, mCells);
+    printf("Merged cells\n\n");
+
+    createVoronoiImage(cells, mCells, imageSize,
+                theta_0, theta_1, sigma_b, mu_b, sigma_c, mu_c, "image_voronoi");
+
+    clock_t end = clock();
+    double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+    printf("TIME voronoi: %lf", time_spent);
+
+
     return 0;
 }

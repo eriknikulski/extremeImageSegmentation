@@ -17,6 +17,10 @@ void printVecs(Vec* v, int dim);
 
 void addVecs(Vec* v1, Vec* v2, Vec* res);
 
+void subtractVec(Vec* v1, Vec* v2, Vec* res);
+
+Vec* getSubVec(Vec* v1, Vec* v2);
+
 Vec* addVecLists(Vec* v1, Vec* v2, int dim);
 
 void multVecs(double t, Vec* vec, Vec* res);
@@ -33,6 +37,12 @@ double getDist(Vec* v1, Vec* v2);
 
 double getLength(Vec* v);
 
-double getDistLine(Vec* lv1, Vec* lv2, Vec* v);
+Vec* getCrossProduct(Vec* v1, Vec* v2);
+
+double getDotProd(Vec* v1, Vec* v2);
+
+int equalVecs(Vec* v1, Vec* v2);
+
+int isZero(double d);
 
 #endif //EXTREMEIMAGESEGMENTATION_VEC_H

@@ -13,7 +13,7 @@
 
 static double getPixelValue(double d, double theta_0, double theta_1, double sigma_b, double mu_b, double sigma_c, double mu_c) {
     double p = (double)1.0 / (double)((double)1 + exp(-theta_0 - theta_1 * d));
-    if (getRand() < p) {
+    if (getRandD() < p) {
         // select from N2
         return normDist(sigma_b, mu_b);
     } else {
@@ -68,7 +68,10 @@ void createVoronoiImage(Cell** cells, int nCells, int imageSize,
                         double theta_0, double theta_1, double sigma_b, double mu_b, double sigma_c, double mu_c,
                         char* fname) {
     Vec p;
+    Vec lastP;
     double dist;
+    double lastDist;
+    double secondLastDist = -1;
     double value;
 
     unsigned char image[imageSize][imageSize][imageSize];
@@ -82,9 +85,17 @@ void createVoronoiImage(Cell** cells, int nCells, int imageSize,
                 p.y = (double) j;
                 p.z = (double) k;
 
-                dist = voronoiDist(&p, cells, nCells);
+                if (secondLastDist >= 0 &&
+                    lastDist + getDist(&p, &lastP) <= secondLastDist - getDist(&p, &lastP)) {
+                    dist = lastDist + getDist(&p, &lastP);
+                    secondLastDist = secondLastDist - getDist(&p, &lastP);
+                } else {
+                    dist = voronoiDist(&p, cells, nCells, &secondLastDist);
+                }
+                lastDist = dist;
                 value = getPixelValue(dist, theta_0, theta_1, sigma_b, mu_b, sigma_c, mu_c);
                 image[i][j][k] = to8Bit(value);
+                lastP = p;
             }
         }
     }

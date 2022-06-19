@@ -144,7 +144,7 @@ Vec** getNSplines(int n, double alpha, double minDist, int dim) {
             continue;
         }
         splines[i] = spline;
-        i++;
+        ++i;
     }
     return splines;
 }
@@ -171,7 +171,7 @@ double splineDist(Vec* point, Vec* spline, int dim) {
     for (int i = 0; i < dim; ++i) {
         cDist = getDist(point, &spline[i]);
         if (cDist < sDist) sDist = cDist;
-        if (sDist == 0.0) return 0.0;
+        if (isZero(sDist)) return 0.0;
     }
     return sDist;
 }
@@ -182,7 +182,7 @@ double splinesDist(Vec* point, Vec** splines, int n, int dim) {
     for (int i = 0; i < n; ++i) {
         cDist = splineDist(point, splines[i], dim);
         if (cDist < sDist) sDist = cDist;
-        if (sDist == 0.0) return 0.0;
+        if (isZero(sDist)) return 0.0;
     }
     return sDist;
 }
