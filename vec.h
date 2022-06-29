@@ -31,6 +31,8 @@ Vec* listMultVecs(double* t, Vec* vecs, int dim);
 
 Vec* getRandVec();
 
+Vec* getVecLogNearCube(int base);
+
 Vec* getRandVecOnCube();
 
 double getDist(Vec* v1, Vec* v2);

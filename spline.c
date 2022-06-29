@@ -126,6 +126,7 @@ Vec** getNSplines(int n, double alpha, double minDist, int dim) {
     Vec** splines = malloc(sizeof(Vec) * dim * n);
     Vec* spline;
     int i = 0;
+    int base = 1000;
 
     Vec* c0;
     Vec* c1;
@@ -133,16 +134,21 @@ Vec** getNSplines(int n, double alpha, double minDist, int dim) {
     Vec* c3;
 
     while (i < n) {
-        c0 = getRandVec();
+        c0 = getVecLogNearCube(base);
         c1 = getRandVecOnCube();
         c2 = getRandVecOnCube();
-        c3 = getRandVec();
+        c3 = getVecLogNearCube(base);
 
         spline = getCatmullRomSpline(c0, c1, c2, c3, alpha, dim);
         if (isClose(splines, spline, i, minDist, dim)) {
             free(spline);
             continue;
         }
+        printVec(c0);
+        printVec(c1);
+        printVec(c2);
+        printVec(c3);
+        printf("\n\n");
         splines[i] = spline;
         ++i;
     }

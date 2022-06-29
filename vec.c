@@ -88,6 +88,16 @@ Vec* getRandVec() {
     return vec;
 }
 
+Vec* getVecLogNearCube(int base) {
+    Vec* vec = malloc(sizeof(Vec));
+
+    vec->x = 1.0 + log(rand() + 1) / log(base);
+    vec->y = 1.0 + log(rand() + 1) / log(base);
+    vec->z = 1.0 + log(rand() + 1) / log(base);
+
+    return vec;
+}
+
 Vec* getRandVecOnCube() {
     Vec* vec = malloc(sizeof(Vec));
     int fix =  rand() % 6;
