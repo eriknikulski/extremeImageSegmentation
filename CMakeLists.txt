@@ -9,4 +9,9 @@ file(GLOB SOURCES
         *.c
         )
 
-add_executable(extremeImageSegmentation ${SOURCE_FILES} ${SOURCES})
+add_library(libpng STATIC IMPORTED)
+set_target_properties(libpng PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/libpng-1.6.37/libpng.a)
+
+add_executable(extremeImageSegmentation ${SOURCE_FILES} ${SOURCES} ${HEADER_FILES})
+target_link_libraries (extremeImageSegmentation libpng)
+target_link_libraries (extremeImageSegmentation z)

@@ -7,66 +7,81 @@
 #include "utility.h"
 #include "spline.h"
 #include "voronoi.h"
+#include "png.h"
+
 
 #include "math.h"
 #include "stdio.h"
+#include "stdlib.h"
+#include "string.h"
 
-static double getPixelValue(double d, double theta_0, double theta_1, double sigma_b, double mu_b, double sigma_c, double mu_c) {
-    double p = (double)1.0 / (double)((double)1 + exp(-theta_0 - theta_1 * d));
-    if (getRandD() < p) {
+static double getPixelValue(double d, ImageParams imageParams) {
+    double p = (double)1.0 / (double)((double)1 + exp(-imageParams.theta_0 - imageParams.theta_1 * d));
+
+    // TODO: N1 and N2 in task are diff for splines and voronoi. Does it matter??
+    if (getRandD() > p) {
         // select from N2
-        return normDist(sigma_b, mu_b);
+        return normalCDF(getRandD(), imageParams.sigma_b, imageParams.mu_b);
     } else {
         // select from N1
-        return normDist(sigma_c, mu_c);
+        return normalCDF(getRandD(), imageParams.sigma_c, imageParams.mu_c);
     }
 }
 
-static unsigned char to8Bit(double value) {
+static uint8_t to8Bit(double value) {
     if (value < 0) value = 0;
     if (value > 1) value = 1;
 
-    return (unsigned char) (value * 255);
+    return (uint8_t) (value * 255);
 }
 
-static void writeImage(int size, void* image, char* fname) {
-    FILE* fp;
-    fp = fopen(fname, "wb");
-    fwrite(&image, size * size * size, sizeof(unsigned char), fp);
-    fclose(fp);
+static int writeImage(bitmap_t* img, char* fname, int x) {
+    int status = 0;
+    size_t len = snprintf(NULL, 0, "%simg_%d.png", fname, x) + 1;
+    char* activeName = malloc(len);
+    snprintf(activeName, len, "%simg_%d.png", fname, x);
+
+    if (save_png_to_file(img, activeName)) {
+        fprintf(stderr, "Error writing file %d.\n", x);
+        status = -1;
+    }
+
+    free(activeName);
+    return status;
 }
 
-void createSplineImage(Vec** splines, int nSplines, int dim, int imageSize,
-                 double theta_0, double theta_1, double sigma_b, double mu_b, double sigma_c, double mu_c,
-                 char* fname) {
+void createSplineImage(Vec** splines, int nSplines, int dim, int imageSize, ImageParams imageParams, char* fname) {
     discretizeSplines(splines, nSplines, dim, imageSize);
     Vec p;
     double dist;
     double value;
 
-    unsigned char image[imageSize][imageSize][imageSize];
+    bitmap_t img;
 
-    for (int i = 0; i < imageSize; ++i) {
-        for (int j = 0; j < imageSize; ++j) {
-            for (int k = 0; k < imageSize; ++k) {
-                p.x = (double) i;
-                p.y = (double) j;
-                p.z = (double) k;
+    for (int x = 0; x < imageSize; ++x) {
+        img.width = imageSize;
+        img.height = imageSize;
+
+        img.pixels = calloc(img.width * img.height, sizeof(pixel_t));
+        for (int y = 0; y < imageSize; ++y) {
+            for (int z = 0; z < imageSize; ++z) {
+                p.x = (double) x;
+                p.y = (double) y;
+                p.z = (double) z;
 
                 dist = splinesDist(&p, splines, nSplines, dim);
-                value = getPixelValue(dist, theta_0, theta_1, sigma_b, mu_b, sigma_c, mu_c);
-                image[i][j][k] = to8Bit(value);
+                value = getPixelValue(dist, imageParams);
+                pixel_t* pixel = pixel_at(&img, y, z);
+                pixel->value = to8Bit(value);
             }
         }
+        writeImage(&img, fname, x);
+        free(img.pixels);
+        printf("%d\n", x);
     }
-
-    writeImage(imageSize, &image, fname);
-    printf("Created spline image!\n");
 }
 
-void createVoronoiImage(Cell** cells, int nCells, int imageSize,
-                        double theta_0, double theta_1, double sigma_b, double mu_b, double sigma_c, double mu_c,
-                        char* fname) {
+void createVoronoiImage(Cell** cells, int nCells, int imageSize, ImageParams imageParams, char* fname) {
     Vec p;
     Vec lastP;
     double dist;
@@ -74,17 +89,24 @@ void createVoronoiImage(Cell** cells, int nCells, int imageSize,
     double secondLastDist = -1;
     double value;
 
-    unsigned char image[imageSize][imageSize][imageSize];
+    bitmap_t img;
 
-    discretizeCells(cells, nCells, imageSize);
+    discretizeCells(cells, nCells, imageSize - 1);
 
-    for (int i = 0; i < imageSize; ++i) {
-        for (int j = 0; j < imageSize; ++j) {
-            for (int k = 0; k < imageSize; ++k) {
-                p.x = (double) i;
-                p.y = (double) j;
-                p.z = (double) k;
+    printCells(cells, nCells);
 
+    for (int x = 0; x < imageSize; ++x) {
+        img.width = imageSize;
+        img.height = imageSize;
+
+        img.pixels = calloc(img.width * img.height, sizeof(pixel_t));
+        for (int y = 0; y < imageSize; ++y) {
+            for (int z = 0; z < imageSize; ++z) {
+                p.x = (double) x;
+                p.y = (double) y;
+                p.z = (double) z;
+
+                // TODO: something is still wrong here
                 if (secondLastDist >= 0 &&
                     lastDist + getDist(&p, &lastP) <= secondLastDist - getDist(&p, &lastP)) {
                     dist = lastDist + getDist(&p, &lastP);
@@ -93,13 +115,15 @@ void createVoronoiImage(Cell** cells, int nCells, int imageSize,
                     dist = voronoiDist(&p, cells, nCells, &secondLastDist);
                 }
                 lastDist = dist;
-                value = getPixelValue(dist, theta_0, theta_1, sigma_b, mu_b, sigma_c, mu_c);
-                image[i][j][k] = to8Bit(value);
+
+                value = getPixelValue(dist, imageParams);
+                pixel_t* pixel = pixel_at(&img, y, z);
+                pixel->value = to8Bit(value);
                 lastP = p;
             }
         }
+        writeImage(&img, fname, x);
+        free(img.pixels);
+        printf("%d\n", x);
     }
-
-    writeImage(imageSize, &image, fname);
-    printf("Created voronoi image!\n");
 }

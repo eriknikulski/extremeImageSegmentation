@@ -1,7 +1,6 @@
 #include "image.h"
 #include "spline.h"
 #include "voronoi.h"
-#include "utility.h"
 
 #include "stdlib.h"
 #include "stdio.h"
@@ -16,27 +15,36 @@ int main() {
     double minDist = 0;
     int nPoints = 100;
 
-    int nSplines = 1;
+    int nSplines = 5;
 
-    double theta_0 = 5.0;
-    double theta_1 = -0.1;
-    double sigma_b = 0.3;
-    double mu_b = 0.3;
-    double sigma_c = 0.1;
-    double mu_c = 0.9;
+    ImageParams imageParams = {
+            .imageSize = 100,
+            .theta_0 = -3.0,
+            .theta_1 = 1,
+            .sigma_b = 5,
+            .mu_b = 3,
+            .sigma_c = 5,
+            .mu_c = -3,
+    };
 
     int mCells = 4;
     int nCells = 4 * mCells;
 
+    clock_t begin;
+    clock_t end;
+    double time_spent;
 
-    clock_t begin = clock();
+
+    begin = clock();
 
     Vec** s = getNSplines(nSplines, alpha, minDist, nPoints);
-    createSplineImage(s, nSplines, nPoints, imageSize,
-                theta_0, theta_1, sigma_b, mu_b, sigma_c, mu_c, "image_spline");
+    printf("Created splines\n");
+    createSplineImage(s, nSplines, nPoints, imageSize, imageParams,
+                      "/Users/eriknikulski/CLionProjects/extremeImageSegmentation/images/spline/");
+    printf("Created spline images!\n");
 
-    clock_t end = clock();
-    double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+    end = clock();
+    time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
     printf("TIME splines: %lf", time_spent);
 
 
@@ -48,11 +56,14 @@ int main() {
     cells = mergeCells(cells, nCells, mCells);
     printf("Merged cells\n\n");
 
-    createVoronoiImage(cells, mCells, imageSize,
-                theta_0, theta_1, sigma_b, mu_b, sigma_c, mu_c, "image_voronoi");
+    printCells(cells, mCells);
 
-    clock_t end = clock();
-    double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+    createVoronoiImage(cells, mCells, imageSize, imageParams,
+                       "/Users/eriknikulski/CLionProjects/extremeImageSegmentation/images/voronoi/");
+    printf("Created voronoi images!\n");
+
+    end = clock();
+    time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
     printf("TIME voronoi: %lf", time_spent);
 
 

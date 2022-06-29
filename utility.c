@@ -71,3 +71,7 @@ double normDist(double sigma, double mu) {
             * cos(2 * M_PI * (rand() + 1.0) / (RAND_MAX + 1.0));
     return mu + sigma * randomNum_normal;
 }
+
+double normalCDF(double value, double sigma, double mu) {
+    return 0.5 * erfc((value - mu) / (sigma * M_SQRT2));
+}

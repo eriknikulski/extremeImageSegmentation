@@ -379,22 +379,19 @@ Cell** mergeCells(Cell** cells, int nOld, int nNew) {
 
     Graph* graph = toGraph(cells, nOld);
     int* seeds = getNRandExc(nNew, 0, (int)graph->count - 1);
-
-    printf("Selected Seeds:\n");
-    for (int i = 0; i < nNew; ++i) {
-        printf("%d: %d\n", i, seeds[i]);
-    }
-
-
     int* assign = growSeeds(graph, seeds, nNew);
-
-    printf("\n\nASSIGNMENT:\n");
-    for (int i = 0; i < nOld; ++i) {
-        printf("%d -> %d\n", i, assign[i]);
-    }
 
     // merge cells based on assignments
     return actualizeAssignment(cells, seeds, assign, nOld, nNew);
+}
+
+void discretizeFace(Face* face, int size) {
+    assert(size % 10 == 0);
+    for (int i = 0; i < face->count; ++i) {
+        face->nodes[i].x = round(face->nodes[i].x * (double)size);
+        face->nodes[i].y = round(face->nodes[i].y * (double)size);
+        face->nodes[i].z = round(face->nodes[i].z * (double)size);
+    }
 }
 
 void discretizeCell(Cell* cell, int size) {
@@ -403,6 +400,9 @@ void discretizeCell(Cell* cell, int size) {
         cell->nodes[i].x = round(cell->nodes[i].x * (double)size);
         cell->nodes[i].y = round(cell->nodes[i].y * (double)size);
         cell->nodes[i].z = round(cell->nodes[i].z * (double)size);
+    }
+    for (int i = 0; i < cell->faceCount; ++i) {
+        discretizeFace(&cell->faces[i], size);
     }
 }
 
@@ -493,6 +493,7 @@ double voronoiDist(Vec* v, Cell** cells, int nCells, double* secondDist) {
                 *secondDist = cDist;
             }
             if (isZero(sDist)) {
+                *secondDist = -1;
                 return 0.0;
             }
         }
@@ -521,7 +522,7 @@ void printCells(Cell** cells, int count) {
             printf("   Face %d  count=%d  normVec={ x=%lf  y=%lf  z=%lf }\n", j, cells[i]->faces[j].count,
                    cells[i]->faces[j].normalVec->x, cells[i]->faces[j].normalVec->y, cells[i]->faces[j].normalVec->z);
             for (int k = 0; k < cells[i]->faces[j].count; ++k)
-                printf("      Node %d  x=%lf  y=%lf  z=%lf\n", j,
+                printf("      Node %d  x=%lf  y=%lf  z=%lf\n", k,
                        cells[i]->faces[j].nodes[k].x, cells[i]->faces[j].nodes[k].y, cells[i]->faces[j].nodes[k].z);
         }
         for (int j = 0; j < cells[i]->neighborCount; ++j) {

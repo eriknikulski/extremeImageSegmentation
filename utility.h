@@ -17,4 +17,6 @@ int getRandFrom(int* l, int n);
 
 double normDist(double sigma, double mu);
 
+double normalCDF(double value, double sigma, double mu);
+
 #endif //EXTREMEIMAGESEGMENTATION_UNTIL_H
