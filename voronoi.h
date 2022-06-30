@@ -9,10 +9,24 @@
 
 typedef Vec Node;
 
+typedef struct FaceCalc {
+    Node* n1;
+    Node* n2;
+    Node* n3;
+
+    Vec* u;
+    Vec* v;
+    Vec* n;
+
+    double nn;
+} FaceCalc;
+
 typedef struct Face {
     Node* nodes;
     unsigned int count;
     Node* normalVec;
+    FaceCalc* faceCalcs;
+    int nFaceCalcs;
 } Face;
 
 typedef struct Cell {

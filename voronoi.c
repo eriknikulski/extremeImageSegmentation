@@ -158,6 +158,8 @@ void setNormalVecFace(Cell* c, char* s) {
         elem = strtok_r(NULL, commaDelimiter, &saveptr2);
         c->faces[i].normalVec->z = strtod(elem, NULL);
 
+        c->faces[i].nFaceCalcs = 0;
+        c->faces[i].faceCalcs = NULL;
         ++i;
     }
 }
@@ -231,43 +233,66 @@ Cell** getCells(int n, char* fname) {
     return cells;
 }
 
-int isNodeInsideFace(Face* f, Node* n) {
-    // https://math.stackexchange.com/questions/4322/check-whether-a-point-is-within-a-3d-triangle
-    double a;
+FaceCalc* getFaceCalc(Face* f, int i) {
+    for (int j = 0; j < f->nFaceCalcs; ++j) {
+        if (f->faceCalcs[j].n1 == &f->nodes[i] &&
+            f->faceCalcs[j].n2 == &f->nodes[i + 1] &&
+            f->faceCalcs[j].n3 == &f->nodes[i + 2])
+            return &f->faceCalcs[j];
+    }
+    return NULL;
+}
+
+double getDistFaceNode(Face* f, Node* p) {
+    // TODO: use hashmap or something for nodes
+    // https://math.stackexchange.com/questions/544946/determine-if-projection-of-3d-point-onto-plane-is-within-a-triangle/544947
     double alpha;
     double beta;
     double gamma;
+    Vec* w;
+    Vec* tmp;
+    Vec res;
+
+    double cDist;
+    double sDist = MAXFLOAT;
 
     for (int i = 0; i < f->count - 2; ++i) {
-        Vec* v1 = getSubVec(&f->nodes[i + 1], &f->nodes[i]);
-        Vec* v2 = getSubVec(&f->nodes[i + 2], &f->nodes[i]);
-        Vec* crossProd = getCrossProduct(v1, v2);
+        FaceCalc* faceCalc = getFaceCalc(f, i);
+        if (!faceCalc) {
+            f->faceCalcs = realloc(f->faceCalcs, sizeof(FaceCalc) * (f->nFaceCalcs + 1));
+            f->nFaceCalcs++;
+            faceCalc = &f->faceCalcs[f->nFaceCalcs - 1];
+            faceCalc->n1 = &f->nodes[i];
+            faceCalc->n2 = &f->nodes[i + 1];
+            faceCalc->n3 = &f->nodes[i + 2];
 
-        a = getLength(crossProd) / 2;
-        free(v1);
-        free(v2);
-        free(crossProd);
+            faceCalc->u = getSubVec(&f->nodes[i + 1], &f->nodes[i]);
+            faceCalc->v = getSubVec(&f->nodes[i + 2], &f->nodes[i]);
+            faceCalc->n = getCrossProduct(faceCalc->u, faceCalc->v);
+            faceCalc->nn = getDotProd(faceCalc->n, faceCalc->n);
+        }
 
-        v1 = getSubVec(&f->nodes[i + 1], n);
-        v2 = getSubVec(&f->nodes[i + 2], n);
-        crossProd = getCrossProduct(v1, v2);
-        alpha = getLength(crossProd) / (2 * a);
-        free(v1);
-        free(v2);
-        free(crossProd);
+        w = getSubVec(p, &f->nodes[i]);
 
-        v1 = getSubVec(&f->nodes[i + 2], n);
-        v2 = getSubVec(&f->nodes[i + 1], n);
-        crossProd = getCrossProduct(v1, v2);
-        beta = getLength(crossProd) / (2 * a);
-        free(v1);
-        free(v2);
-        free(crossProd);
+        tmp = getCrossProduct(faceCalc->u, w);
+        gamma = getDotProd(tmp, faceCalc->n) / faceCalc->nn;
 
-        gamma = 1 - alpha - beta;
-        if (alpha >= 0 && alpha <= 1 && beta >= 0 && beta <= 1 && gamma >= 0 && gamma <= 1) return 1;
+        tmp = getCrossProduct(w, faceCalc->v);
+        beta = getDotProd(tmp, faceCalc->n) / faceCalc->nn;
+
+        alpha = 1 - gamma - beta;
+
+        if (alpha >= 0 && alpha <= 1 && beta >= 0 && beta <= 1 && gamma >= 0 && gamma <= 1) {
+            res.x = alpha * f->nodes[i].x + beta * f->nodes[i + 1].x + gamma * f->nodes[i + 2].x;
+            res.y = alpha * f->nodes[i].y + beta * f->nodes[i + 1].y + gamma * f->nodes[i + 2].y;
+            res.z = alpha * f->nodes[i].z + beta * f->nodes[i + 1].z + gamma * f->nodes[i + 2].z;
+
+            cDist = getDist(&res, p);
+            if (cDist < sDist) sDist = cDist;
+            if (isZero(sDist)) return 0;
+        }
     }
-    return 0;
+    return sDist;
 }
 
 void removeDupNodes(Cell* c) {
@@ -306,7 +331,7 @@ void removeDupFaces(Cell* c) {
         }
     }
 
-    c->faces = realloc(c->faces, sizeof(Node) * count);
+    c->faces = realloc(c->faces, sizeof(Face) * count);
     c->faceCount = count;
 }
 
@@ -386,7 +411,6 @@ Cell** mergeCells(Cell** cells, int nOld, int nNew) {
 }
 
 void discretizeFace(Face* face, int size) {
-    assert(size % 10 == 0);
     for (int i = 0; i < face->count; ++i) {
         face->nodes[i].x = round(face->nodes[i].x * (double)size);
         face->nodes[i].y = round(face->nodes[i].y * (double)size);
@@ -395,7 +419,6 @@ void discretizeFace(Face* face, int size) {
 }
 
 void discretizeCell(Cell* cell, int size) {
-    assert(size % 10 == 0);
     for (int i = 0; i < cell->nodeCount; ++i) {
         cell->nodes[i].x = round(cell->nodes[i].x * (double)size);
         cell->nodes[i].y = round(cell->nodes[i].y * (double)size);
@@ -407,7 +430,6 @@ void discretizeCell(Cell* cell, int size) {
 }
 
 void discretizeCells(Cell** cells, int n, int size) {
-    assert(size % 10 == 0);
     for (int i = 0; i < n; ++i) {
         discretizeCell(cells[i], size);
     }
@@ -446,30 +468,8 @@ double getDistFace(Face* f, Vec* v) {
     double sDist = DBL_MAX;
     double cDist;
 
-    Vec* vProj = malloc(sizeof(Vec));
-
-    Vec* tmp = getSubVec(v, &f->nodes[0]);
-    double d = getDotProd(f->normalVec, tmp);
-    free(tmp);
-
-    if (d == 0) {
-        // on plane
-        // check if inside face (including EDGES!!!)
-        if (isNodeInsideFace(f, v)) {
-            free(vProj);
-            return 0.0;
-        }
-    } else {
-        multVecs(d, f->normalVec, vProj);
-        subtractVec(v, vProj, vProj);
-
-        if (isNodeInsideFace(f, vProj)) {
-            double dist = getDist(vProj, v);
-            free(vProj);
-            return dist;
-        }
-    }
-
+    double d = getDistFaceNode(f, v);
+    if (d < MAXFLOAT) return d;
 
     for (int i = 0; i < f->count - 1; ++i) {
         cDist = getDistLineSeg(&f->nodes[i], &f->nodes[i + 1], v);
