@@ -479,23 +479,15 @@ double getDistFace(Face* f, Vec* v) {
     return sDist;
 }
 
-double voronoiDist(Vec* v, Cell** cells, int nCells, double* secondDist) {
+double voronoiDist(Vec* v, Cell** cells, int nCells) {
     double sDist = DBL_MAX;
     double cDist;
-    *secondDist = -1;
 
     for (int i = 0; i < nCells; ++i) {
         for (int j = 0; j < cells[i]->faceCount; ++j) {
             cDist = getDistFace(&cells[i]->faces[j], v);
-            if (cDist < sDist) {
-                sDist = cDist;
-            } else if (*secondDist < 0 || cDist < *secondDist) {
-                *secondDist = cDist;
-            }
-            if (isZero(sDist)) {
-                *secondDist = -1;
-                return 0.0;
-            }
+            if (cDist < sDist) sDist = cDist;
+            if (isZero(sDist)) return 0.0;
         }
     }
     return sDist;

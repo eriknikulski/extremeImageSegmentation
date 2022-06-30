@@ -83,10 +83,7 @@ void createSplineImage(Vec** splines, int nSplines, int dim, int imageSize, Imag
 
 void createVoronoiImage(Cell** cells, int nCells, int imageSize, ImageParams imageParams, char* fname) {
     Vec p;
-    Vec lastP;
     double dist;
-    double lastDist;
-    double secondLastDist = -1;
     double value;
 
     bitmap_t img;
@@ -106,20 +103,11 @@ void createVoronoiImage(Cell** cells, int nCells, int imageSize, ImageParams ima
                 p.y = (double) y;
                 p.z = (double) z;
 
-                // TODO: something is still wrong here
-                if (secondLastDist >= 0 &&
-                    lastDist + getDist(&p, &lastP) <= secondLastDist - getDist(&p, &lastP)) {
-                    dist = lastDist + getDist(&p, &lastP);
-                    secondLastDist = secondLastDist - getDist(&p, &lastP);
-                } else {
-                    dist = voronoiDist(&p, cells, nCells, &secondLastDist);
-                }
-                lastDist = dist;
+                dist = voronoiDist(&p, cells, nCells);
 
                 value = getPixelValue(dist, imageParams);
                 pixel_t* pixel = pixel_at(&img, y, z);
                 pixel->value = to8Bit(value);
-                lastP = p;
             }
         }
         writeImage(&img, fname, x);

@@ -85,7 +85,7 @@ double getDistLineSeg(Vec* v1, Vec* v2, Vec* v);
 
 double getDistFace(Face* f, Vec* v);
 
-double voronoiDist(Vec* v, Cell** cells, int nCells, double* secondDist);
+double voronoiDist(Vec* v, Cell** cells, int nCells);
 
 int equalFaces(Face* f1, Face* f2);
 
