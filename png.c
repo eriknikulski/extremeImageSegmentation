@@ -4,26 +4,20 @@
 
 #include "png.h"
 
+#include "dirent.h"
 #include "libpng-1.6.37/png.h"
 #include "stdio.h"
 #include "stdint.h"
+#include "errno.h"
+#include "string.h"
+#include "stdlib.h"
+#include "stdarg.h"
 
 
-/* Given "bitmap", this returns the pixel of bitmap at the point
-   ("x", "y"). */
-
-pixel_t* pixel_at(bitmap_t* bitmap, int x, int y) {
-    return bitmap->pixels + bitmap->width * y + x;
-}
-
-/* Write "bitmap" to a PNG file specified by "path"; returns 0 on
-   success, non-zero on error. */
-
-int save_png_to_file(bitmap_t* bitmap, const char *path) {
+int save_bitmap_slice_to_file(Bitmap* bitmap, int z, const char *path) {
     FILE* fp;
     png_structp png_ptr = NULL;
     png_infop info_ptr = NULL;
-    size_t x, y;
     png_byte** row_pointers = NULL;
     /* "status" contains the return value of this function. At first
        it is set to a value which means 'failure'. When the routine
@@ -61,8 +55,8 @@ int save_png_to_file(bitmap_t* bitmap, const char *path) {
 
     png_set_IHDR(png_ptr,
                  info_ptr,
-                 bitmap->width,
-                 bitmap->height,
+                 bitmap->size,
+                 bitmap->size,
                  depth,
                  PNG_COLOR_TYPE_GRAY,
                  PNG_INTERLACE_NONE,
@@ -71,12 +65,12 @@ int save_png_to_file(bitmap_t* bitmap, const char *path) {
 
     /* Initialize rows of PNG. */
 
-    row_pointers = png_malloc(png_ptr, bitmap->height * sizeof(png_byte*));
-    for (y = 0; y < bitmap->height; ++y) {
-        png_byte* row = png_malloc(png_ptr, sizeof(uint8_t) * bitmap->width * pixel_size);
+    row_pointers = png_malloc(png_ptr, bitmap->size * sizeof(png_byte*));
+    for (int y = 0; y < bitmap->size; ++y) {
+        png_byte* row = png_malloc(png_ptr, sizeof(uint8_t) * bitmap->size * pixel_size);
         row_pointers[y] = row;
-        for (x = 0; x < bitmap->width; ++x) {
-            pixel_t* pixel = pixel_at(bitmap, x, y);
+        for (int x = 0; x < bitmap->size; ++x) {
+            Pixel* pixel = getPixel(bitmap, x, y, z);
             *row++ = pixel->value;
         }
     }
@@ -92,7 +86,7 @@ int save_png_to_file(bitmap_t* bitmap, const char *path) {
 
     status = 0;
 
-    for (y = 0; y < bitmap->height; ++y) {
+    for (int y = 0; y < bitmap->size; ++y) {
         png_free(png_ptr, row_pointers[y]);
     }
     png_free(png_ptr, row_pointers);
@@ -104,4 +98,98 @@ int save_png_to_file(bitmap_t* bitmap, const char *path) {
     fclose(fp);
     fopen_failed:
     return status;
+}
+
+static void fatal_error (const char * message, ...) {
+    va_list args;
+    va_start(args, message);
+    vfprintf (stderr, message, args);
+    va_end(args);
+    exit(EXIT_FAILURE);
+}
+
+int get_file_count(const char* dir_path) {
+    int counter = 0;
+    struct dirent* entry;
+    DIR* dir = opendir(dir_path);
+
+    if(dir == NULL) {
+        printf("Error! Unable to read directory");
+        return 0;
+    }
+
+    while((entry = readdir(dir)) != NULL) {
+        if (entry->d_type == DT_REG)
+            ++counter;
+    }
+
+    closedir(dir);
+    return counter;
+}
+
+Bitmap* read_pngs(const char* path) {
+    png_structp	png_ptr;
+    png_infop info_ptr;
+    FILE * fp;
+    png_uint_32 width;
+    png_uint_32 height;
+    int bit_depth;
+    int color_type;
+    int interlace_method;
+    int compression_method;
+    int filter_method;
+    png_bytepp rows;
+
+    Bitmap* bitmap = malloc(sizeof(Bitmap));
+    Pixel* pixel;
+
+    int size = get_file_count(path);
+
+    // assumes image is a cube
+    bitmap->size = size;
+    bitmap->size2 = size * size;
+    bitmap->pixels = calloc(size * size * size, sizeof(Pixel));
+
+    for (int z = 0; z < size; ++z) {
+        size_t len = snprintf(NULL, 0, "%simg_%d.png", path, z) + 1;
+        char* activeName = malloc(len);
+        snprintf(activeName, len, "%simg_%d.png", path, z);
+
+        fp = fopen(activeName, "rb");
+        free(activeName);
+
+        if (!fp)
+            fatal_error("Cannot open '%s': %s\n", path, strerror(errno));
+
+        png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+        if (!png_ptr)
+            fatal_error("Cannot create PNG read structure");
+
+        info_ptr = png_create_info_struct(png_ptr);
+        if (!png_ptr)
+            fatal_error("Cannot create PNG info structure");
+
+        png_init_io(png_ptr, fp);
+        png_read_png(png_ptr, info_ptr, 0, 0);
+        png_get_IHDR(png_ptr, info_ptr, &width, &height, &bit_depth, &color_type,
+                     &interlace_method, &compression_method, &filter_method);
+        rows = png_get_rows(png_ptr, info_ptr);
+        int rowbytes;
+        rowbytes = png_get_rowbytes(png_ptr, info_ptr);
+        for (int y = 0; y < height; ++y) {
+            png_bytep row;
+            row = rows[y];
+            for (int x = 0; x < rowbytes; ++x) {
+                pixel = getPixel(bitmap, x, y, z);
+                pixel->value = row[x];
+                pixel->v = malloc(sizeof(Vec));
+                pixel->v->x = x;
+                pixel->v->y = y;
+                pixel->v->z = z;
+                pixel->grouping = NULL;
+                pixel->inSSL = 0;
+            }
+        }
+    }
+    return bitmap;
 }

@@ -7,7 +7,22 @@
 
 #include "vec.h"
 #include "voronoi.h"
-#include "png.h"
+
+#include "stdint.h"
+
+typedef struct Pixel {
+    Vec* v;
+    uint8_t value;
+    struct Seed* grouping;
+    double delta;
+    int inSSL;
+} Pixel;
+
+typedef struct Bitmap {
+    Pixel* pixels;
+    int size;
+    int size2;
+} Bitmap;
 
 typedef struct ImageParams {
     int imageSize;
@@ -19,11 +34,24 @@ typedef struct ImageParams {
     double mu_c;
 } ImageParams;
 
+typedef struct VoronoiParams {
+    int nInitialCells;
+    int nCells;
+} VoronoiParams;
 
-static int writeImage(bitmap_t* img, char* fname, int x);
+typedef struct SplineParams {
+    double alpha;
+    double minDist;
+    int nPoints;
+    int nSplines;
+} SplineParams;
 
-void createSplineImage(Vec** splines, int nSplines, int dim, int imageSize, ImageParams imageParams, char* fname);
+Pixel* getPixel(Bitmap* bitmap, int x, int y, int z);
 
-void createVoronoiImage(Cell** cells, int nCells, int imageSize, ImageParams imageParams, char* fname);
+void writeBitmap(Bitmap* bitmap, char* fname);
+
+void createSplineImage(Vec** splines, int nSplines, int dim, ImageParams imageParams, char* fname);
+
+void createVoronoiImage(Cell** cells, int nCells, ImageParams imageParams, char* fname);
 
 #endif //EXTREMEIMAGESEGMENTATION_IMAGE_H

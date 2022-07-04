@@ -26,9 +26,7 @@ Vec* getRandParticles(int n) {
     return particles;
 }
 
-void createParticleFile(int n, char* fname) {
-    Vec* particles = getRandParticles(n);
-
+void createParticleFile(Vec* particles, int n, char* fname) {
     FILE* fp;
     fp = fopen(fname, "w");
     if (fp == NULL) exit(EXIT_FAILURE);
@@ -38,16 +36,15 @@ void createParticleFile(int n, char* fname) {
     }
 
     fclose(fp);
-    free(particles);
 }
 
-void createCells(int n, char* fname) {
+void createCells(Vec* particles, int n, char* fname) {
     char* command = malloc(sizeof(char) * (45 + strlen(fname) + 1));
     strcpy(command, "voro++ -c \"%i:%w:%P:%s:%t:%l:%n\" 0 1 0 1 0 1 ");
     strcat(command, fname);
     strcat(command, "\0");
 
-    createParticleFile(n, fname);
+    createParticleFile(particles, n, fname);
     system(command);
     free(command);
 }
@@ -222,12 +219,13 @@ Cell** readCells(int n, char* fname) {
     return cells;
 }
 
-Cell** getCells(int n, char* fname) {
+Cell** getCells(int n, char* fname, Vec** particles) {
     char* fout = malloc(sizeof(char) * (strlen(fname) + 5 + 1));
     strcpy(fout, fname);
     strcat(fout, ".vol\0");
 
-    createCells(n, fname);
+    *particles = getRandParticles(n);
+    createCells(*particles, n, fname);
     Cell** cells = readCells(n, fout);
     free(fout);
     return cells;
@@ -254,7 +252,7 @@ double getDistFaceNode(Face* f, Node* p) {
     Vec res;
 
     double cDist;
-    double sDist = MAXFLOAT;
+    double sDist = DBL_MAX;
 
     for (int i = 0; i < f->count - 2; ++i) {
         FaceCalc* faceCalc = getFaceCalc(f, i);
@@ -411,18 +409,19 @@ Cell** mergeCells(Cell** cells, int nOld, int nNew) {
 }
 
 void discretizeFace(Face* face, int size) {
-    for (int i = 0; i < face->count; ++i) {
-        face->nodes[i].x = round(face->nodes[i].x * (double)size);
-        face->nodes[i].y = round(face->nodes[i].y * (double)size);
-        face->nodes[i].z = round(face->nodes[i].z * (double)size);
-    }
+    discretizeVecs(face->nodes, (int)face->count, size);
+//    for (int i = 0; i < face->count; ++i) {
+//        face->nodes[i].x = round(face->nodes[i].x * (double)(size - 1));
+//        face->nodes[i].y = round(face->nodes[i].y * (double)(size - 1));
+//        face->nodes[i].z = round(face->nodes[i].z * (double)(size - 1));
+//    }
 }
 
 void discretizeCell(Cell* cell, int size) {
     for (int i = 0; i < cell->nodeCount; ++i) {
-        cell->nodes[i].x = round(cell->nodes[i].x * (double)size);
-        cell->nodes[i].y = round(cell->nodes[i].y * (double)size);
-        cell->nodes[i].z = round(cell->nodes[i].z * (double)size);
+        cell->nodes[i].x = round(cell->nodes[i].x * (double)(size - 1));
+        cell->nodes[i].y = round(cell->nodes[i].y * (double)(size - 1));
+        cell->nodes[i].z = round(cell->nodes[i].z * (double)(size - 1));
     }
     for (int i = 0; i < cell->faceCount; ++i) {
         discretizeFace(&cell->faces[i], size);
@@ -468,8 +467,10 @@ double getDistFace(Face* f, Vec* v) {
     double sDist = DBL_MAX;
     double cDist;
 
-    double d = getDistFaceNode(f, v);
-    if (d < MAXFLOAT) return d;
+    double d = getDistFaceNode(f, v);       // TODO: should always return a result < DBL_MAX
+//    if (d == DBL_MAX) printf("lul");
+//    if (d < DBL_MAX) return d;         // TODO: might be a problem if d is only minimal smaller than DBL_MAX
+    sDist = d;
 
     for (int i = 0; i < f->count - 1; ++i) {
         cDist = getDistLineSeg(&f->nodes[i], &f->nodes[i + 1], v);

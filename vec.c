@@ -7,6 +7,7 @@
 
 #include "utility.h"
 
+#include "assert.h"
 #include "math.h"
 #include "memory.h"
 #include "stdlib.h"
@@ -149,4 +150,13 @@ int equalVecs(Vec* v1, Vec* v2) {
 
 int isZero(double d) {
     return fabs(d) < DBL_EPSILON;
+}
+
+void discretizeVecs(Vec* vecs, int count, int size) {
+    assert(size % 10 == 0);
+    for (int i = 0; i < count; ++i) {
+        vecs[i].x = round(vecs[i].x * (double)size);
+        vecs[i].y = round(vecs[i].y * (double)size);
+        vecs[i].z = round(vecs[i].z * (double)size);
+    }
 }

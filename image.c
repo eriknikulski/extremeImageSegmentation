@@ -9,11 +9,18 @@
 #include "voronoi.h"
 #include "png.h"
 
-
 #include "math.h"
 #include "stdio.h"
 #include "stdlib.h"
 #include "string.h"
+
+
+/* Given "bitmap", this returns the pixel of bitmap at the point
+   ("x", "y", "z"). */
+
+Pixel* getPixel(Bitmap* bitmap, int x, int y, int z) {
+    return bitmap->pixels + bitmap->size2 * z + bitmap->size * y + x;
+}
 
 static double getPixelValue(double d, ImageParams imageParams) {
     double p = (double)1.0 / (double)((double)1 + exp(-imageParams.theta_0 - imageParams.theta_1 * d));
@@ -35,83 +42,87 @@ static uint8_t to8Bit(double value) {
     return (uint8_t) (value * 255);
 }
 
-static int writeImage(bitmap_t* img, char* fname, int x) {
-    int status = 0;
-    size_t len = snprintf(NULL, 0, "%simg_%d.png", fname, x) + 1;
-    char* activeName = malloc(len);
-    snprintf(activeName, len, "%simg_%d.png", fname, x);
+void writeBitmap(Bitmap* bitmap, char* fname) {
+    size_t len;
+    char* activeName;
 
-    if (save_png_to_file(img, activeName)) {
-        fprintf(stderr, "Error writing file %d.\n", x);
-        status = -1;
+    for (int z = 0; z < bitmap->size; ++z) {
+        len = snprintf(NULL, 0, "%simg_%d.png", fname, z) + 1;
+        activeName = malloc(len);
+        snprintf(activeName, len, "%simg_%d.png", fname, z);
+
+        if (save_bitmap_slice_to_file(bitmap, z, activeName)) {
+            fprintf(stderr, "Error writing file %d.\n", z);
+        }
+        free(activeName);
     }
 
-    free(activeName);
-    return status;
 }
 
-void createSplineImage(Vec** splines, int nSplines, int dim, int imageSize, ImageParams imageParams, char* fname) {
-    discretizeSplines(splines, nSplines, dim, imageSize);
+Bitmap* calcSplineDistance(Vec** splines, int nSplines, int dim, ImageParams imageParams) {
     Vec p;
     double dist;
     double value;
 
-    bitmap_t img;
+    Bitmap* bitmap = malloc(sizeof(Bitmap));
+    bitmap->size = imageParams.imageSize;
+    bitmap->size2 = imageParams.imageSize * imageParams.imageSize;
+    bitmap->pixels = malloc(sizeof(Pixel) * imageParams.imageSize * imageParams.imageSize * imageParams.imageSize);
 
-    for (int x = 0; x < imageSize; ++x) {
-        img.width = imageSize;
-        img.height = imageSize;
-
-        img.pixels = calloc(img.width * img.height, sizeof(pixel_t));
-        for (int y = 0; y < imageSize; ++y) {
-            for (int z = 0; z < imageSize; ++z) {
+    for (int z = 0; z < imageParams.imageSize; ++z) {
+        for (int y = 0; y < imageParams.imageSize; ++y) {
+            for (int x = 0; x < imageParams.imageSize; ++x) {
                 p.x = (double) x;
                 p.y = (double) y;
                 p.z = (double) z;
 
                 dist = splinesDist(&p, splines, nSplines, dim);
                 value = getPixelValue(dist, imageParams);
-                pixel_t* pixel = pixel_at(&img, y, z);
+                Pixel* pixel = getPixel(bitmap, x, y, z);
                 pixel->value = to8Bit(value);
             }
         }
-        writeImage(&img, fname, x);
-        free(img.pixels);
-        printf("%d\n", x);
+        printf("%d\n", z);
     }
+    return bitmap;
 }
 
-void createVoronoiImage(Cell** cells, int nCells, int imageSize, ImageParams imageParams, char* fname) {
+void createSplineImage(Vec** splines, int nSplines, int dim, ImageParams imageParams, char* fname) {
+    discretizeSplines(splines, nSplines, dim, imageParams.imageSize);
+    Bitmap* bitmap = calcSplineDistance(splines, nSplines, dim, imageParams);
+    writeBitmap(bitmap, fname);
+}
+
+Bitmap* calcVoronoiDistances(Cell** cells, int nCells, ImageParams imageParams) {
     Vec p;
     double dist;
     double value;
 
-    bitmap_t img;
+    Bitmap* bitmap = malloc(sizeof(Bitmap));
+    bitmap->size = imageParams.imageSize;
+    bitmap->size2 = imageParams.imageSize * imageParams.imageSize;
+    bitmap->pixels = malloc(sizeof(Pixel) * imageParams.imageSize * imageParams.imageSize * imageParams.imageSize);
 
-    discretizeCells(cells, nCells, imageSize - 1);
-
-    printCells(cells, nCells);
-
-    for (int x = 0; x < imageSize; ++x) {
-        img.width = imageSize;
-        img.height = imageSize;
-
-        img.pixels = calloc(img.width * img.height, sizeof(pixel_t));
-        for (int y = 0; y < imageSize; ++y) {
-            for (int z = 0; z < imageSize; ++z) {
+    for (int z = 0; z < imageParams.imageSize; ++z) {
+        for (int y = 0; y < imageParams.imageSize; ++y) {
+            for (int x = 0; x < imageParams.imageSize; ++x) {
                 p.x = (double) x;
                 p.y = (double) y;
                 p.z = (double) z;
 
                 dist = voronoiDist(&p, cells, nCells);
-
                 value = getPixelValue(dist, imageParams);
-                pixel_t* pixel = pixel_at(&img, y, z);
+                Pixel* pixel = getPixel(bitmap, x, y, z);
                 pixel->value = to8Bit(value);
             }
         }
-        writeImage(&img, fname, x);
-        free(img.pixels);
-        printf("%d\n", x);
+        printf("%d\n", z);
     }
+    return bitmap;
+}
+
+void createVoronoiImage(Cell** cells, int nCells, ImageParams imageParams, char* fname) {
+    discretizeCells(cells, nCells, imageParams.imageSize);
+    Bitmap* bitmap = calcVoronoiDistances(cells, nCells, imageParams);
+    writeBitmap(bitmap, fname);
 }

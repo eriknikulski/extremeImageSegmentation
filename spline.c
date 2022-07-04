@@ -123,6 +123,7 @@ static int isClose(Vec** splines, Vec* spline, int splinesN, double minDist, int
 }
 
 Vec** getNSplines(int n, double alpha, double minDist, int dim) {
+    assert(minDist < 1 && minDist > 0);
     Vec** splines = malloc(sizeof(Vec) * dim * n);
     Vec* spline;
     int i = 0;
@@ -155,19 +156,10 @@ Vec** getNSplines(int n, double alpha, double minDist, int dim) {
     return splines;
 }
 
-void discretizeSpline(Vec* spline, int dim, int size) {
-    assert(size % 10 == 0);
-    for (int i = 0; i < dim; ++i) {
-        spline[i].x = round(spline[i].x * (double)size);
-        spline[i].y = round(spline[i].y * (double)size);
-        spline[i].z = round(spline[i].z * (double)size);
-    }
-}
-
 void discretizeSplines(Vec** splines, int n, int dim, int size) {
     assert(size % 10 == 0);
     for (int i = 0; i < n; ++i) {
-        discretizeSpline(splines[i], dim, size);
+        discretizeVecs(splines[i], dim, size);
     }
 }
 

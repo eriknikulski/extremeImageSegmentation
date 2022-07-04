@@ -41,9 +41,9 @@ typedef struct Cell {
 
 Vec* getRandParticles(int n);
 
-void createParticleFile(int n, char* fname);
+void createParticleFile(Vec* particles, int n, char* fname);
 
-void createCells(int n, char* fname);
+void createCells(Vec* particles, int n, char* fname);
 
 void setParticleId(Cell* cell, char* s);
 
@@ -65,9 +65,7 @@ void setNeighboringCells(Cell* cell, char* s);
 
 Cell** readCells(int n, char* fname);
 
-Cell** getCells(int n, char* fname);
-
-int isNodeInsideFace(Face* f, Node* n);
+Cell** getCells(int n, char* fname, Vec** particles);
 
 void removeDupNodes(Cell* c);
 

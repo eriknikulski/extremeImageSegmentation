@@ -47,4 +47,6 @@ int equalVecs(Vec* v1, Vec* v2);
 
 int isZero(double d);
 
+void discretizeVecs(Vec* vecs, int dim, int size);
+
 #endif //EXTREMEIMAGESEGMENTATION_VEC_H
