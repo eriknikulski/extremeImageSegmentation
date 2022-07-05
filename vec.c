@@ -134,7 +134,7 @@ double getLength(Vec* v) {
 Vec* getCrossProduct(Vec* v1, Vec* v2) {
     Vec* cross = malloc(sizeof(Vec));
     cross->x = v1->y * v2->z - v1->z * v2->y;
-    cross->y = v1->x * v2->z - v1->z * v2->x;
+    cross->y = v1->z * v2->x - v1->x * v2->z;
     cross->z = v1->x * v2->y - v1->y * v2->x;
     return cross;
 }
@@ -152,11 +152,15 @@ int isZero(double d) {
     return fabs(d) < DBL_EPSILON;
 }
 
+void discretizeVec(Vec* v, int size) {
+    v->x = round(v->x * (double)(size - 1));
+    v->y = round(v->y * (double)(size - 1));
+    v->z = round(v->z * (double)(size - 1));
+}
+
 void discretizeVecs(Vec* vecs, int count, int size) {
     assert(size % 10 == 0);
     for (int i = 0; i < count; ++i) {
-        vecs[i].x = round(vecs[i].x * (double)size);
-        vecs[i].y = round(vecs[i].y * (double)size);
-        vecs[i].z = round(vecs[i].z * (double)size);
+        discretizeVec(&vecs[i], size);
     }
 }

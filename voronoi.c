@@ -8,8 +8,6 @@
 #include "utility.h"
 
 #include "assert.h"
-#include "float.h"
-#include "math.h"
 #include "stdlib.h"
 #include "stdio.h"
 #include "string.h"
@@ -154,9 +152,6 @@ void setNormalVecFace(Cell* c, char* s) {
         c->faces[i].normalVec->y = strtod(elem, NULL);
         elem = strtok_r(NULL, commaDelimiter, &saveptr2);
         c->faces[i].normalVec->z = strtod(elem, NULL);
-
-        c->faces[i].nFaceCalcs = 0;
-        c->faces[i].faceCalcs = NULL;
         ++i;
     }
 }
@@ -228,69 +223,12 @@ Cell** getCells(int n, char* fname, Vec** particles) {
     createCells(*particles, n, fname);
     Cell** cells = readCells(n, fout);
     free(fout);
+
+    for (int i = 0; i < n; ++i) {
+        cells[i]->particle = &(*particles)[cells[i]->id];
+    }
+
     return cells;
-}
-
-FaceCalc* getFaceCalc(Face* f, int i) {
-    for (int j = 0; j < f->nFaceCalcs; ++j) {
-        if (f->faceCalcs[j].n1 == &f->nodes[i] &&
-            f->faceCalcs[j].n2 == &f->nodes[i + 1] &&
-            f->faceCalcs[j].n3 == &f->nodes[i + 2])
-            return &f->faceCalcs[j];
-    }
-    return NULL;
-}
-
-double getDistFaceNode(Face* f, Node* p) {
-    // TODO: use hashmap or something for nodes
-    // https://math.stackexchange.com/questions/544946/determine-if-projection-of-3d-point-onto-plane-is-within-a-triangle/544947
-    double alpha;
-    double beta;
-    double gamma;
-    Vec* w;
-    Vec* tmp;
-    Vec res;
-
-    double cDist;
-    double sDist = DBL_MAX;
-
-    for (int i = 0; i < f->count - 2; ++i) {
-        FaceCalc* faceCalc = getFaceCalc(f, i);
-        if (!faceCalc) {
-            f->faceCalcs = realloc(f->faceCalcs, sizeof(FaceCalc) * (f->nFaceCalcs + 1));
-            f->nFaceCalcs++;
-            faceCalc = &f->faceCalcs[f->nFaceCalcs - 1];
-            faceCalc->n1 = &f->nodes[i];
-            faceCalc->n2 = &f->nodes[i + 1];
-            faceCalc->n3 = &f->nodes[i + 2];
-
-            faceCalc->u = getSubVec(&f->nodes[i + 1], &f->nodes[i]);
-            faceCalc->v = getSubVec(&f->nodes[i + 2], &f->nodes[i]);
-            faceCalc->n = getCrossProduct(faceCalc->u, faceCalc->v);
-            faceCalc->nn = getDotProd(faceCalc->n, faceCalc->n);
-        }
-
-        w = getSubVec(p, &f->nodes[i]);
-
-        tmp = getCrossProduct(faceCalc->u, w);
-        gamma = getDotProd(tmp, faceCalc->n) / faceCalc->nn;
-
-        tmp = getCrossProduct(w, faceCalc->v);
-        beta = getDotProd(tmp, faceCalc->n) / faceCalc->nn;
-
-        alpha = 1 - gamma - beta;
-
-        if (alpha >= 0 && alpha <= 1 && beta >= 0 && beta <= 1 && gamma >= 0 && gamma <= 1) {
-            res.x = alpha * f->nodes[i].x + beta * f->nodes[i + 1].x + gamma * f->nodes[i + 2].x;
-            res.y = alpha * f->nodes[i].y + beta * f->nodes[i + 1].y + gamma * f->nodes[i + 2].y;
-            res.z = alpha * f->nodes[i].z + beta * f->nodes[i + 1].z + gamma * f->nodes[i + 2].z;
-
-            cDist = getDist(&res, p);
-            if (cDist < sDist) sDist = cDist;
-            if (isZero(sDist)) return 0;
-        }
-    }
-    return sDist;
 }
 
 void removeDupNodes(Cell* c) {
@@ -410,19 +348,11 @@ Cell** mergeCells(Cell** cells, int nOld, int nNew) {
 
 void discretizeFace(Face* face, int size) {
     discretizeVecs(face->nodes, (int)face->count, size);
-//    for (int i = 0; i < face->count; ++i) {
-//        face->nodes[i].x = round(face->nodes[i].x * (double)(size - 1));
-//        face->nodes[i].y = round(face->nodes[i].y * (double)(size - 1));
-//        face->nodes[i].z = round(face->nodes[i].z * (double)(size - 1));
-//    }
 }
 
 void discretizeCell(Cell* cell, int size) {
-    for (int i = 0; i < cell->nodeCount; ++i) {
-        cell->nodes[i].x = round(cell->nodes[i].x * (double)(size - 1));
-        cell->nodes[i].y = round(cell->nodes[i].y * (double)(size - 1));
-        cell->nodes[i].z = round(cell->nodes[i].z * (double)(size - 1));
-    }
+    discretizeVec(cell->particle, size);
+    discretizeVecs(cell->nodes, (int)cell->nodeCount, size);
     for (int i = 0; i < cell->faceCount; ++i) {
         discretizeFace(&cell->faces[i], size);
     }
@@ -434,64 +364,19 @@ void discretizeCells(Cell** cells, int n, int size) {
     }
 }
 
-double getDistLineSeg(Vec* v1, Vec* v2, Vec* v) {
-    // https://stackoverflow.com/questions/849211/shortest-distance-between-a-point-and-a-line-segment
-    double lineDist = getDist(v1, v2);
-    if (isZero(lineDist)) return getDist(v1, v);
-    Vec* tmp = getSubVec(v2, v1);
-    Vec* tmpV = getSubVec(v, v1);
-    double t = getDotProd(tmp, tmpV) / lineDist;
+double getDistPlane(Vec* v, Face* f) {
+    Vec vProj;
+    Vec* tmp;
+    double d;
 
-    if (t <= 0.0) {
-        t = 0.0;
-    } else if (t >= 1.0) {
-        t = 1.0;
-    }
-
-    multVecs(t, tmp, tmp);
-    addVecs(v1, tmp, tmp);
-    double dist = getDist(v, tmp);
-
+    tmp = getSubVec(v, &f->nodes[0]);
+    d = getDotProd(f->normalVec, tmp);
     free(tmp);
-    free(tmpV);
-    return dist;
-}
 
-double getDistFace(Face* f, Vec* v) {
-    // https://stackoverflow.com/questions/10983872/distance-from-a-point-to-a-polygon
+    multVecs(d, f->normalVec, &vProj);
+    subtractVec(v, &vProj, &vProj);
 
-    // check if vec on face plane
-    // if on plane -> calc if inside face
-    // else:
-
-    double sDist = DBL_MAX;
-    double cDist;
-
-    double d = getDistFaceNode(f, v);       // TODO: should always return a result < DBL_MAX
-//    if (d == DBL_MAX) printf("lul");
-//    if (d < DBL_MAX) return d;         // TODO: might be a problem if d is only minimal smaller than DBL_MAX
-    sDist = d;
-
-    for (int i = 0; i < f->count - 1; ++i) {
-        cDist = getDistLineSeg(&f->nodes[i], &f->nodes[i + 1], v);
-        if (cDist < sDist) sDist = cDist;
-        if (isZero(sDist)) return 0.0;   // TODO: should in theory never occur; check and remove
-    }
-    return sDist;
-}
-
-double voronoiDist(Vec* v, Cell** cells, int nCells) {
-    double sDist = DBL_MAX;
-    double cDist;
-
-    for (int i = 0; i < nCells; ++i) {
-        for (int j = 0; j < cells[i]->faceCount; ++j) {
-            cDist = getDistFace(&cells[i]->faces[j], v);
-            if (cDist < sDist) sDist = cDist;
-            if (isZero(sDist)) return 0.0;
-        }
-    }
-    return sDist;
+    return getDist(&vProj, v);
 }
 
 int equalFaces(Face* f1, Face* f2) {
@@ -509,6 +394,7 @@ void printCells(Cell** cells, int count) {
     for (int i = 0; i < count; ++i) {
         printf("Cell %d ID=%d  nodeCount=%d  faceCount=%d  neighborCount=%d\n", i, cells[i]->id, cells[i]->nodeCount,
                cells[i]->faceCount, cells[i]->neighborCount);
+        printf("Particle:  x=%lf  y=%lf  z=%lf\n", cells[i]->particle->x, cells[i]->particle->y, cells[i]->particle->z);
         for (int j = 0; j < cells[i]->nodeCount; ++j)
             printf("   Node %d  x=%lf  y=%lf  z=%lf\n", j, cells[i]->nodes[j].x, cells[i]->nodes[j].y, cells[i]->nodes[j].z);
         for (int j = 0; j < cells[i]->faceCount; ++j) {

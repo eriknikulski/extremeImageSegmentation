@@ -8,7 +8,7 @@
 #include "time.h"
 
 
-void spline(SplineParams splineParams, ImageParams imageParams) {
+void spline(SplineParams splineParams, ImageParams* imageParams) {
     Vec** s = getNSplines(splineParams.nSplines, splineParams.alpha, splineParams.minDist, splineParams.nPoints);
     printf("Created splines\n");
     createSplineImage(s, splineParams.nSplines, splineParams.nPoints, imageParams,
@@ -16,7 +16,7 @@ void spline(SplineParams splineParams, ImageParams imageParams) {
     printf("Created spline images!\n");
 }
 
-void voronoi(VoronoiParams voronoiParams, ImageParams imageParams) {
+void voronoi(VoronoiParams voronoiParams, ImageParams* imageParams) {
 //    Vec* particles = malloc(sizeof(Vec) * voronoiParams.nInitialCells);
 //    Cell** cells = getCells(voronoiParams.nInitialCells, "test", &particles);
 
@@ -37,13 +37,13 @@ void voronoi(VoronoiParams voronoiParams, ImageParams imageParams) {
                        "/Users/eriknikulski/CLionProjects/extremeImageSegmentation/images/voronoi/");
     printf("Created voronoi images!\n");
 
-    discretizeVecs(particles, voronoiParams.nCells, imageParams.imageSize);
-    printf("Particles:\n");
-    printVecs(particles, voronoiParams.nCells);
-
-    Bitmap* bitmap = srg("/Users/eriknikulski/CLionProjects/extremeImageSegmentation/images/voronoi/",
-                         particles, voronoiParams.nCells);
-    writeBitmap(bitmap, "/Users/eriknikulski/CLionProjects/extremeImageSegmentation/images/voronoi/srg/");
+//    discretizeVecs(particles, voronoiParams.nCells, imageParams.imageSize);
+//    printf("Particles:\n");
+//    printVecs(particles, voronoiParams.nCells);
+//
+//    Bitmap* bitmap = srg("/Users/eriknikulski/CLionProjects/extremeImageSegmentation/images/voronoi/",
+//                         particles, voronoiParams.nCells);
+//    writeBitmap(bitmap, "/Users/eriknikulski/CLionProjects/extremeImageSegmentation/images/voronoi/srg/");
 }
 
 int main() {
@@ -78,9 +78,9 @@ int main() {
 
     begin = clock();
 
-//    spline(splineParams, imageParams);
+//    spline(splineParams, &imageParams);
 
-    voronoi(voronoiParams, imageParams);
+    voronoi(voronoiParams, &imageParams);
 
     end = clock();
     time_spent = (double)(end - begin) / CLOCKS_PER_SEC;

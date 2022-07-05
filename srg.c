@@ -13,45 +13,6 @@
 #include "stdio.h"
 
 
-Pixel** getNeighbors(Bitmap* bitmap, Pixel* p, int* count) {
-    int iter = 0;
-    *count = 26;
-    Pixel** neighbors = malloc(sizeof(Pixel*) * (*count));
-
-    int x_min = -1;
-    int x_max = 1;
-    int y_min = -1;
-    int y_max = 1;
-    int z_min = -1;
-    int z_max = 1;
-
-    if (p->v->x == 0)
-        x_min = 0;
-    if (p->v->x == bitmap->size - 1)
-        x_max = 0;
-    if (p->v->y == 0)
-        y_min = 0;
-    if (p->v->y == bitmap->size - 1)
-        y_max = 0;
-    if (p->v->z == 0)
-        z_min = 0;
-    if (p->v->z == bitmap->size - 1)
-        z_max = 0;
-
-    for (int z = z_min; z <= z_max; ++z) {
-        for (int y = y_min; y <= y_max; ++y) {
-            for (int x = x_min; x <= x_max; ++x) {
-                if (z == 0 && y == 0 && x == 0) continue;
-                neighbors[iter] = getPixel(bitmap, (int)p->v->x + x, (int)p->v->y + y, (int)p->v->z + z);
-                ++iter;
-            }
-        }
-    }
-    *count = iter;
-    neighbors = realloc(neighbors, sizeof(Pixel*) * (*count));
-    return neighbors;
-}
-
 double calcDelta(Seed* s, uint8_t value) {
     return fabs(value - s->sum / s->count);
 }

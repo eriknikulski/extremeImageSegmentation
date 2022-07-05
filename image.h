@@ -13,9 +13,11 @@
 typedef struct Pixel {
     Vec* v;
     uint8_t value;
+    double dist;
     struct Seed* grouping;
     double delta;
     int inSSL;
+    Vec* particle;
 } Pixel;
 
 typedef struct Bitmap {
@@ -48,10 +50,12 @@ typedef struct SplineParams {
 
 Pixel* getPixel(Bitmap* bitmap, int x, int y, int z);
 
+Pixel** getNeighbors(Bitmap* bitmap, Pixel* p, int* count);
+
 void writeBitmap(Bitmap* bitmap, char* fname);
 
-void createSplineImage(Vec** splines, int nSplines, int dim, ImageParams imageParams, char* fname);
+void createSplineImage(Vec** splines, int nSplines, int dim, ImageParams* imageParams, char* fname);
 
-void createVoronoiImage(Cell** cells, int nCells, ImageParams imageParams, char* fname);
+void createVoronoiImage(Cell** cells, int nCells, ImageParams* imageParams, char* fname);
 
 #endif //EXTREMEIMAGESEGMENTATION_IMAGE_H
