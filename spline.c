@@ -157,7 +157,6 @@ Vec** getNSplines(int n, double alpha, double minDist, int dim) {
 }
 
 void discretizeSplines(Vec** splines, int n, int dim, int size) {
-    assert(size % 10 == 0);
     for (int i = 0; i < n; ++i) {
         discretizeVecs(splines[i], dim, size);
     }

@@ -7,7 +7,6 @@
 
 #include "utility.h"
 
-#include "assert.h"
 #include "math.h"
 #include "memory.h"
 #include "stdlib.h"
@@ -159,7 +158,6 @@ void discretizeVec(Vec* v, int size) {
 }
 
 void discretizeVecs(Vec* vecs, int count, int size) {
-    assert(size % 10 == 0);
     for (int i = 0; i < count; ++i) {
         discretizeVec(&vecs[i], size);
     }
