@@ -213,13 +213,17 @@ void setValuesBitmap(Bitmap* bitmap, ImageParams* imageParams) {
 
 Bitmap* setVoronoiValues(Cell** cells, int nCells, ImageParams* imageParams) {
     Bitmap* bitmap = initializeBitmap(cells, nCells, imageParams);
+    printf("        Calculating distances\n");
     calcVoronoiDist(bitmap, cells, nCells);
+    printf("        Setting bitmap values\n");
     setValuesBitmap(bitmap, imageParams);
     return bitmap;
 }
 
 void createVoronoiImage(Cell** cells, int nCells, ImageParams* imageParams, char* fname) {
     discretizeCells(cells, nCells, imageParams->imageSize);
+    printf("    Calculating image values\n");
     Bitmap* bitmap = setVoronoiValues(cells, nCells, imageParams);
+    printf("    Writing images\n");
     writeBitmap(bitmap, fname);
 }
