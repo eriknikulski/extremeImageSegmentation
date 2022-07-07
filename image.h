@@ -5,6 +5,7 @@
 #ifndef EXTREMEIMAGESEGMENTATION_IMAGE_H
 #define EXTREMEIMAGESEGMENTATION_IMAGE_H
 
+#include "params.h"
 #include "vec.h"
 #include "voronoi.h"
 
@@ -26,37 +27,14 @@ typedef struct Bitmap {
     int size2;
 } Bitmap;
 
-typedef struct ImageParams {
-    int imageSize;
-    double theta_0;
-    double theta_1;
-    double sigma_b;
-    double mu_b;
-    double sigma_c;
-    double mu_c;
-} ImageParams;
-
-typedef struct VoronoiParams {
-    int nInitialCells;
-    int nCells;
-    int srgPrecision;
-} VoronoiParams;
-
-typedef struct SplineParams {
-    double alpha;
-    double minDist;
-    int nPoints;
-    int nSplines;
-} SplineParams;
-
 Pixel* getPixel(Bitmap* bitmap, int x, int y, int z);
 
 Pixel** getNeighbors(Bitmap* bitmap, Pixel* p, int* count);
 
 void writeBitmap(Bitmap* bitmap, char* fname);
 
-void createSplineImage(Vec** splines, int nSplines, int dim, ImageParams* imageParams, char* fname);
+void createSplineImage(Vec** splines, SplineParams* splineParams, ImageParams* imageParams);
 
-void createVoronoiImage(Cell** cells, int nCells, ImageParams* imageParams, char* fname);
+void createVoronoiImage(Cell** cells, VoronoiParams* voronoiParams, ImageParams* imageParams);
 
 #endif //EXTREMEIMAGESEGMENTATION_IMAGE_H

@@ -122,9 +122,9 @@ static int isClose(Vec** splines, Vec* spline, int splinesN, double minDist, int
     return 0;
 }
 
-Vec** getNSplines(int n, double alpha, double minDist, int dim) {
-    assert(minDist < 1 && minDist > 0);
-    Vec** splines = malloc(sizeof(Vec) * dim * n);
+Vec** getNSplines(SplineParams* splineParams) {
+    assert(splineParams->minDist < 1 && splineParams->minDist > 0);
+    Vec** splines = malloc(sizeof(Vec) * splineParams->nPoints * splineParams->nSplines);
     Vec* spline;
     int i = 0;
     int base = 1000;
@@ -134,14 +134,14 @@ Vec** getNSplines(int n, double alpha, double minDist, int dim) {
     Vec* c2;
     Vec* c3;
 
-    while (i < n) {
+    while (i < splineParams->nSplines) {
         c0 = getVecLogNearCube(base);
         c1 = getRandVecOnCube();
         c2 = getRandVecOnCube();
         c3 = getVecLogNearCube(base);
 
-        spline = getCatmullRomSpline(c0, c1, c2, c3, alpha, dim);
-        if (isClose(splines, spline, i, minDist, dim)) {
+        spline = getCatmullRomSpline(c0, c1, c2, c3, splineParams->alpha, splineParams->nPoints);
+        if (isClose(splines, spline, i, splineParams->minDist, splineParams->nPoints)) {
             free(spline);
             continue;
         }
@@ -173,11 +173,11 @@ double splineDist(Vec* point, Vec* spline, int dim) {
     return sDist;
 }
 
-double splinesDist(Vec* point, Vec** splines, int n, int dim) {
+double splinesDist(Vec* point, Vec** splines, SplineParams* splineParams) {
     double sDist = DBL_MAX;
     double cDist;
-    for (int i = 0; i < n; ++i) {
-        cDist = splineDist(point, splines[i], dim);
+    for (int i = 0; i < splineParams->nSplines; ++i) {
+        cDist = splineDist(point, splines[i], splineParams->nPoints);
         if (cDist < sDist) sDist = cDist;
         if (isZero(sDist)) return 0.0;
     }

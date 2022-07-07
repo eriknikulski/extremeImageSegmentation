@@ -4,6 +4,7 @@
 
 #include "voronoi.h"
 
+#include "params.h"
 #include "graph.h"
 #include "utility.h"
 
@@ -334,7 +335,9 @@ Cell** actualizeAssignment(Cell** cs, int* seeds, int* assign, int nOld, int nNe
     return cells;
 }
 
-Cell** mergeCells(Cell** cells, int nOld, int nNew) {
+Cell** mergeCells(Cell** cells, VoronoiParams* voronoiParams) {
+    int nOld = voronoiParams->nInitialCells;
+    int nNew = voronoiParams->nCells;
     assert(nOld >= nNew);
     if (nOld == nNew) return cells;
 

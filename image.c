@@ -60,7 +60,7 @@ void writeBitmap(Bitmap* bitmap, char* fname) {
 
 }
 
-Bitmap* calcSplineDistance(Vec** splines, int nSplines, int dim, ImageParams* imageParams) {
+Bitmap* calcSplineDistance(Vec** splines, SplineParams* splineParams, ImageParams* imageParams) {
     Vec p;
     double dist;
     double value;
@@ -77,7 +77,7 @@ Bitmap* calcSplineDistance(Vec** splines, int nSplines, int dim, ImageParams* im
                 p.y = (double) y;
                 p.z = (double) z;
 
-                dist = splinesDist(&p, splines, nSplines, dim);
+                dist = splinesDist(&p, splines, splineParams);
                 value = getPixelValue(dist, imageParams);
                 Pixel* pixel = getPixel(bitmap, x, y, z);
                 pixel->value = to8Bit(value);
@@ -88,10 +88,10 @@ Bitmap* calcSplineDistance(Vec** splines, int nSplines, int dim, ImageParams* im
     return bitmap;
 }
 
-void createSplineImage(Vec** splines, int nSplines, int dim, ImageParams* imageParams, char* fname) {
-    discretizeSplines(splines, nSplines, dim, imageParams->imageSize);
-    Bitmap* bitmap = calcSplineDistance(splines, nSplines, dim, imageParams);
-    writeBitmap(bitmap, fname);
+void createSplineImage(Vec** splines, SplineParams* splineParams, ImageParams* imageParams) {
+    discretizeSplines(splines, splineParams->nSplines, splineParams->nPoints, imageParams->imageSize);
+    Bitmap* bitmap = calcSplineDistance(splines, splineParams, imageParams);
+    writeBitmap(bitmap, splineParams->imagePath);
 }
 
 Pixel** getNeighbors(Bitmap* bitmap, Pixel* p, int* count) {
@@ -220,10 +220,10 @@ Bitmap* setVoronoiValues(Cell** cells, int nCells, ImageParams* imageParams) {
     return bitmap;
 }
 
-void createVoronoiImage(Cell** cells, int nCells, ImageParams* imageParams, char* fname) {
-    discretizeCells(cells, nCells, imageParams->imageSize);
+void createVoronoiImage(Cell** cells, VoronoiParams* voronoiParams, ImageParams* imageParams) {
+    discretizeCells(cells, voronoiParams->nCells, imageParams->imageSize);
     printf("    Calculating image values\n");
-    Bitmap* bitmap = setVoronoiValues(cells, nCells, imageParams);
+    Bitmap* bitmap = setVoronoiValues(cells, voronoiParams->nCells, imageParams);
     printf("    Writing images\n");
-    writeBitmap(bitmap, fname);
+    writeBitmap(bitmap, voronoiParams->imagePath);
 }

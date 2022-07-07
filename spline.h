@@ -2,6 +2,7 @@
 // Created by Erik Nikulski on 07.04.22.
 //
 
+#include "params.h"
 #include "vec.h"
 
 #ifndef EXTREMEIMAGESEGMENTATION_SPLINE_H
@@ -26,7 +27,7 @@ Vec* getCatmullRomSpline(Vec* p0, Vec* p1, Vec* p2, Vec* p3, double alpha, int n
 
 double getMinDist(Vec* s1, Vec* s2, int dim);
 
-Vec** getNSplines(int n, double alpha, double minDist, int dim);
+Vec** getNSplines(SplineParams* splineParams);
 
 void discretizeSpline(Vec* spline, int dim, int size);
 
@@ -34,6 +35,6 @@ void discretizeSplines(Vec** splines, int n, int dim, int size);
 
 double splineDist(Vec* point, Vec* spline, int dim);
 
-double splinesDist(Vec* point, Vec** splines, int n, int dim);
+double splinesDist(Vec* point, Vec** splines, SplineParams* splineParams);
 
 #endif //EXTREMEIMAGESEGMENTATION_SPLINE_H

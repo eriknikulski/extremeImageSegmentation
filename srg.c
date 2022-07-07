@@ -4,6 +4,7 @@
 
 #include "srg.h"
 
+#include "params.h"
 #include "png.h"
 #include "vec.h"
 #include "image.h"
@@ -63,9 +64,9 @@ SSL* insertSSL(SSL* head, Pixel* p, double delta) {
     return head;
 }
 
-Bitmap* srg(char* path, Vec* vSeeds, VoronoiParams voronoiParams, ImageParams* imageParams) {
-    int nSeeds = voronoiParams.nCells;
-    int precision = voronoiParams.srgPrecision;
+Bitmap* srg(Vec* vSeeds, VoronoiParams* voronoiParams, ImageParams* imageParams) {
+    int nSeeds = voronoiParams->nCells;
+    int precision = voronoiParams->srgPrecision;
     int neighborCount = 0;
     Pixel** neighbors;
 
@@ -76,7 +77,7 @@ Bitmap* srg(char* path, Vec* vSeeds, VoronoiParams voronoiParams, ImageParams* i
     SSL* current = NULL;
     Seed* label = NULL;
 
-    Bitmap* bitmap = read_pngs(path, imageParams->imageSize);
+    Bitmap* bitmap = read_pngs(voronoiParams->imagePath, imageParams->imageSize);
     // Label seed points according their initial grouping.
     for (int i = 0; i < nSeeds; ++i) {
         Pixel* p = getPixel(bitmap, (int)vSeeds[i].x, (int)vSeeds[i].y, (int)vSeeds[i].z);

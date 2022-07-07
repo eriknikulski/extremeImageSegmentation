@@ -3,6 +3,7 @@
 //
 
 #include "vec.h"
+#include "params.h"
 
 #ifndef EXTREMEIMAGESEGMENTATION_VORONOI_H
 #define EXTREMEIMAGESEGMENTATION_VORONOI_H
@@ -60,7 +61,7 @@ void removeDupFaces(Cell* c);
 
 Cell** actualizeAssignment(Cell** cs, int* seeds, int* assign, int nOld, int nNew);
 
-Cell** mergeCells(Cell** cells, int nOld, int nNew);
+Cell** mergeCells(Cell** cells, VoronoiParams* voronoiParams);
 
 void discretizeCell(Cell* cell, int size);
 
