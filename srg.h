@@ -10,6 +10,7 @@
 
 typedef struct SSL {
     struct SSL* next;
+    struct SSL* nextHigher;
     Pixel* p;
     double delta;
 } SSL;
@@ -21,7 +22,7 @@ typedef struct Seed {
     Pixel* p;
 } Seed;
 
-Bitmap* srg(char* path, Vec* vSeeds, int nSeeds);
+Bitmap* srg(char* path, Vec* vSeeds, VoronoiParams voronoiParams, ImageParams* imageParams);
 
 void setGroupings(Bitmap* bitmap);
 

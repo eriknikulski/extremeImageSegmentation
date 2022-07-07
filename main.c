@@ -21,36 +21,39 @@ void voronoi(VoronoiParams voronoiParams, ImageParams* imageParams) {
 //    Cell** cells = getCells(voronoiParams.nInitialCells, "test", &particles);
 
     Vec* particles = malloc(sizeof(Vec) * voronoiParams.nCells);
+    printf("Creating cells\n");
     Cell** cells = getCells(voronoiParams.nCells, "test", &particles);
-    printf("Created cells\n");
 
 //    printf("Particles:\n");
 //    printVecs(particles, voronoiParams.nInitialCells);
 //    printVecs(particles, voronoiParams.nCells);
 
     // TODO: when cells are merged, seeds need to be merged (choose one)
+    // TODO: when merging: some distances need to be recalculated (careful)
 //    cells = mergeCells(cells, voronoiParams.nInitialCells, voronoiParams.nCells);
 //    printf("Merged cells\n\n");
 //    printCells(cells, voronoiParams.nCells);
 
+    printf("Creating voronoi images\n");
     createVoronoiImage(cells, voronoiParams.nCells, imageParams,
                        "/Users/eriknikulski/CLionProjects/extremeImageSegmentation/images/voronoi/");
-    printf("Created voronoi images!\n");
 
-//    discretizeVecs(particles, voronoiParams.nCells, imageParams.imageSize);
-//    printf("Particles:\n");
-//    printVecs(particles, voronoiParams.nCells);
+//    discretizeVecs(particles, voronoiParams.nCells, imageParams->imageSize);
+    printf("Particles:\n");
+    printVecs(particles, voronoiParams.nCells);
 //
-//    Bitmap* bitmap = srg("/Users/eriknikulski/CLionProjects/extremeImageSegmentation/images/voronoi/",
-//                         particles, voronoiParams.nCells);
-//    writeBitmap(bitmap, "/Users/eriknikulski/CLionProjects/extremeImageSegmentation/images/voronoi/srg/");
+    printf("Applying srg\n");
+    Bitmap* bitmap = srg("/Users/eriknikulski/CLionProjects/extremeImageSegmentation/images/voronoi/",
+                         particles, voronoiParams, imageParams);
+    printf("Writing bitmap\n");
+    writeBitmap(bitmap, "/Users/eriknikulski/CLionProjects/extremeImageSegmentation/images/voronoi/srg/");
 }
 
 int main() {
     srand(time(0));
 
     ImageParams imageParams = {
-            .imageSize = 100,
+            .imageSize = 128,
             .theta_0 = -3.0,
             .theta_1 = 1,
             .sigma_b = 5,
@@ -62,6 +65,7 @@ int main() {
     VoronoiParams voronoiParams = {
             .nInitialCells = 16,
             .nCells = 4,
+            .srgPrecision = 100,
     };
 
     SplineParams splineParams = {

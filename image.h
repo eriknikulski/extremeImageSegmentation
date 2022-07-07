@@ -39,6 +39,7 @@ typedef struct ImageParams {
 typedef struct VoronoiParams {
     int nInitialCells;
     int nCells;
+    int srgPrecision;
 } VoronoiParams;
 
 typedef struct SplineParams {

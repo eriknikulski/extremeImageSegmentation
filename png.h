@@ -9,6 +9,6 @@
 
 int save_bitmap_slice_to_file(Bitmap* bitmap, int z, const char *path);
 
-Bitmap* read_pngs(const char* path);
+Bitmap* read_pngs(const char* path, int size);
 
 #endif //EXTREMEIMAGESEGMENTATION_PNG_H

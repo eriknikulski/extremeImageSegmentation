@@ -127,7 +127,7 @@ int get_file_count(const char* dir_path) {
     return counter;
 }
 
-Bitmap* read_pngs(const char* path) {
+Bitmap* read_pngs(const char* path, int size) {
     png_structp	png_ptr;
     png_infop info_ptr;
     FILE * fp;
@@ -142,8 +142,6 @@ Bitmap* read_pngs(const char* path) {
 
     Bitmap* bitmap = malloc(sizeof(Bitmap));
     Pixel* pixel;
-
-    int size = get_file_count(path);
 
     // assumes image is a cube
     bitmap->size = size;

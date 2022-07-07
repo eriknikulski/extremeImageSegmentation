@@ -16,9 +16,9 @@ Vec* getRandParticles(int n) {
     Vec* particles = malloc(sizeof(Vec) * n);
 
     for (int i = 0; i < n; ++i) {
-        particles[i].x = getRandD();
-        particles[i].y = getRandD();
-        particles[i].z = getRandD();
+        particles[i].x = (double)(rand() + 0.05*RAND_MAX) / (double)(1.1*RAND_MAX);
+        particles[i].y = (double)(rand() + 0.05*RAND_MAX) / (double)(1.1*RAND_MAX);
+        particles[i].z = (double)(rand() + 0.05*RAND_MAX) / (double)(1.1*RAND_MAX);
     }
 
     return particles;

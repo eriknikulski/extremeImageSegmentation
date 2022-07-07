@@ -13,46 +13,59 @@
 #include "stdio.h"
 
 
-double calcDelta(Seed* s, uint8_t value) {
-    return fabs(value - s->sum / s->count);
+double calcDelta(Seed* s, uint8_t value, int precision) {
+    return round(fabs(value - s->sum / s->count) * precision) / precision;
 }
 
 SSL* insertSSL(SSL* head, Pixel* p, double delta) {
     p->inSSL = 1;
-    if (head == NULL) {
-        head = malloc(sizeof(SSL));
-        head->p = p;
-        head->delta = delta;
-        head->next = NULL;
-        return head;
-    }
 
     SSL* current = head;
     SSL* prev = NULL;
-    SSL* elem;
-    elem = malloc(sizeof(SSL));
+    SSL* elem = malloc(sizeof(SSL));
     elem->p = p;
     elem->delta = delta;
     elem->next = NULL;
+    elem->nextHigher = NULL;
 
-    while (current->next) {
-        if (current->delta > delta) {
-            elem->next = current;
-            if (prev) {
-                prev->next = elem;
-            }
+    if (head == NULL)
+        return elem;
+
+    while (current) {
+        if (delta == current->delta) {
+            elem->next = current->next;
+            current->next = elem;
             return head;
         }
+        if (delta < current->delta) {
+            elem->nextHigher = current;
+            elem->next = current;
+            if (prev) {
+                prev->nextHigher = elem;
+                while (prev->next != current) {
+                    prev = prev->next;
+                }
+                prev->next = elem;
+                return head;
+            }
+            return elem;
+        }
         prev = current;
-        current = current->next;
+        current = current->nextHigher;
     }
 
+    current = prev;
+    current->nextHigher= elem;
+    while (current->next) {
+        current = current->next;
+    }
     current->next = elem;
     return head;
 }
 
-Bitmap* srg(char* path, Vec* vSeeds, int nSeeds) {
-    // TODO: use border label
+Bitmap* srg(char* path, Vec* vSeeds, VoronoiParams voronoiParams, ImageParams* imageParams) {
+    int nSeeds = voronoiParams.nCells;
+    int precision = voronoiParams.srgPrecision;
     int neighborCount = 0;
     Pixel** neighbors;
 
@@ -63,7 +76,7 @@ Bitmap* srg(char* path, Vec* vSeeds, int nSeeds) {
     SSL* current = NULL;
     Seed* label = NULL;
 
-    Bitmap* bitmap = read_pngs(path);
+    Bitmap* bitmap = read_pngs(path, imageParams->imageSize);
     // Label seed points according their initial grouping.
     for (int i = 0; i < nSeeds; ++i) {
         Pixel* p = getPixel(bitmap, (int)vSeeds[i].x, (int)vSeeds[i].y, (int)vSeeds[i].z);
@@ -75,18 +88,13 @@ Bitmap* srg(char* path, Vec* vSeeds, int nSeeds) {
         p->inSSL = 1;
     }
 
-
-    int sslCount = 0;
-
-
     // Put neighbors of seed points (the initial T ) in the SSL.
     for (int i = 0; i < nSeeds; ++i) {
         neighbors = getNeighbors(bitmap, seeds[i].p, &neighborCount);
         for (int j = 0; j < neighborCount; ++j) {
-            delta = calcDelta(&seeds[i], neighbors[j]->value);
+            delta = calcDelta(&seeds[i], neighbors[j]->value, precision);
             head = insertSSL(head, neighbors[j], delta);
         }
-        sslCount += neighborCount;
         free(neighbors);
     }
 
@@ -95,11 +103,15 @@ Bitmap* srg(char* path, Vec* vSeeds, int nSeeds) {
         current = head;
         head = head->next;
 
+        if (head && head->delta == current->delta)
+            head->nextHigher = current->nextHigher;
+
         neighbors = getNeighbors(bitmap, current->p, &neighborCount);
         for (int i = 0; i < neighborCount; ++i) {
             if (neighbors[i]->grouping) {
                 if (label == NULL) {
                     label = neighbors[i]->grouping;
+                    continue;
                 }
                 if (label != neighbors[i]->grouping) {
                     label = NULL;
@@ -116,16 +128,15 @@ Bitmap* srg(char* path, Vec* vSeeds, int nSeeds) {
         label->sum += current->p->value;
 
         for (int i = 0; i < neighborCount; ++i) {
-            if (neighbors[i]->inSSL || neighbors[i]->grouping) continue;
-            delta = calcDelta(label, neighbors[i]->value);
-            insertSSL(head, neighbors[i], delta);
-            sslCount++;
+            if (neighbors[i]->inSSL) continue;
+            delta = calcDelta(label, neighbors[i]->value, precision);
+            head = insertSSL(head, neighbors[i], delta);
         }
         free(neighbors);
+        free(current);
     }
 
-    printf("SSL COUNT: %d\n", sslCount);
-
+    printf("Setting groupiung values\n");
     setGroupings(bitmap);
 
     return bitmap;
