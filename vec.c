@@ -143,6 +143,8 @@ double getDotProd(Vec* v1, Vec* v2) {
 }
 
 int equalVecs(Vec* v1, Vec* v2) {
+    if (!v1 && !v2) return 1;
+    if (!v1 || !v2) return 0;
     if (fabs(v1->x - v2->x) < DBL_EPSILON && fabs(v1->y - v2->y) < DBL_EPSILON && fabs(v1->z - v2->z) < DBL_EPSILON) return 1;
     return 0;
 }
@@ -161,4 +163,10 @@ void discretizeVecs(Vec* vecs, int count, int size) {
     for (int i = 0; i < count; ++i) {
         discretizeVec(&vecs[i], size);
     }
+}
+
+int isOutsideUnitCube(Vec* vec) {
+    if (vec->x < 0 || vec->x > 1 || vec->y < 0 || vec->y > 1 || vec->z < 0 || vec->z > 1)
+        return 1;
+    return 0;
 }

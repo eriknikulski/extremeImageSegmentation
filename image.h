@@ -33,8 +33,15 @@ Pixel** getNeighbors(Bitmap* bitmap, Pixel* p, int* count);
 
 void writeBitmap(Bitmap* bitmap, char* fname);
 
-void createSplineImage(Vec** splines, SplineParams* splineParams, ImageParams* imageParams);
+void setValuesBitmap(Bitmap* bitmap, ImageParams* imageParams);
 
-void createVoronoiImage(Cell** cells, VoronoiParams* voronoiParams, ImageParams* imageParams);
+Bitmap* createSplineImage(Vec** splines, SplineParams* splineParams, ImageParams* imageParams);
+
+Bitmap* createVoronoiImage(Cell** cells, VoronoiParams* voronoiParams, ImageParams* imageParams);
+
+double getRandsIndex(Bitmap* orig, Bitmap* srg);
+
+double getVariationOfInformation(Bitmap* orig, Bitmap* srg, Vec* particles, int n);
+
 
 #endif //EXTREMEIMAGESEGMENTATION_IMAGE_H

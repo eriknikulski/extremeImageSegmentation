@@ -60,15 +60,10 @@ void writeBitmap(Bitmap* bitmap, char* fname) {
 
 }
 
-Bitmap* calcSplineDistance(Vec** splines, SplineParams* splineParams, ImageParams* imageParams) {
+Bitmap* calcSplineDistance(Bitmap* bitmap, Vec** splines, SplineParams* splineParams, ImageParams* imageParams) {
     Vec p;
     double dist;
-    double value;
-
-    Bitmap* bitmap = malloc(sizeof(Bitmap));
-    bitmap->size = imageParams->imageSize;
-    bitmap->size2 = imageParams->imageSize * imageParams->imageSize;
-    bitmap->pixels = malloc(sizeof(Pixel) * imageParams->imageSize * imageParams->imageSize * imageParams->imageSize);
+    int spline;
 
     for (int z = 0; z < imageParams->imageSize; ++z) {
         for (int y = 0; y < imageParams->imageSize; ++y) {
@@ -77,10 +72,11 @@ Bitmap* calcSplineDistance(Vec** splines, SplineParams* splineParams, ImageParam
                 p.y = (double) y;
                 p.z = (double) z;
 
-                dist = splinesDist(&p, splines, splineParams);
-                value = getPixelValue(dist, imageParams);
                 Pixel* pixel = getPixel(bitmap, x, y, z);
-                pixel->value = to8Bit(value);
+                dist = splinesDist(&p, splines, splineParams, &spline);
+                pixel->dist = dist;
+                if (dist <= 2)
+                    pixel->particle = &splines[spline][splineParams->nPoints / 2];
             }
         }
         printf("%d\n", z);
@@ -88,10 +84,47 @@ Bitmap* calcSplineDistance(Vec** splines, SplineParams* splineParams, ImageParam
     return bitmap;
 }
 
-void createSplineImage(Vec** splines, SplineParams* splineParams, ImageParams* imageParams) {
+Bitmap* initializeBitmapSplines(ImageParams* imageParams) {
+    Pixel* pixel;
+    Bitmap* bitmap = malloc(sizeof(Bitmap));
+    bitmap->size = imageParams->imageSize;
+    bitmap->size2 = imageParams->imageSize * imageParams->imageSize;
+    bitmap->pixels = malloc(sizeof(Pixel) * imageParams->imageSize * imageParams->imageSize * imageParams->imageSize);
+
+    for (int z = 0; z < bitmap->size; ++z) {
+        for (int y = 0; y < bitmap->size; ++y) {
+            for (int x = 0; x < bitmap->size; ++x) {
+                pixel = getPixel(bitmap, x, y, z);
+                pixel->v = malloc(sizeof(Vec));
+                pixel->v->x = x;
+                pixel->v->y = y;
+                pixel->v->z = z;
+                pixel->value = UINT8_MAX;
+                pixel->dist = DBL_MAX;
+                pixel->particle = NULL;
+            }
+        }
+    }
+
+    return bitmap;
+}
+
+Bitmap* setSplineValues(Vec** splines, SplineParams* splineParams, ImageParams* imageParams) {
+    Bitmap* bitmap = initializeBitmapSplines(imageParams);
+    printf("        Calculating distances\n");
+    bitmap = calcSplineDistance(bitmap, splines, splineParams, imageParams);
+    printf("        Setting bitmap values\n");
+    setValuesBitmap(bitmap, imageParams);
+    return bitmap;
+}
+
+Bitmap* createSplineImage(Vec** splines, SplineParams* splineParams, ImageParams* imageParams) {
     discretizeSplines(splines, splineParams->nSplines, splineParams->nPoints, imageParams->imageSize);
-    Bitmap* bitmap = calcSplineDistance(splines, splineParams, imageParams);
+    printf("    Calculating image values\n");
+    Bitmap* bitmap = setSplineValues(splines, splineParams, imageParams);
+    printf("    Writing images\n");
     writeBitmap(bitmap, splineParams->imagePath);
+    return bitmap;
 }
 
 Pixel** getNeighbors(Bitmap* bitmap, Pixel* p, int* count) {
@@ -220,10 +253,69 @@ Bitmap* setVoronoiValues(Cell** cells, int nCells, ImageParams* imageParams) {
     return bitmap;
 }
 
-void createVoronoiImage(Cell** cells, VoronoiParams* voronoiParams, ImageParams* imageParams) {
+Bitmap* createVoronoiImage(Cell** cells, VoronoiParams* voronoiParams, ImageParams* imageParams) {
     discretizeCells(cells, voronoiParams->nCells, imageParams->imageSize);
     printf("    Calculating image values\n");
     Bitmap* bitmap = setVoronoiValues(cells, voronoiParams->nCells, imageParams);
     printf("    Writing images\n");
     writeBitmap(bitmap, voronoiParams->imagePath);
+    return bitmap;
+}
+
+double getRandsIndex(Bitmap* orig, Bitmap* srg) {
+    Pixel* pSRG;
+    Pixel* pOrig;
+    int counter = 0;
+    int n = orig->size * orig->size * orig->size;
+
+    for (int z = 0; z < orig->size; ++z) {
+        for (int y = 0; y < orig->size; ++y) {
+            for (int x = 0; x < orig->size; ++x) {
+                pSRG = getPixel(srg, x, y, z);
+                pOrig = getPixel(orig, x, y, z);
+                if (pSRG->particle == pOrig->particle) ++counter;
+            }
+        }
+    }
+    return (double)counter / (double)n;
+}
+
+double getVariationOfInformation(Bitmap* orig, Bitmap* srg, Vec* particles, int n) {
+    int *p = malloc(sizeof(int) * (n + 1));
+    int *q = malloc(sizeof(int) * (n + 1));
+    int *r = malloc(sizeof(int) * (n + 1));
+    memset(p, 0, sizeof(int) * (n + 1));
+    memset(q, 0, sizeof(int) * (n + 1));
+    memset(r, 0, sizeof(int) * (n + 1));
+    int size = orig->size * orig->size * orig->size;
+    double res = 0;
+    Pixel* pSRG;
+    Pixel* pOrig;
+
+    for (int z = 0; z < orig->size; ++z) {
+        for (int y = 0; y < orig->size; ++y) {
+            for (int x = 0; x < orig->size; ++x) {
+                pSRG = getPixel(srg, x, y, z);
+                pOrig = getPixel(orig, x, y, z);
+
+                if (!pOrig->particle) ++p[n];
+                if (!pOrig->particle && !pSRG->particle) ++r[n];
+                if (!pSRG->particle) ++q[n];
+
+                for (int i = 0; i < n; ++i) {
+                    if (equalVecs(pSRG->particle, &particles[i])) ++q[i];
+                    if (equalVecs(pOrig->particle, &particles[i])) ++p[i];
+                    if (equalVecs(pOrig->particle, &particles[i]) && equalVecs(pSRG->particle, &particles[i]))
+                        ++r[i];
+                }
+            }
+        }
+    }
+
+    for (int i = 0; i < n + 1; ++i) {
+        if (r[i] == 0 || p[i] == 0 || q[i] == 0) continue;
+        res -= (double)r[i] / size * (log((double)r[i] / p[i]) + log((double)r[i] / q[i]));
+    }
+    
+    return res;
 }

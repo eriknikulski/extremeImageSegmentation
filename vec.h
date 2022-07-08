@@ -51,4 +51,6 @@ void discretizeVec(Vec* v, int size);
 
 void discretizeVecs(Vec* vecs, int dim, int size);
 
+int isOutsideUnitCube(Vec* vec);
+
 #endif //EXTREMEIMAGESEGMENTATION_VEC_H

@@ -64,9 +64,7 @@ SSL* insertSSL(SSL* head, Pixel* p, double delta) {
     return head;
 }
 
-Bitmap* srg(Vec* vSeeds, VoronoiParams* voronoiParams, ImageParams* imageParams) {
-    int nSeeds = voronoiParams->nCells;
-    int precision = voronoiParams->srgPrecision;
+Bitmap* srg(Vec* vSeeds, int nSeeds, int precision, char* imagePath, ImageParams* imageParams) {
     int neighborCount = 0;
     Pixel** neighbors;
 
@@ -77,7 +75,7 @@ Bitmap* srg(Vec* vSeeds, VoronoiParams* voronoiParams, ImageParams* imageParams)
     SSL* current = NULL;
     Seed* label = NULL;
 
-    Bitmap* bitmap = read_pngs(voronoiParams->imagePath, imageParams->imageSize);
+    Bitmap* bitmap = read_pngs(imagePath, imageParams->imageSize);
     // Label seed points according their initial grouping.
     for (int i = 0; i < nSeeds; ++i) {
         Pixel* p = getPixel(bitmap, (int)vSeeds[i].x, (int)vSeeds[i].y, (int)vSeeds[i].z);
@@ -85,6 +83,7 @@ Bitmap* srg(Vec* vSeeds, VoronoiParams* voronoiParams, ImageParams* imageParams)
         seeds[i].count = 1;
         seeds[i].sum = p->value;
         seeds[i].p = p;
+        p->particle = &vSeeds[i];
         p->grouping = &seeds[i];
         p->inSSL = 1;
     }
@@ -125,6 +124,7 @@ Bitmap* srg(Vec* vSeeds, VoronoiParams* voronoiParams, ImageParams* imageParams)
             continue;
 
         current->p->grouping = label;
+        current->p->particle = label->p->particle;
         ++(label->count);
         label->sum += current->p->value;
 
@@ -137,7 +137,7 @@ Bitmap* srg(Vec* vSeeds, VoronoiParams* voronoiParams, ImageParams* imageParams)
         free(current);
     }
 
-    printf("Setting groupiung values\n");
+    printf("Setting grouping values\n");
     setGroupings(bitmap);
 
     return bitmap;

@@ -141,7 +141,10 @@ Vec** getNSplines(SplineParams* splineParams) {
         c3 = getVecLogNearCube(base);
 
         spline = getCatmullRomSpline(c0, c1, c2, c3, splineParams->alpha, splineParams->nPoints);
-        if (isClose(splines, spline, i, splineParams->minDist, splineParams->nPoints)) {
+        if (isClose(splines, spline, i, splineParams->minDist, splineParams->nPoints) ||
+                isOutsideUnitCube(&spline[splineParams->nPoints / 4]) ||
+                isOutsideUnitCube(&spline[splineParams->nPoints / 2]) ||
+                isOutsideUnitCube(&spline[splineParams->nPoints * 3 / 4])) {
             free(spline);
             continue;
         }
@@ -173,13 +176,25 @@ double splineDist(Vec* point, Vec* spline, int dim) {
     return sDist;
 }
 
-double splinesDist(Vec* point, Vec** splines, SplineParams* splineParams) {
+double splinesDist(Vec* point, Vec** splines, SplineParams* splineParams, int* spline) {
     double sDist = DBL_MAX;
     double cDist;
+    *spline = 0;
     for (int i = 0; i < splineParams->nSplines; ++i) {
         cDist = splineDist(point, splines[i], splineParams->nPoints);
-        if (cDist < sDist) sDist = cDist;
+        if (cDist < sDist) {
+            sDist = cDist;
+            *spline = i;
+        }
         if (isZero(sDist)) return 0.0;
     }
     return sDist;
+}
+
+Vec* getSplineSeeds(Vec** splines, SplineParams* splineParams) {
+    Vec* seeds = malloc(sizeof(Vec*) * splineParams->nSplines);
+    for (int i = 0; i < splineParams->nSplines; ++i) {
+        seeds[i] = splines[i][splineParams->nPoints / 2];
+    }
+    return seeds;
 }

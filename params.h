@@ -28,7 +28,9 @@ typedef struct SplineParams {
     double minDist;
     int nPoints;
     int nSplines;
+    int srgPrecision;
     char* imagePath;
+    char* srgImagePath;
 } SplineParams;
 
 #endif //EXTREMEIMAGESEGMENTATION_PARAMS_H

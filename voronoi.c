@@ -12,6 +12,7 @@
 #include "stdlib.h"
 #include "stdio.h"
 #include "string.h"
+#include "image.h"
 
 Vec* getRandParticles(int n) {
     Vec* particles = malloc(sizeof(Vec) * n);
@@ -226,7 +227,7 @@ Cell** getCells(int n, char* fname, Vec** particles) {
     free(fout);
 
     for (int i = 0; i < n; ++i) {
-        cells[i]->particle = &(*particles)[cells[i]->id];
+        cells[i]->particle = &((*particles)[cells[i]->id]);
     }
 
     return cells;

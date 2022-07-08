@@ -22,7 +22,7 @@ typedef struct Seed {
     Pixel* p;
 } Seed;
 
-Bitmap* srg(Vec* vSeeds, VoronoiParams* voronoiParams, ImageParams* imageParams);
+Bitmap* srg(Vec* vSeeds, int nSeeds, int precision, char* imagePath, ImageParams* imageParams);
 
 void setGroupings(Bitmap* bitmap);
 
