@@ -43,90 +43,6 @@ static uint8_t to8Bit(double value) {
     return (uint8_t) (value * 255);
 }
 
-void writeBitmap(Bitmap* bitmap, char* fname) {
-    size_t len;
-    char* activeName;
-
-    for (int z = 0; z < bitmap->size; ++z) {
-        len = snprintf(NULL, 0, "%simg_%d.png", fname, z) + 1;
-        activeName = malloc(len);
-        snprintf(activeName, len, "%simg_%d.png", fname, z);
-
-        if (save_bitmap_slice_to_file(bitmap, z, activeName)) {
-            fprintf(stderr, "Error writing file %d.\n", z);
-        }
-        free(activeName);
-    }
-
-}
-
-Bitmap* calcSplineDistance(Bitmap* bitmap, Vec** splines, SplineParams* splineParams, ImageParams* imageParams) {
-    Vec p;
-    double dist;
-    int spline;
-
-    for (int z = 0; z < imageParams->imageSize; ++z) {
-        for (int y = 0; y < imageParams->imageSize; ++y) {
-            for (int x = 0; x < imageParams->imageSize; ++x) {
-                p.x = (double) x;
-                p.y = (double) y;
-                p.z = (double) z;
-
-                Pixel* pixel = getPixel(bitmap, x, y, z);
-                dist = splinesDist(&p, splines, splineParams, &spline);
-                pixel->dist = dist;
-                if (dist <= 2)
-                    pixel->particle = &splines[spline][splineParams->nPoints / 2];
-            }
-        }
-        printf("%d\n", z);
-    }
-    return bitmap;
-}
-
-Bitmap* initializeBitmapSplines(ImageParams* imageParams) {
-    Pixel* pixel;
-    Bitmap* bitmap = malloc(sizeof(Bitmap));
-    bitmap->size = imageParams->imageSize;
-    bitmap->size2 = imageParams->imageSize * imageParams->imageSize;
-    bitmap->pixels = malloc(sizeof(Pixel) * imageParams->imageSize * imageParams->imageSize * imageParams->imageSize);
-
-    for (int z = 0; z < bitmap->size; ++z) {
-        for (int y = 0; y < bitmap->size; ++y) {
-            for (int x = 0; x < bitmap->size; ++x) {
-                pixel = getPixel(bitmap, x, y, z);
-                pixel->v = malloc(sizeof(Vec));
-                pixel->v->x = x;
-                pixel->v->y = y;
-                pixel->v->z = z;
-                pixel->value = UINT8_MAX;
-                pixel->dist = DBL_MAX;
-                pixel->particle = NULL;
-            }
-        }
-    }
-
-    return bitmap;
-}
-
-Bitmap* setSplineValues(Vec** splines, SplineParams* splineParams, ImageParams* imageParams) {
-    Bitmap* bitmap = initializeBitmapSplines(imageParams);
-    printf("        Calculating distances\n");
-    bitmap = calcSplineDistance(bitmap, splines, splineParams, imageParams);
-    printf("        Setting bitmap values\n");
-    setValuesBitmap(bitmap, imageParams);
-    return bitmap;
-}
-
-Bitmap* createSplineImage(Vec** splines, SplineParams* splineParams, ImageParams* imageParams) {
-    discretizeSplines(splines, splineParams->nSplines, splineParams->nPoints, imageParams->imageSize);
-    printf("    Calculating image values\n");
-    Bitmap* bitmap = setSplineValues(splines, splineParams, imageParams);
-    printf("    Writing images\n");
-    writeBitmap(bitmap, splineParams->imagePath);
-    return bitmap;
-}
-
 Pixel** getNeighbors(Bitmap* bitmap, Pixel* p, int* count) {
     int iter = 0;
     *count = 26;
@@ -180,7 +96,22 @@ Vec* getClosestParticle(Vec* v, Cell** cells, int nCells) {
     return closest;
 }
 
-Bitmap* initializeBitmap(Cell** cells, int nCells, ImageParams* imageParams) {
+void setValuesBitmap(Bitmap* bitmap, ImageParams* imageParams) {
+    Pixel* pixel;
+    double value;
+
+    for (int z = 0; z < bitmap->size; ++z) {
+        for (int y = 0; y < bitmap->size; ++y) {
+            for (int x = 0; x < bitmap->size; ++x) {
+                pixel = getPixel(bitmap, x, y, z);
+                value = getPixelValue(pixel->dist, imageParams);
+                pixel->value = to8Bit(value);
+            }
+        }
+    }
+}
+
+Bitmap* initializeBitmap(ImageParams* imageParams) {
     Pixel* pixel;
     Bitmap* bitmap = malloc(sizeof(Bitmap));
     bitmap->size = imageParams->imageSize;
@@ -197,11 +128,69 @@ Bitmap* initializeBitmap(Cell** cells, int nCells, ImageParams* imageParams) {
                 pixel->v->z = z;
                 pixel->value = UINT8_MAX;
                 pixel->dist = DBL_MAX;
-                pixel->particle = getClosestParticle(pixel->v, cells, nCells);
+                pixel->particle = NULL;
             }
         }
     }
 
+    return bitmap;
+}
+
+void writeBitmap(Bitmap* bitmap, char* fname) {
+    size_t len;
+    char* activeName;
+
+    for (int z = 0; z < bitmap->size; ++z) {
+        len = snprintf(NULL, 0, "%simg_%d.png", fname, z) + 1;
+        activeName = malloc(len);
+        snprintf(activeName, len, "%simg_%d.png", fname, z);
+
+        if (save_bitmap_slice_to_file(bitmap, z, activeName)) {
+            fprintf(stderr, "Error writing file %d.\n", z);
+        }
+        free(activeName);
+    }
+
+}
+
+Bitmap* calcSplineDistance(Bitmap* bitmap, Vec** splines, SplineParams* splineParams, ImageParams* imageParams) {
+    Vec p;
+    double dist;
+    int spline;
+
+    for (int z = 0; z < imageParams->imageSize; ++z) {
+        for (int y = 0; y < imageParams->imageSize; ++y) {
+            for (int x = 0; x < imageParams->imageSize; ++x) {
+                p.x = (double) x;
+                p.y = (double) y;
+                p.z = (double) z;
+
+                Pixel* pixel = getPixel(bitmap, x, y, z);
+                dist = splinesDist(&p, splines, splineParams, &spline);
+                pixel->dist = dist;
+                if (dist <= 2)
+                    pixel->particle = &splines[spline][splineParams->nPoints / 2];
+            }
+        }
+    }
+    return bitmap;
+}
+
+Bitmap* setSplineValues(Vec** splines, SplineParams* splineParams, ImageParams* imageParams) {
+    Bitmap* bitmap = initializeBitmap(imageParams);
+    printf("        Calculating distances\n");
+    bitmap = calcSplineDistance(bitmap, splines, splineParams, imageParams);
+    printf("        Setting bitmap values\n");
+    setValuesBitmap(bitmap, imageParams);
+    return bitmap;
+}
+
+Bitmap* createSplineImage(Vec** splines, SplineParams* splineParams, ImageParams* imageParams) {
+    discretizeSplines(splines, splineParams->nSplines, splineParams->nPoints, imageParams->imageSize);
+    printf("    Calculating image values\n");
+    Bitmap* bitmap = setSplineValues(splines, splineParams, imageParams);
+    printf("    Writing images\n");
+    writeBitmap(bitmap, splineParams->imagePath);
     return bitmap;
 }
 
@@ -213,6 +202,7 @@ Bitmap* calcVoronoiDist(Bitmap* bitmap, Cell** cells, int nCells) {
         for (int y = 0; y < bitmap->size; ++y) {
             for (int x = 0; x < bitmap->size; ++x) {
                 pixel = getPixel(bitmap, x, y, z);
+                pixel->particle = getClosestParticle(pixel->v, cells, nCells);
 
                 for (int i = 0; i < nCells; ++i) {
                     if (equalVecs(cells[i]->particle, pixel->particle)) {
@@ -229,23 +219,8 @@ Bitmap* calcVoronoiDist(Bitmap* bitmap, Cell** cells, int nCells) {
     return bitmap;
 }
 
-void setValuesBitmap(Bitmap* bitmap, ImageParams* imageParams) {
-    Pixel* pixel;
-    double value;
-
-    for (int z = 0; z < bitmap->size; ++z) {
-        for (int y = 0; y < bitmap->size; ++y) {
-            for (int x = 0; x < bitmap->size; ++x) {
-                pixel = getPixel(bitmap, x, y, z);
-                value = getPixelValue(pixel->dist, imageParams);
-                pixel->value = to8Bit(value);
-            }
-        }
-    }
-}
-
 Bitmap* setVoronoiValues(Cell** cells, int nCells, ImageParams* imageParams) {
-    Bitmap* bitmap = initializeBitmap(cells, nCells, imageParams);
+    Bitmap* bitmap = initializeBitmap(imageParams);
     printf("        Calculating distances\n");
     calcVoronoiDist(bitmap, cells, nCells);
     printf("        Setting bitmap values\n");
@@ -261,6 +236,14 @@ Bitmap* createVoronoiImage(Cell** cells, VoronoiParams* voronoiParams, ImagePara
     writeBitmap(bitmap, voronoiParams->imagePath);
     return bitmap;
 }
+
+
+/* *********************************************************************************************************************
+ * *********************************************************************************************************************
+ * ***************************************************   MEASURES   ****************************************************
+ * *********************************************************************************************************************
+ * *********************************************************************************************************************
+ */
 
 double getRandsIndex(Bitmap* orig, Bitmap* srg) {
     Pixel* pSRG;

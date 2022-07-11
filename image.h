@@ -33,8 +33,6 @@ Pixel** getNeighbors(Bitmap* bitmap, Pixel* p, int* count);
 
 void writeBitmap(Bitmap* bitmap, char* fname);
 
-void setValuesBitmap(Bitmap* bitmap, ImageParams* imageParams);
-
 Bitmap* createSplineImage(Vec** splines, SplineParams* splineParams, ImageParams* imageParams);
 
 Bitmap* createVoronoiImage(Cell** cells, VoronoiParams* voronoiParams, ImageParams* imageParams);

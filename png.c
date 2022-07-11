@@ -108,25 +108,6 @@ static void fatal_error (const char * message, ...) {
     exit(EXIT_FAILURE);
 }
 
-int get_file_count(const char* dir_path) {
-    int counter = 0;
-    struct dirent* entry;
-    DIR* dir = opendir(dir_path);
-
-    if(dir == NULL) {
-        printf("Error! Unable to read directory");
-        return 0;
-    }
-
-    while((entry = readdir(dir)) != NULL) {
-        if (entry->d_type == DT_REG)
-            ++counter;
-    }
-
-    closedir(dir);
-    return counter;
-}
-
 Bitmap* read_pngs(const char* path, int size) {
     png_structp	png_ptr;
     png_infop info_ptr;
