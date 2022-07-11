@@ -105,6 +105,7 @@ void setValuesBitmap(Bitmap* bitmap, ImageParams* imageParams) {
             for (int x = 0; x < bitmap->size; ++x) {
                 pixel = getPixel(bitmap, x, y, z);
                 value = getPixelValue(pixel->dist, imageParams);
+                if (bitmap->reverse) value = 1 - value;
                 pixel->value = to8Bit(value);
             }
         }
@@ -114,6 +115,7 @@ void setValuesBitmap(Bitmap* bitmap, ImageParams* imageParams) {
 Bitmap* initializeBitmap(ImageParams* imageParams) {
     Pixel* pixel;
     Bitmap* bitmap = malloc(sizeof(Bitmap));
+    bitmap->reverse = 0;
     bitmap->size = imageParams->imageSize;
     bitmap->size2 = imageParams->imageSize * imageParams->imageSize;
     bitmap->pixels = malloc(sizeof(Pixel) * imageParams->imageSize * imageParams->imageSize * imageParams->imageSize);
@@ -178,6 +180,7 @@ Bitmap* calcSplineDistance(Bitmap* bitmap, Vec** splines, SplineParams* splinePa
 
 Bitmap* setSplineValues(Vec** splines, SplineParams* splineParams, ImageParams* imageParams) {
     Bitmap* bitmap = initializeBitmap(imageParams);
+    bitmap->reverse = 1;
     printf("        Calculating distances\n");
     bitmap = calcSplineDistance(bitmap, splines, splineParams, imageParams);
     printf("        Setting bitmap values\n");

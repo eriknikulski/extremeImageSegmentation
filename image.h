@@ -25,6 +25,7 @@ typedef struct Bitmap {
     Pixel* pixels;
     int size;
     int size2;
+    int reverse;
 } Bitmap;
 
 Pixel* getPixel(Bitmap* bitmap, int x, int y, int z);
