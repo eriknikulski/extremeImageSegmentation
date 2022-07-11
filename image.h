@@ -32,6 +32,8 @@ Pixel* getPixel(Bitmap* bitmap, int x, int y, int z);
 
 Pixel** getNeighbors(Bitmap* bitmap, Pixel* p, int* count);
 
+Vec** getSeeds(Bitmap* bitmap, uint8_t value, int* count);
+
 void writeBitmap(Bitmap* bitmap, char* fname);
 
 Bitmap* createSplineImage(Vec** splines, SplineParams* splineParams, ImageParams* imageParams);
@@ -40,7 +42,7 @@ Bitmap* createVoronoiImage(Cell** cells, VoronoiParams* voronoiParams, ImagePara
 
 double getRandsIndex(Bitmap* orig, Bitmap* srg);
 
-double getVariationOfInformation(Bitmap* orig, Bitmap* srg, Vec* particles, int n);
+double getVariationOfInformation(Bitmap* orig, Bitmap* srg, Vec** particles, int n);
 
 
 #endif //EXTREMEIMAGESEGMENTATION_IMAGE_H

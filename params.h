@@ -5,6 +5,8 @@
 #ifndef EXTREMEIMAGESEGMENTATION_PARAMS_H
 #define EXTREMEIMAGESEGMENTATION_PARAMS_H
 
+#include "stdint.h"
+
 typedef struct ImageParams {
     int imageSize;
     double theta_0;
@@ -21,6 +23,7 @@ typedef struct VoronoiParams {
     int srgPrecision;
     char* imagePath;
     char* srgImagePath;
+    uint8_t seedThreshold;
 } VoronoiParams;
 
 typedef struct SplineParams {
@@ -31,6 +34,7 @@ typedef struct SplineParams {
     int srgPrecision;
     char* imagePath;
     char* srgImagePath;
+    uint8_t seedThreshold;
 } SplineParams;
 
 #endif //EXTREMEIMAGESEGMENTATION_PARAMS_H

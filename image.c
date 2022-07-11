@@ -26,7 +26,6 @@ Pixel* getPixel(Bitmap* bitmap, int x, int y, int z) {
 static double getPixelValue(double d, ImageParams* imageParams) {
     double p = (double)1.0 / (double)((double)1 + exp(-imageParams->theta_0 - imageParams->theta_1 * d));
 
-    // TODO: N1 and N2 in task are diff for splines and voronoi. Does it matter??
     if (getRandD() > p) {
         // select from N2
         return normalCDF(getRandD(), imageParams->sigma_b, imageParams->mu_b);
@@ -80,6 +79,38 @@ Pixel** getNeighbors(Bitmap* bitmap, Pixel* p, int* count) {
     *count = iter;
     neighbors = realloc(neighbors, sizeof(Pixel*) * (*count));
     return neighbors;
+}
+
+Vec** getSeeds(Bitmap* bitmap, uint8_t value, int* count) {
+    Pixel* pixel;
+    Vec** seeds;
+    *count = 0;
+    int i = 0;
+
+    for (int z = 0; z < bitmap->size; ++z) {
+        for (int y = 0; y < bitmap->size; ++y) {
+            for (int x = 0; x < bitmap->size; ++x) {
+                pixel = getPixel(bitmap, x, y, z);
+                if (pixel->value <= value) ++(*count);
+            }
+        }
+    }
+
+    seeds = malloc(sizeof(Vec*) * *count);
+
+    for (int z = 0; z < bitmap->size; ++z) {
+        for (int y = 0; y < bitmap->size; ++y) {
+            for (int x = 0; x < bitmap->size; ++x) {
+                pixel = getPixel(bitmap, x, y, z);
+                if (pixel->value <= value) {
+                    seeds[i] = pixel->v;
+                    ++i;
+                }
+            }
+        }
+    }
+
+    return seeds;
 }
 
 Vec* getClosestParticle(Vec* v, Cell** cells, int nCells) {
@@ -266,7 +297,7 @@ double getRandsIndex(Bitmap* orig, Bitmap* srg) {
     return (double)counter / (double)n;
 }
 
-double getVariationOfInformation(Bitmap* orig, Bitmap* srg, Vec* particles, int n) {
+double getVariationOfInformation(Bitmap* orig, Bitmap* srg, Vec** particles, int n) {
     int *p = malloc(sizeof(int) * (n + 1));
     int *q = malloc(sizeof(int) * (n + 1));
     int *r = malloc(sizeof(int) * (n + 1));
@@ -289,9 +320,9 @@ double getVariationOfInformation(Bitmap* orig, Bitmap* srg, Vec* particles, int 
                 if (!pSRG->particle) ++q[n];
 
                 for (int i = 0; i < n; ++i) {
-                    if (equalVecs(pSRG->particle, &particles[i])) ++q[i];
-                    if (equalVecs(pOrig->particle, &particles[i])) ++p[i];
-                    if (equalVecs(pOrig->particle, &particles[i]) && equalVecs(pSRG->particle, &particles[i]))
+                    if (equalVecs(pSRG->particle, particles[i])) ++q[i];
+                    if (equalVecs(pOrig->particle, particles[i])) ++p[i];
+                    if (equalVecs(pOrig->particle, particles[i]) && equalVecs(pSRG->particle, particles[i]))
                         ++r[i];
                 }
             }

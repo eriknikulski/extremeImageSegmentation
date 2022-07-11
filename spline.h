@@ -37,6 +37,4 @@ double splineDist(Vec* point, Vec* spline, int dim);
 
 double splinesDist(Vec* point, Vec** splines, SplineParams* splineParams, int* spline);
 
-Vec* getSplineSeeds(Vec** splines, SplineParams* splineParams);
-
 #endif //EXTREMEIMAGESEGMENTATION_SPLINE_H

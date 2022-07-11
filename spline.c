@@ -190,11 +190,3 @@ double splinesDist(Vec* point, Vec** splines, SplineParams* splineParams, int* s
     }
     return sDist;
 }
-
-Vec* getSplineSeeds(Vec** splines, SplineParams* splineParams) {
-    Vec* seeds = malloc(sizeof(Vec*) * splineParams->nSplines);
-    for (int i = 0; i < splineParams->nSplines; ++i) {
-        seeds[i] = splines[i][splineParams->nPoints / 2];
-    }
-    return seeds;
-}
