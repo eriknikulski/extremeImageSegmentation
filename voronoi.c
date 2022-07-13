@@ -9,10 +9,10 @@
 #include "utility.h"
 
 #include "assert.h"
+#include "float.h"
 #include "stdlib.h"
 #include "stdio.h"
 #include "string.h"
-#include "image.h"
 
 Vec* getRandParticles(int n) {
     Vec* particles = malloc(sizeof(Vec) * n);
@@ -127,6 +127,9 @@ void setFacesStr(Cell* c, char* s) {
         c->faces[i].nodes = malloc(sizeof(Node) * c->faces[i].count);
         setFaceNodesStr(c, &c->faces[i], split);
 
+        c->faces[i].faceCalcs = NULL;
+        c->faces[i].nFaceCalcs = 0;
+
         ++i;
     }
 }
@@ -235,16 +238,20 @@ Cell** getCells(int n, char* fname, Vec** particles) {
 
 void removeDupNodes(Cell* c) {
     unsigned int count = c->nodeCount;
-    for (int i = 0; i < count; ++i) {
+    for (int i = 0; i < count - 1; ++i) {
         for (int j = i + 1; j < count; ++j) {
             if (equalVecs(&c->nodes[i], &c->nodes[j])) {
-                if (j == count - 1) {
-                    --count;
+                if (i == count - 2 && j == count - 1) {
+                    count -= 2;
                     break;
                 }
-                c->nodes[j] = c->nodes[count - 1];
-                --count;
-                --j;
+                if (j != count - 1) {
+                    c->nodes[j] = c->nodes[count - 1];
+                }
+                c->nodes[i] = c->nodes[count - 2];
+
+                count -= 2;
+                j = i + 1;
             }
         }
     }
@@ -255,16 +262,20 @@ void removeDupNodes(Cell* c) {
 
 void removeDupFaces(Cell* c) {
     unsigned int count = c->faceCount;
-    for (int i = 0; i < count; ++i) {
+    for (int i = 0; i < count - 1; ++i) {
         for (int j = i + 1; j < count; ++j) {
             if (equalFaces(&c->faces[i], &c->faces[j])) {
-                if (j == count - 1) {
-                    --count;
+                if (i == count - 2 && j == count - 1) {
+                    count -= 2;
                     break;
                 }
-                c->faces[j] = c->faces[count - 1];
-                --count;
-                --j;
+                if (j != count - 1) {
+                    c->faces[j] = c->faces[count - 1];
+                }
+                c->faces[i] = c->faces[count - 2];
+
+                count -= 2;
+                j = i + 1;
             }
         }
     }
@@ -281,26 +292,30 @@ Cell** actualizeAssignment(Cell** cs, int* seeds, int* assign, int nOld, int nNe
         unsigned int faceCount = 0;
         int cNode = 0;
         int cFace = 0;
+        int cCells = 0;
+        int counter = 0;
 
         cells[i] = malloc(sizeof(Cell));
         Cell* cell = cells[i];
 
         int seed = seeds[i];
         cell->id = seed;
+        cell->particle = NULL;
 
         for (int j = 0; j < nOld; ++j) {
             if (assign[j] != seed) continue;
             nodeCount += cs[j]->nodeCount;
             faceCount += cs[j]->faceCount;
+            ++cCells;
         }
+
+        cell->nIds = cCells;
+        cell->ids = malloc(sizeof(int) * cell->nIds);
 
         cell->faces = malloc(sizeof(Face) * faceCount);
         cell->nodes = malloc(sizeof(Node) * nodeCount);
-        cell->neighbors = malloc(sizeof(int) * nNew);
         cell->faceCount = faceCount;
         cell->nodeCount = nodeCount;
-        cell->neighborCount = nNew;
-        int actualNeighborCount = 0;
 
         for (int j = 0; j < nOld; ++j) {
             if (assign[j] != seed) continue;
@@ -311,24 +326,10 @@ Cell** actualizeAssignment(Cell** cs, int* seeds, int* assign, int nOld, int nNe
             for (int k = 0; k < cs[j]->faceCount; ++k) {
                 cell->faces[cFace] = cs[j]->faces[k];
                 ++cFace;
-
-                if (cs[j]->neighbors[k] < 0 || assign[cs[j]->neighbors[k]] == seed) continue;
-                int hasNeighbor = 0;
-                for (int l = 0; l < actualNeighborCount; ++l) {
-                    if (assign[cs[j]->neighbors[k]] == cell->neighbors[l]) {
-                        hasNeighbor = 1;
-                        break;
-                    }
-                }
-                if (!hasNeighbor) {
-                    cell->neighbors[actualNeighborCount] = assign[cs[j]->neighbors[k]];
-                    ++actualNeighborCount;
-                }
             }
+            cell->ids[counter] = cs[j]->id;
+            ++counter;
         }
-
-        cell->neighbors = realloc(cell->neighbors, sizeof(int) * actualNeighborCount);
-        cell->neighborCount = actualNeighborCount;
 
         removeDupNodes(cell);
         removeDupFaces(cell);
@@ -346,7 +347,6 @@ Cell** mergeCells(Cell** cells, VoronoiParams* voronoiParams) {
     int* seeds = getNRandExc(nNew, 0, (int)graph->count - 1);
     int* assign = growSeeds(graph, seeds, nNew);
 
-    // merge cells based on assignments
     return actualizeAssignment(cells, seeds, assign, nOld, nNew);
 }
 
@@ -355,7 +355,8 @@ void discretizeFace(Face* face, int size) {
 }
 
 void discretizeCell(Cell* cell, int size) {
-    discretizeVec(cell->particle, size);
+    if (cell->particle)
+        discretizeVec(cell->particle, size);
     discretizeVecs(cell->nodes, (int)cell->nodeCount, size);
     for (int i = 0; i < cell->faceCount; ++i) {
         discretizeFace(&cell->faces[i], size);
@@ -383,8 +384,126 @@ double getDistPlane(Vec* v, Face* f) {
     return getDist(&vProj, v);
 }
 
+double getDistLineSeg(Vec* v1, Vec* v2, Vec* v) {
+    // https://stackoverflow.com/questions/849211/shortest-distance-between-a-point-and-a-line-segment
+    double lineDist = getDistSq(v1, v2);
+    if (isZero(lineDist)) return getDist(v, v1);
+    Vec* tmpV = getSubVec(v, v1);
+    Vec* tmp = getSubVec(v2, v1);
+    double t = getDotProd(tmpV, tmp) / lineDist;
+
+    if (t < 0.0) t = 0.0;
+    if (t > 1.0) t = 1.0;
+
+    multVecs(t, tmp, tmp);
+    addVecs(v1, tmp, tmp);
+    double dist = getDist(v, tmp);
+
+    free(tmp);
+    free(tmpV);
+    return dist;
+}
+
+double getDistFacePlane(Vec* v, Face* f) {
+    // https://math.stackexchange.com/questions/544946/determine-if-projection-of-3d-point-onto-plane-is-within-a-triangle/544947
+    double alpha;
+    double beta;
+    double gamma;
+    Vec* w;
+    Vec* tmp;
+    Vec res;
+
+    FaceCalc* faceCalc;
+
+    double cDist;
+    double sDist = DBL_MAX;
+
+    for (int i = 0; i < f->count - 2; ++i) {
+        if (f->nFaceCalcs < i + 1) {
+            f->faceCalcs = realloc(f->faceCalcs, sizeof(FaceCalc) * (f->nFaceCalcs + 1));
+            f->nFaceCalcs++;
+            faceCalc = &f->faceCalcs[f->nFaceCalcs - 1];
+
+            faceCalc->u = getSubVec(&f->nodes[i + 1], &f->nodes[i]);
+            faceCalc->v = getSubVec(&f->nodes[i + 2], &f->nodes[i]);
+            faceCalc->n = getCrossProduct(faceCalc->u, faceCalc->v);
+            faceCalc->nn = getDotProd(faceCalc->n, faceCalc->n);
+        }
+        faceCalc = &f->faceCalcs[i];
+
+        w = getSubVec(v, &f->nodes[i]);
+
+        tmp = getCrossProduct(faceCalc->u, w);
+        gamma = getDotProd(tmp, faceCalc->n) / faceCalc->nn;
+
+        tmp = getCrossProduct(w, faceCalc->v);
+        beta = getDotProd(tmp, faceCalc->n) / faceCalc->nn;
+
+        alpha = 1 - gamma - beta;
+
+        if (alpha >= 0 && alpha <= 1 && beta >= 0 && beta <= 1 && gamma >= 0 && gamma <= 1) {
+            res.x = alpha * f->nodes[i].x + beta * f->nodes[i + 1].x + gamma * f->nodes[i + 2].x;
+            res.y = alpha * f->nodes[i].y + beta * f->nodes[i + 1].y + gamma * f->nodes[i + 2].y;
+            res.z = alpha * f->nodes[i].z + beta * f->nodes[i + 1].z + gamma * f->nodes[i + 2].z;
+
+            cDist = getDist(&res, v);
+            if (cDist < sDist) sDist = cDist;
+            if (isAlmostZero(sDist)) return 0;
+        }
+    }
+
+    return sDist;
+}
+
+double getDistFaceLineSegs(Vec* v, Face* f) {
+    double sDist = DBL_MAX;
+    double cDist;
+
+    for (int i = 0; i < f->count - 1; ++i) {
+        for (int j = i + 1; j < f->count; ++j) {
+            cDist = getDistLineSeg(&f->nodes[i], &f->nodes[j], v);
+            if (cDist < sDist) sDist = cDist;
+            if (isAlmostZero(sDist)) return 0;
+        }
+    }
+
+    return sDist;
+}
+
+double getDistFace(Vec* v, Face* f) {
+    double plane = getDistFacePlane(v, f);
+    double lineSeg = getDistFaceLineSegs(v, f);
+    return plane < lineSeg ? plane : lineSeg;
+}
+
+double getDistCell(Vec* v, Cell* cell) {
+    double sDist = DBL_MAX;
+    double cDist;
+
+    for (int i = 0; i < cell->faceCount; ++i) {
+        cDist = getDistFace(v, &cell->faces[i]);
+        if (cDist < sDist) sDist = cDist;
+        if (isAlmostZero(sDist)) return 0;
+    }
+
+    return sDist;
+}
+
+double getDistCells(Vec* v, Cell** cells, int n) {
+    double sDist = DBL_MAX;
+    double cDist;
+
+    for (int i = 0; i < n; ++i) {
+        cDist = getDistCell(v, cells[i]);
+        if (cDist < sDist) sDist = cDist;
+    }
+
+    return sDist;
+}
+
 int equalFaces(Face* f1, Face* f2) {
-    if (f1->normalVec != f2->normalVec || f1->count != f2->count) return 0;
+    if (f1->count != f2->count) return 0;
+    if (!equalVecs(f1->normalVec, f2->normalVec) && !negEqualVecs(f1->normalVec, f2->normalVec)) return 0;
     int common = 0;
     for (int i = 0; i < f1->count; ++i) {
         for (int j = 0; j < f2->count; ++j) {
@@ -394,11 +513,45 @@ int equalFaces(Face* f1, Face* f2) {
     return common == f1->count ? 1 : 0;
 }
 
+Node* getNodeCopy(Node* node) {
+    Node* res = malloc(sizeof(Node));
+    res->x = node->x;
+    res->y = node->y;
+    res->z = node->z;
+    return res;
+}
+
+Node* getNodesCopy(Node* nodes, int count) {
+    Node* res = malloc(sizeof(Node) * count);
+    for (int i = 0; i < count; ++i) {
+        res[i].x = nodes[i].x;
+        res[i].y = nodes[i].y;
+        res[i].z = nodes[i].z;
+    }
+    return res;
+}
+
+Face* getFaceCopy(Face* f) {
+    Face* res = malloc(sizeof(Face));
+    res->nodes = getNodesCopy(f->nodes, f->count);
+    res->count = f->count;
+    res->normalVec = getNodeCopy(f->normalVec);
+    return res;
+}
+
 void printCells(Cell** cells, int count) {
     for (int i = 0; i < count; ++i) {
         printf("Cell %d ID=%d  nodeCount=%d  faceCount=%d  neighborCount=%d\n", i, cells[i]->id, cells[i]->nodeCount,
                cells[i]->faceCount, cells[i]->neighborCount);
-        printf("Particle:  x=%lf  y=%lf  z=%lf\n", cells[i]->particle->x, cells[i]->particle->y, cells[i]->particle->z);
+        if (cells[i]->particle)
+            printf("Particle:  x=%lf  y=%lf  z=%lf\n", cells[i]->particle->x, cells[i]->particle->y, cells[i]->particle->z);
+        if (cells[i]->nIds) {
+            printf("Cell IDs: ");
+            for (int j = 0; j < cells[i]->nIds; ++j) {
+                printf(" %d", cells[i]->ids[j]);
+            }
+            printf("\n");
+        }
         for (int j = 0; j < cells[i]->nodeCount; ++j)
             printf("   Node %d  x=%lf  y=%lf  z=%lf\n", j, cells[i]->nodes[j].x, cells[i]->nodes[j].y, cells[i]->nodes[j].z);
         for (int j = 0; j < cells[i]->faceCount; ++j) {

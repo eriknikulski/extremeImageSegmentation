@@ -35,7 +35,7 @@ int* getNRandExc(int n, int lower, int upper) {
     assert(n <= (upper - lower + 1));
 
     int* res = malloc(sizeof(int) * n);
-    int a[upper + 1];
+    int a[upper - lower + 1];
     int tmp;
     int j;
 

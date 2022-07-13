@@ -10,10 +10,20 @@
 
 typedef Vec Node;
 
+typedef struct FaceCalc {
+    Vec* u;
+    Vec* v;
+    Vec* n;
+
+    double nn;
+} FaceCalc;
+
 typedef struct Face {
     Node* nodes;
     unsigned int count;
     Node* normalVec;
+    FaceCalc* faceCalcs;
+    int nFaceCalcs;
 } Face;
 
 typedef struct Cell {
@@ -25,6 +35,8 @@ typedef struct Cell {
     unsigned int faceCount;
     unsigned int neighborCount;
     Vec* particle;
+    int* ids;
+    int nIds;
 } Cell;
 
 Vec* getRandParticles(int n);
@@ -69,7 +81,13 @@ void discretizeCells(Cell** cells, int n, int size);
 
 double getDistPlane(Vec* v, Face* f);
 
+double getDistCell(Vec* v, Cell* cell);
+
+double getDistCells(Vec* v, Cell** cells, int n);
+
 int equalFaces(Face* f1, Face* f2);
+
+Face* getFaceCopy(Face* f);
 
 void printCells(Cell** cells, int count);
 

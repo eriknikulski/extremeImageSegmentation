@@ -35,6 +35,8 @@ Vec* getVecLogNearCube(int base);
 
 Vec* getRandVecOnCube();
 
+double getDistSq(Vec* v1, Vec* v2);
+
 double getDist(Vec* v1, Vec* v2);
 
 double getLength(Vec* v);
@@ -43,9 +45,13 @@ Vec* getCrossProduct(Vec* v1, Vec* v2);
 
 double getDotProd(Vec* v1, Vec* v2);
 
+int negEqualVecs(Vec* v1, Vec* v2);
+
 int equalVecs(Vec* v1, Vec* v2);
 
 int isZero(double d);
+
+int isAlmostZero(double d);
 
 void discretizeVec(Vec* v, int size);
 

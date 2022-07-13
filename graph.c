@@ -6,6 +6,7 @@
 #include "utility.h"
 #include "voronoi.h"
 
+#include "memory.h"
 #include "stdlib.h"
 
 
@@ -52,7 +53,9 @@ int* growSeeds(Graph* graph, int* seeds, int n) {
     int* awail = malloc(sizeof(int) * graph->count);
     int count = (int)graph->count - n;
     int* assign = malloc(sizeof(int) * graph->count);
+    memset(assign, 0, sizeof(int) * graph->count);
     int* neigh = malloc(sizeof(int) * (int)graph->count);
+    memset(neigh, 0, sizeof(int) * graph->count);
 
     for (int i = 0; i < graph->count; ++i) {
         awail[i] = 1;
@@ -70,7 +73,10 @@ int* growSeeds(Graph* graph, int* seeds, int n) {
         for (int i = 0; i < (int)graph->count; ++i) {
             if (assign[i] != randSeed) continue;
             for (int j = 0; j < (int)graph->nodes[i].neighbourCount; ++j) {
-                if (awail[graph->nodes[i].neighbors[j]]) neigh[c++] = graph->nodes[i].neighbors[j];
+                if (awail[graph->nodes[i].neighbors[j]]) {
+                    neigh[c] = graph->nodes[i].neighbors[j];
+                    ++c;
+                }
             }
         }
 
@@ -82,5 +88,6 @@ int* growSeeds(Graph* graph, int* seeds, int n) {
         --count;
     }
     free(neigh);
+    free(awail);
     return assign;
 }

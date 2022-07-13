@@ -33,40 +33,53 @@ void spline(SplineParams* splineParams, ImageParams* imageParams) {
 }
 
 void voronoi(VoronoiParams* voronoiParams, ImageParams* imageParams) {
-//    Vec* particles = malloc(sizeof(Vec) * voronoiParams->nInitialCells);
-//    Cell** cells = getCells(voronoiParams->nInitialCells, "test", &particles);
-
-    Vec* particles = malloc(sizeof(Vec) * voronoiParams->nCells);
+    Vec* particles = malloc(sizeof(Vec) * voronoiParams->nInitialCells);
     printf("Creating cells\n");
-    Cell** cells = getCells(voronoiParams->nCells, "test", &particles);
+    Cell** cells = getCells(voronoiParams->nInitialCells, "test", &particles);
+
+//    Vec* particles = malloc(sizeof(Vec) * voronoiParams->nCells);
+//    printf("Creating cells\n");
+//    Cell** cells = getCells(voronoiParams->nCells, "test", &particles);
 
 //    printf("Particles:\n");
 //    printVecs(particles, voronoiParams->nInitialCells);
 //    printVecs(particles, voronoiParams->nCells);
 
-    // TODO: when cells are merged, seeds need to be merged (choose one)
-    // TODO: when merging: some distances need to be recalculated (careful)
-//    cells = mergeCells(cells, voronoiParams);
-//    printf("Merged cells\n\n");
-//    printCells(cells, voronoiParams->nCells);
+    discretizeCells(cells, voronoiParams->nInitialCells, imageParams->imageSize);
+    Bitmap* bitmapOrig = initializeBitmap(imageParams);
+    calcVoronoiDist(bitmapOrig, cells, voronoiParams->nInitialCells);
+    setValuesBitmap(bitmapOrig, imageParams);
+    writeBitmap(bitmapOrig, voronoiParams->imagePathPre);
 
-    printf("Creating voronoi images\n");
-    Bitmap* bitmapOrig = createVoronoiImage(cells, voronoiParams, imageParams);
+    cells = mergeCells(cells, voronoiParams);
+    printf("Merged cells\n\n");
+    printCells(cells, voronoiParams->nCells);
 
-    int nSeeds;
-    Vec** seeds = getSeeds(bitmapOrig, voronoiParams->seedThreshold, &nSeeds);
-    printf("nSeeds: %d\n", nSeeds);
+    removeDistMissingFaces(bitmapOrig, cells, voronoiParams->nCells);
+    setValuesBitmap(bitmapOrig, imageParams);
+    writeBitmap(bitmapOrig, voronoiParams->imagePathRem);
 
-    printf("Applying srg\n");
-    Bitmap* bitmapSRG = srg(bitmapOrig, seeds, nSeeds, voronoiParams->srgPrecision,
-                            voronoiParams->imagePath, imageParams);
-    printf("Writing bitmap\n");
-    writeBitmap(bitmapSRG, voronoiParams->srgImagePath);
+    calcMissingDist(bitmapOrig, cells, voronoiParams->nCells);
+    setValuesBitmap(bitmapOrig, imageParams);
+    writeBitmap(bitmapOrig, voronoiParams->imagePath);
 
-    double randsIndex = getRandsIndex(bitmapOrig, bitmapSRG);
-    printf("Rands Index: %lf\n", randsIndex);
-    double variationOfInformation = getVariationOfInformation(bitmapOrig, bitmapSRG, seeds, nSeeds);
-    printf("Variation Of Information: %lf\n", variationOfInformation);
+//    printf("Creating voronoi images\n");
+//    Bitmap* bitmapOrig = createVoronoiImage(cells, voronoiParams, imageParams);
+
+//    int nSeeds;
+//    Vec** seeds = getSeeds(bitmapOrig, voronoiParams->seedThreshold, &nSeeds);
+//    printf("nSeeds: %d\n", nSeeds);
+//
+//    printf("Applying srg\n");
+//    Bitmap* bitmapSRG = srg(bitmapOrig, seeds, nSeeds, voronoiParams->srgPrecision,
+//                            voronoiParams->imagePath, imageParams);
+//    printf("Writing bitmap\n");
+//    writeBitmap(bitmapSRG, voronoiParams->srgImagePath);
+//
+//    double randsIndex = getRandsIndex(bitmapOrig, bitmapSRG);
+//    printf("Rands Index: %lf\n", randsIndex);
+//    double variationOfInformation = getVariationOfInformation(bitmapOrig, bitmapSRG, seeds, nSeeds);
+//    printf("Variation Of Information: %lf\n", variationOfInformation);
 }
 
 int main() {
@@ -84,9 +97,11 @@ int main() {
     };
 
     VoronoiParams voronoiParams = {
-            .nInitialCells = 16,
-            .nCells = 4,
+            .nInitialCells = 4,
+            .nCells = 2,
             .imagePath = strdup("/Users/eriknikulski/CLionProjects/extremeImageSegmentation/images/voronoi/"),
+            .imagePathPre = strdup("/Users/eriknikulski/CLionProjects/extremeImageSegmentation/images/voronoi/pre/"),
+            .imagePathRem = strdup("/Users/eriknikulski/CLionProjects/extremeImageSegmentation/images/voronoi/rem/"),
             .srgImagePath = strdup("/Users/eriknikulski/CLionProjects/extremeImageSegmentation/images/voronoi/srg/"),
             .srgPrecision = 100,
             .seedThreshold = 54,

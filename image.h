@@ -19,6 +19,8 @@ typedef struct Pixel {
     double delta;
     int inSSL;
     Vec* particle;
+    Face* closestFace;
+    int cellId;
 } Pixel;
 
 typedef struct Bitmap {
@@ -34,7 +36,17 @@ Pixel** getNeighbors(Bitmap* bitmap, Pixel* p, int* count);
 
 Vec** getSeeds(Bitmap* bitmap, uint8_t value, int* count);
 
+void setValuesBitmap(Bitmap* bitmap, ImageParams* imageParams);
+
+Bitmap* initializeBitmap(ImageParams* imageParams);
+
 void writeBitmap(Bitmap* bitmap, char* fname);
+
+Bitmap* calcVoronoiDist(Bitmap* bitmap, Cell** cells, int nCells);
+
+Bitmap* removeDistMissingFaces(Bitmap* bitmap, Cell** cells, int nCells);
+
+Bitmap* calcMissingDist(Bitmap* bitmap, Cell** cells, int nCells);
 
 Bitmap* createSplineImage(Vec** splines, SplineParams* splineParams, ImageParams* imageParams);
 

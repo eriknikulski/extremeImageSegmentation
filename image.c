@@ -242,10 +242,74 @@ Bitmap* calcVoronoiDist(Bitmap* bitmap, Cell** cells, int nCells) {
                     if (equalVecs(cells[i]->particle, pixel->particle)) {
                         for (int j = 0; j < cells[i]->faceCount; ++j) {
                             cDist = getDistPlane(pixel->v, &cells[i]->faces[j]);
-                            if (cDist < pixel->dist)
+                            if (cDist < pixel->dist) {
                                 pixel->dist = cDist;
+                                pixel->closestFace = getFaceCopy(&cells[i]->faces[j]);
+                                pixel->cellId = cells[i]->id;
+                            }
                         }
                     }
+                }
+            }
+        }
+    }
+    return bitmap;
+}
+
+Bitmap* removeDistMissingFaces(Bitmap* bitmap, Cell** cells, int nCells) {
+    Pixel* pixel;
+    int found;
+
+    for (int z = 0; z < bitmap->size; ++z) {
+        for (int y = 0; y < bitmap->size; ++y) {
+            for (int x = 0; x < bitmap->size; ++x) {
+                pixel = getPixel(bitmap, x, y, z);
+                found = 0;
+
+
+                for (int i = 0; i < nCells; ++i) {
+                    for (int j = 0; j < cells[i]->faceCount; ++j) {
+                        if (equalFaces(pixel->closestFace, &cells[i]->faces[j])) {
+                            found = 1;
+                            break;
+                        }
+                    }
+                    if (found) break;
+                }
+
+                if (!found) {
+                    pixel->dist = DBL_MAX;
+                    pixel->closestFace = NULL;
+                }
+            }
+        }
+    }
+    return bitmap;
+}
+
+Bitmap* calcMissingDist(Bitmap* bitmap, Cell** cells, int nCells) {
+    Pixel* pixel;
+    int i;
+    int found;
+
+    for (int z = 0; z < bitmap->size; ++z) {
+        for (int y = 0; y < bitmap->size; ++y) {
+            for (int x = 0; x < bitmap->size; ++x) {
+                pixel = getPixel(bitmap, x, y, z);
+
+                if (pixel->dist == DBL_MAX) {
+                    found = 0;
+
+                    for (i = 0; i < nCells; ++i) {
+                        for (int j = 0; j < cells[i]->nIds; ++j) {
+                            if (cells[i]->ids[j] == pixel->cellId) {
+                                found = 1;
+                                break;
+                            }
+                        }
+                        if (found) break;
+                    }
+                    pixel->dist = getDistCell(pixel->v, cells[i]);
                 }
             }
         }

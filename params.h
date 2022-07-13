@@ -7,6 +7,8 @@
 
 #include "stdint.h"
 
+#define IDC_SMALL 1e-5
+
 typedef struct ImageParams {
     int imageSize;
     double theta_0;
@@ -22,6 +24,8 @@ typedef struct VoronoiParams {
     int nCells;
     int srgPrecision;
     char* imagePath;
+    char* imagePathRem;
+    char* imagePathPre;
     char* srgImagePath;
     uint8_t seedThreshold;
 } VoronoiParams;

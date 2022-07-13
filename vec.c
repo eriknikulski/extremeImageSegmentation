@@ -2,11 +2,12 @@
 // Created by Erik Nikulski on 10.04.22.
 //
 
-#include "float.h"
 #include "vec.h"
 
+#include "params.h"
 #include "utility.h"
 
+#include "float.h"
 #include "math.h"
 #include "memory.h"
 #include "stdlib.h"
@@ -122,6 +123,10 @@ Vec* getRandVecOnCube() {
     return vec;
 }
 
+double getDistSq(Vec* v1, Vec* v2) {
+    return pow(v2->x - v1->x, 2) + pow(v2->y - v1->y, 2) + pow(v2->z - v1->z, 2);
+}
+
 double getDist(Vec* v1, Vec* v2) {
     return sqrt(pow(v2->x - v1->x, 2) + pow(v2->y - v1->y, 2) + pow(v2->z - v1->z, 2));
 }
@@ -142,6 +147,13 @@ double getDotProd(Vec* v1, Vec* v2) {
     return v1->x * v2->x + v1->y * v2->y + v1->z * v2->z;
 }
 
+int negEqualVecs(Vec* v1, Vec* v2) {
+    if (!v1 && !v2) return 1;
+    if (!v1 || !v2) return 0;
+    if (fabs(v1->x + v2->x) < DBL_EPSILON && fabs(v1->y + v2->y) < DBL_EPSILON && fabs(v1->z + v2->z) < DBL_EPSILON) return 1;
+    return 0;
+}
+
 int equalVecs(Vec* v1, Vec* v2) {
     if (!v1 && !v2) return 1;
     if (!v1 || !v2) return 0;
@@ -151,6 +163,10 @@ int equalVecs(Vec* v1, Vec* v2) {
 
 int isZero(double d) {
     return fabs(d) < DBL_EPSILON;
+}
+
+int isAlmostZero(double d) {
+    return fabs(d) < IDC_SMALL;
 }
 
 void discretizeVec(Vec* v, int size) {
