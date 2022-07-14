@@ -10,6 +10,7 @@
 
 #include "assert.h"
 #include "float.h"
+#include "math.h"
 #include "stdlib.h"
 #include "stdio.h"
 #include "string.h"
@@ -238,20 +239,16 @@ Cell** getCells(int n, char* fname, Vec** particles) {
 
 void removeDupNodes(Cell* c) {
     unsigned int count = c->nodeCount;
-    for (int i = 0; i < count - 1; ++i) {
+    for (int i = 0; i < count; ++i) {
         for (int j = i + 1; j < count; ++j) {
             if (equalVecs(&c->nodes[i], &c->nodes[j])) {
-                if (i == count - 2 && j == count - 1) {
-                    count -= 2;
+                if (j == count - 1) {
+                    --count;
                     break;
                 }
-                if (j != count - 1) {
-                    c->nodes[j] = c->nodes[count - 1];
-                }
-                c->nodes[i] = c->nodes[count - 2];
-
-                count -= 2;
-                j = i + 1;
+                c->nodes[j] = c->nodes[count - 1];
+                --count;
+                --j;
             }
         }
     }
@@ -331,7 +328,7 @@ Cell** actualizeAssignment(Cell** cs, int* seeds, int* assign, int nOld, int nNe
             ++counter;
         }
 
-        removeDupNodes(cell);
+        removeDupNodes(cell);   // TODO: could be removed -> performance
         removeDupFaces(cell);
     }
     return cells;
@@ -371,12 +368,11 @@ void discretizeCells(Cell** cells, int n, int size) {
 
 double getDistPlane(Vec* v, Face* f) {
     Vec vProj;
-    Vec* tmp;
+    Vec tmp;
     double d;
 
-    tmp = getSubVec(v, &f->nodes[0]);
-    d = getDotProd(f->normalVec, tmp);
-    free(tmp);
+    subtractVec(v, &f->nodes[0], &tmp);
+    d = getDotProd(f->normalVec, &tmp);
 
     multVecs(d, f->normalVec, &vProj);
     subtractVec(v, &vProj, &vProj);
@@ -384,24 +380,25 @@ double getDistPlane(Vec* v, Face* f) {
     return getDist(&vProj, v);
 }
 
-double getDistLineSeg(Vec* v1, Vec* v2, Vec* v) {
+double getDistLineSegSq(Vec* v1, Vec* v2, Vec* v) {
     // https://stackoverflow.com/questions/849211/shortest-distance-between-a-point-and-a-line-segment
     double lineDist = getDistSq(v1, v2);
-    if (isZero(lineDist)) return getDist(v, v1);
-    Vec* tmpV = getSubVec(v, v1);
-    Vec* tmp = getSubVec(v2, v1);
-    double t = getDotProd(tmpV, tmp) / lineDist;
+    if (isAlmostZero(lineDist)) return getDist(v, v1);
+
+    Vec tmpV;
+    Vec tmp;
+    double t;
+
+    subtractVec(v, v1, &tmpV);
+    subtractVec(v2, v1, &tmp);
+    t = getDotProd(&tmpV, &tmp) / lineDist;
 
     if (t < 0.0) t = 0.0;
     if (t > 1.0) t = 1.0;
 
-    multVecs(t, tmp, tmp);
-    addVecs(v1, tmp, tmp);
-    double dist = getDist(v, tmp);
-
-    free(tmp);
-    free(tmpV);
-    return dist;
+    multVecs(t, &tmp, &tmp);
+    addVecs(v1, &tmp, &tmp);
+    return getDistSq(v, &tmp);
 }
 
 double getDistFacePlane(Vec* v, Face* f) {
@@ -409,8 +406,8 @@ double getDistFacePlane(Vec* v, Face* f) {
     double alpha;
     double beta;
     double gamma;
-    Vec* w;
-    Vec* tmp;
+    Vec w;
+    Vec tmp;
     Vec res;
 
     FaceCalc* faceCalc;
@@ -435,13 +432,13 @@ double getDistFacePlane(Vec* v, Face* f) {
         }
         faceCalc = &f->faceCalcs[i];
 
-        w = getSubVec(v, n1);
+        subtractVec(v, n1, &w);
 
-        tmp = getCrossProduct(faceCalc->u, w);
-        gamma = getDotProd(tmp, faceCalc->n) / faceCalc->nn;
+        calcCrossProduct(faceCalc->u, &w, &tmp);
+        gamma = getDotProd(&tmp, faceCalc->n) / faceCalc->nn;
 
-        tmp = getCrossProduct(w, faceCalc->v);
-        beta = getDotProd(tmp, faceCalc->n) / faceCalc->nn;
+        calcCrossProduct(&w, faceCalc->v, &tmp);
+        beta = getDotProd(&tmp, faceCalc->n) / faceCalc->nn;
 
         alpha = 1 - gamma - beta;
 
@@ -459,19 +456,20 @@ double getDistFacePlane(Vec* v, Face* f) {
     return sDist;
 }
 
+// TODO: improve performance
 double getDistFaceLineSegs(Vec* v, Face* f) {
     double sDist = DBL_MAX;
     double cDist;
 
     for (int i = 0; i < f->count - 1; ++i) {
         for (int j = i + 1; j < f->count; ++j) {
-            cDist = getDistLineSeg(&f->nodes[i], &f->nodes[j], v);
+            cDist = getDistLineSegSq(&f->nodes[i], &f->nodes[j], v);
             if (cDist < sDist) sDist = cDist;
             if (isAlmostZero(sDist)) return 0;
         }
     }
 
-    return sDist;
+    return sqrt(sDist);
 }
 
 double getDistFace(Vec* v, Face* f) {

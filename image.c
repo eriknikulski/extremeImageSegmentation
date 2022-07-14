@@ -118,7 +118,7 @@ Vec* getClosestParticle(Vec* v, Cell** cells, int nCells) {
     double cDist;
     Vec* closest = NULL;
     for (int i = 0; i < nCells; ++i) {
-        cDist = getDist(cells[i]->particle, v);
+        cDist = getDistSq(cells[i]->particle, v);
         if (cDist < sDist) {
             sDist = cDist;
             closest = cells[i]->particle;

@@ -41,6 +41,8 @@ double getDist(Vec* v1, Vec* v2);
 
 double getLength(Vec* v);
 
+Vec* calcCrossProduct(Vec* v1, Vec* v2, Vec* res);
+
 Vec* getCrossProduct(Vec* v1, Vec* v2);
 
 double getDotProd(Vec* v1, Vec* v2);

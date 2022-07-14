@@ -135,6 +135,13 @@ double getLength(Vec* v) {
     return sqrt(pow(v->x, 2) + pow(v->y, 2) + pow(v->z, 2));
 }
 
+Vec* calcCrossProduct(Vec* v1, Vec* v2, Vec* res) {
+    res->x = v1->y * v2->z - v1->z * v2->y;
+    res->y = v1->z * v2->x - v1->x * v2->z;
+    res->z = v1->x * v2->y - v1->y * v2->x;
+    return res;
+}
+
 Vec* getCrossProduct(Vec* v1, Vec* v2) {
     Vec* cross = malloc(sizeof(Vec));
     cross->x = v1->y * v2->z - v1->z * v2->y;
