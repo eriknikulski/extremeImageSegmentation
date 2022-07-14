@@ -383,7 +383,7 @@ double getDistPlane(Vec* v, Face* f) {
 double getDistLineSegSq(Vec* v1, Vec* v2, Vec* v) {
     // https://stackoverflow.com/questions/849211/shortest-distance-between-a-point-and-a-line-segment
     double lineDist = getDistSq(v1, v2);
-    if (isAlmostZero(lineDist)) return getDist(v, v1);
+    if (isAlmostZero(lineDist)) return getDistSq(v, v1);
 
     Vec tmpV;
     Vec tmp;
@@ -469,7 +469,7 @@ double getDistFaceLineSegs(Vec* v, Face* f) {
         }
     }
 
-    return sqrt(sDist);
+    return sDist == DBL_MAX ? DBL_MAX : sqrt(sDist);
 }
 
 double getDistFace(Vec* v, Face* f) {
