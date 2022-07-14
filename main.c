@@ -51,6 +51,10 @@ void voronoi(VoronoiParams* voronoiParams, ImageParams* imageParams) {
     setValuesBitmap(bitmapOrig, imageParams);
     writeBitmap(bitmapOrig, voronoiParams->imagePathPre);
 
+    printf("Cells\n\n");
+    printCells(cells, voronoiParams->nInitialCells);
+    printf("\n\n\n");
+
     cells = mergeCells(cells, voronoiParams);
     printf("Merged cells\n\n");
     printCells(cells, voronoiParams->nCells);
@@ -61,6 +65,9 @@ void voronoi(VoronoiParams* voronoiParams, ImageParams* imageParams) {
 
     calcMissingDist(bitmapOrig, cells, voronoiParams->nCells);
     setValuesBitmap(bitmapOrig, imageParams);
+    writeBitmap(bitmapOrig, voronoiParams->imagePathMerged);
+
+    setNoiseValuesBitmap(bitmapOrig, imageParams);
     writeBitmap(bitmapOrig, voronoiParams->imagePath);
 
 //    printf("Creating voronoi images\n");
@@ -97,11 +104,12 @@ int main() {
     };
 
     VoronoiParams voronoiParams = {
-            .nInitialCells = 4,
-            .nCells = 2,
-            .imagePath = strdup("/Users/eriknikulski/CLionProjects/extremeImageSegmentation/images/voronoi/"),
+            .nInitialCells = 16,
+            .nCells = 4,
+            .imagePath = strdup("/Users/eriknikulski/CLionProjects/extremeImageSegmentation/images/voronoi/fin/"),
             .imagePathPre = strdup("/Users/eriknikulski/CLionProjects/extremeImageSegmentation/images/voronoi/pre/"),
             .imagePathRem = strdup("/Users/eriknikulski/CLionProjects/extremeImageSegmentation/images/voronoi/rem/"),
+            .imagePathMerged = strdup("/Users/eriknikulski/CLionProjects/extremeImageSegmentation/images/voronoi/merged/"),
             .srgImagePath = strdup("/Users/eriknikulski/CLionProjects/extremeImageSegmentation/images/voronoi/srg/"),
             .srgPrecision = 100,
             .seedThreshold = 54,

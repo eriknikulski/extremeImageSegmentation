@@ -127,6 +127,22 @@ Vec* getClosestParticle(Vec* v, Cell** cells, int nCells) {
     return closest;
 }
 
+void setNoiseValuesBitmap(Bitmap* bitmap, ImageParams* imageParams) {
+    Pixel* pixel;
+    double value;
+
+    for (int z = 0; z < bitmap->size; ++z) {
+        for (int y = 0; y < bitmap->size; ++y) {
+            for (int x = 0; x < bitmap->size; ++x) {
+                pixel = getPixel(bitmap, x, y, z);
+                value = getPixelValue(pixel->dist, imageParams);
+                if (bitmap->reverse) value = 1 - value;
+                pixel->value = to8Bit(value);
+            }
+        }
+    }
+}
+
 void setValuesBitmap(Bitmap* bitmap, ImageParams* imageParams) {
     Pixel* pixel;
     double value;
@@ -265,7 +281,6 @@ Bitmap* removeDistMissingFaces(Bitmap* bitmap, Cell** cells, int nCells) {
             for (int x = 0; x < bitmap->size; ++x) {
                 pixel = getPixel(bitmap, x, y, z);
                 found = 0;
-
 
                 for (int i = 0; i < nCells; ++i) {
                     for (int j = 0; j < cells[i]->faceCount; ++j) {

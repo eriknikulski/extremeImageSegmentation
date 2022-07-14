@@ -36,6 +36,8 @@ Pixel** getNeighbors(Bitmap* bitmap, Pixel* p, int* count);
 
 Vec** getSeeds(Bitmap* bitmap, uint8_t value, int* count);
 
+void setNoiseValuesBitmap(Bitmap* bitmap, ImageParams* imageParams);
+
 void setValuesBitmap(Bitmap* bitmap, ImageParams* imageParams);
 
 Bitmap* initializeBitmap(ImageParams* imageParams);

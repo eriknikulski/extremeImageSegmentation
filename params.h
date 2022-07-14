@@ -26,6 +26,7 @@ typedef struct VoronoiParams {
     char* imagePath;
     char* imagePathRem;
     char* imagePathPre;
+    char* imagePathMerged;
     char* srgImagePath;
     uint8_t seedThreshold;
 } VoronoiParams;

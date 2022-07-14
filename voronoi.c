@@ -419,19 +419,23 @@ double getDistFacePlane(Vec* v, Face* f) {
     double sDist = DBL_MAX;
 
     for (int i = 0; i < f->count - 2; ++i) {
+        Vec* n1 = &f->nodes[0];
+        Vec* n2 = &f->nodes[i + 1];
+        Vec* n3 = &f->nodes[i + 2];
+
         if (f->nFaceCalcs < i + 1) {
             f->faceCalcs = realloc(f->faceCalcs, sizeof(FaceCalc) * (f->nFaceCalcs + 1));
             f->nFaceCalcs++;
             faceCalc = &f->faceCalcs[f->nFaceCalcs - 1];
 
-            faceCalc->u = getSubVec(&f->nodes[i + 1], &f->nodes[i]);
-            faceCalc->v = getSubVec(&f->nodes[i + 2], &f->nodes[i]);
+            faceCalc->u = getSubVec(n2, n1);
+            faceCalc->v = getSubVec(n3, n1);
             faceCalc->n = getCrossProduct(faceCalc->u, faceCalc->v);
             faceCalc->nn = getDotProd(faceCalc->n, faceCalc->n);
         }
         faceCalc = &f->faceCalcs[i];
 
-        w = getSubVec(v, &f->nodes[i]);
+        w = getSubVec(v, n1);
 
         tmp = getCrossProduct(faceCalc->u, w);
         gamma = getDotProd(tmp, faceCalc->n) / faceCalc->nn;
@@ -442,9 +446,9 @@ double getDistFacePlane(Vec* v, Face* f) {
         alpha = 1 - gamma - beta;
 
         if (alpha >= 0 && alpha <= 1 && beta >= 0 && beta <= 1 && gamma >= 0 && gamma <= 1) {
-            res.x = alpha * f->nodes[i].x + beta * f->nodes[i + 1].x + gamma * f->nodes[i + 2].x;
-            res.y = alpha * f->nodes[i].y + beta * f->nodes[i + 1].y + gamma * f->nodes[i + 2].y;
-            res.z = alpha * f->nodes[i].z + beta * f->nodes[i + 1].z + gamma * f->nodes[i + 2].z;
+            res.x = alpha * n1->x + beta * n2->x + gamma * n3->x;
+            res.y = alpha * n1->y + beta * n2->y + gamma * n3->y;
+            res.z = alpha * n1->z + beta * n2->z + gamma * n3->z;
 
             cDist = getDist(&res, v);
             if (cDist < sDist) sDist = cDist;
