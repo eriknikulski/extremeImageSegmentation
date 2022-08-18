@@ -64,7 +64,7 @@ SSL* insertSSL(SSL* head, Pixel* p, double delta) {
     return head;
 }
 
-Bitmap* srg(Bitmap* bitmap, Vec** vSeeds, int nSeeds, int precision, char* imagePath, ImageParams* imageParams) {
+Bitmap* srg(Bitmap* bitmap, Vec* vSeeds, int nSeeds, int precision, char* imagePath, ImageParams* imageParams) {
     int neighborCount = 0;
     Pixel** neighbors;
 
@@ -77,12 +77,12 @@ Bitmap* srg(Bitmap* bitmap, Vec** vSeeds, int nSeeds, int precision, char* image
 
     // Label seed points according their initial grouping.
     for (int i = 0; i < nSeeds; ++i) {
-        Pixel* p = getPixel(bitmap, (int)vSeeds[i]->x, (int)vSeeds[i]->y, (int)vSeeds[i]->z);
+        Pixel* p = getPixel(bitmap, (int)vSeeds[i].x, (int)vSeeds[i].y, (int)vSeeds[i].z);
         seeds[i].id = i;
         seeds[i].count = 1;
         seeds[i].sum = p->value;
         seeds[i].p = p;
-        p->particle = vSeeds[i];
+        p->particle = &vSeeds[i];
         p->grouping = &seeds[i];
         p->inSSL = 1;
     }

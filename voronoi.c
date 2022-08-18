@@ -232,6 +232,7 @@ Cell** getCells(int n, char* fname, Vec** particles) {
 
     for (int i = 0; i < n; ++i) {
         cells[i]->particle = &((*particles)[cells[i]->id]);
+        cells[i]->nIds = 0;
     }
 
     return cells;
@@ -461,6 +462,7 @@ double getDistFaceLineSegs(Vec* v, Face* f) {
     double sDist = DBL_MAX;
     double cDist;
 
+    // TODO: if nodes in order -> iterate over i, i+1
     for (int i = 0; i < f->count - 1; ++i) {
         for (int j = i + 1; j < f->count; ++j) {
             cDist = getDistLineSegSq(&f->nodes[i], &f->nodes[j], v);

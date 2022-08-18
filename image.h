@@ -19,6 +19,7 @@ typedef struct Pixel {
     double delta;
     int inSSL;
     Vec* particle;
+    int particleId;
     Face* closestFace;
     int cellId;
 } Pixel;
@@ -54,9 +55,11 @@ Bitmap* createSplineImage(Vec** splines, SplineParams* splineParams, ImageParams
 
 Bitmap* createVoronoiImage(Cell** cells, VoronoiParams* voronoiParams, ImageParams* imageParams);
 
-double getRandsIndex(Bitmap* orig, Bitmap* srg);
+void setParticleIds(Bitmap* bitmap, int n);
 
-double getVariationOfInformation(Bitmap* orig, Bitmap* srg, Vec** particles, int n);
+double getRandsIndex(Bitmap* orig, Bitmap* srg, int nParticles, int nSeeds);
+
+double getVariationOfInformation(Bitmap* orig, Bitmap* srg, int nParticles, int nSeeds);
 
 
 #endif //EXTREMEIMAGESEGMENTATION_IMAGE_H

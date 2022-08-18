@@ -17,18 +17,43 @@ void spline(SplineParams* splineParams, ImageParams* imageParams) {
     printf("Created spline images!\n");
 
     int nSeeds;
-    Vec** seeds = getSeeds(bitmapOrig, splineParams->seedThreshold, &nSeeds);
-    printf("nSeeds: %d\n", nSeeds);
+//    Vec* seeds = getSeeds(bitmapOrig, splineParams->seedThreshold, &nSeeds);
+//    printf("nSeeds: %d\n", nSeeds);
+
+//    nSeeds = splineParams->nSplines;
+//    Vec* seeds = malloc(sizeof(Vec) * nSeeds);
+//    for (int i = 0; i < splineParams->nSplines; ++i) {
+//        seeds[i] = s[i][splineParams->nPoints / 2];
+//    }
+
+    nSeeds = splineParams->nSplines + 1;
+    Vec* seeds = malloc(sizeof(Vec) * nSeeds);
+    for (int i = 0; i < splineParams->nSplines; ++i) {
+        seeds[i] = s[i][splineParams->nPoints / 2];
+    }
+    for (int i = 0; i < imageParams->imageSize; ++i) {
+        Pixel* p = getPixel(bitmapOrig, i, 0, 0);
+        if (p->particle == NULL) {
+            seeds[nSeeds - 1] = *p->v;
+            break;
+        }
+    }
 
     printf("Applying srg\n");
-    Bitmap* bitmapSRG = srg(bitmapOrig, seeds, nSeeds, splineParams->srgPrecision,
-                            splineParams->imagePath, imageParams);
+    Bitmap* bitmapSRG = initializeBitmap(imageParams);
+    bitmapSRG->pixels = memcpy(bitmapSRG->pixels, bitmapOrig->pixels, sizeof(Pixel) * imageParams->imageSize * imageParams->imageSize * imageParams->imageSize);
+    bitmapSRG = srg(bitmapSRG, seeds, nSeeds, splineParams->srgPrecision,
+                    splineParams->imagePath, imageParams);
     printf("Writing bitmap\n");
     writeBitmap(bitmapSRG, splineParams->srgImagePath);
 
-    double randsIndex = getRandsIndex(bitmapOrig, bitmapSRG);
+    printf("Calculating Metrics: \n");
+    setParticleIds(bitmapOrig, splineParams->nSplines);
+    setParticleIds(bitmapSRG, nSeeds);
+
+    double randsIndex = getRandsIndex(bitmapOrig, bitmapSRG, splineParams->nSplines, nSeeds);
     printf("Rands Index: %lf\n", randsIndex);
-    double variationOfInformation = getVariationOfInformation(bitmapOrig, bitmapSRG, seeds, nSeeds);
+    double variationOfInformation = getVariationOfInformation(bitmapOrig, bitmapSRG, splineParams->nSplines, nSeeds);
     printf("Variation Of Information: %lf\n", variationOfInformation);
 }
 
@@ -67,8 +92,8 @@ void voronoi(VoronoiParams* voronoiParams, ImageParams* imageParams) {
     setValuesBitmap(bitmapOrig, imageParams);
     writeBitmap(bitmapOrig, voronoiParams->imagePathMerged);
 
-    setNoiseValuesBitmap(bitmapOrig, imageParams);
-    writeBitmap(bitmapOrig, voronoiParams->imagePath);
+//    setNoiseValuesBitmap(bitmapOrig, imageParams);
+//    writeBitmap(bitmapOrig, voronoiParams->imagePath);
 
 //    printf("Creating voronoi images\n");
 //    Bitmap* bitmapOrig = createVoronoiImage(cells, voronoiParams, imageParams);
@@ -76,17 +101,32 @@ void voronoi(VoronoiParams* voronoiParams, ImageParams* imageParams) {
 //    int nSeeds;
 //    Vec** seeds = getSeeds(bitmapOrig, voronoiParams->seedThreshold, &nSeeds);
 //    printf("nSeeds: %d\n", nSeeds);
-//
-//    printf("Applying srg\n");
-//    Bitmap* bitmapSRG = srg(bitmapOrig, seeds, nSeeds, voronoiParams->srgPrecision,
-//                            voronoiParams->imagePath, imageParams);
-//    printf("Writing bitmap\n");
-//    writeBitmap(bitmapSRG, voronoiParams->srgImagePath);
-//
-//    double randsIndex = getRandsIndex(bitmapOrig, bitmapSRG);
-//    printf("Rands Index: %lf\n", randsIndex);
-//    double variationOfInformation = getVariationOfInformation(bitmapOrig, bitmapSRG, seeds, nSeeds);
-//    printf("Variation Of Information: %lf\n", variationOfInformation);
+
+//    int nSeeds = voronoiParams->nInitialCells;
+
+    int nSeeds = voronoiParams->nInitialCells + 1;
+    particles = realloc(particles, sizeof(Vec) * (voronoiParams->nInitialCells + 1));
+    particles[voronoiParams->nInitialCells].x = 0.0;
+    particles[voronoiParams->nInitialCells].y = 0.0;
+    particles[voronoiParams->nInitialCells].z = 0.0;
+
+    printf("Applying srg\n");
+    Bitmap* bitmapSRG = initializeBitmap(imageParams);
+    bitmapSRG->pixels = memcpy(bitmapSRG->pixels, bitmapOrig->pixels, sizeof(Pixel) * imageParams->imageSize * imageParams->imageSize * imageParams->imageSize);
+    bitmapSRG = srg(bitmapSRG, particles, nSeeds, voronoiParams->srgPrecision,
+                            voronoiParams->imagePath, imageParams);
+    printf("Writing bitmap\n");
+    writeBitmap(bitmapSRG, voronoiParams->srgImagePath);
+
+    printf("Calculating Metrics: \n");
+    setParticleIds(bitmapOrig, voronoiParams->nCells);
+    setParticleIds(bitmapSRG, nSeeds);
+
+    double randsIndex = getRandsIndex(bitmapOrig, bitmapSRG, voronoiParams->nCells, nSeeds);
+    printf("Rands Index: %lf\n", randsIndex);
+
+    double variationOfInformation = getVariationOfInformation(bitmapOrig, bitmapSRG, voronoiParams->nCells, nSeeds);
+    printf("Variation Of Information: %lf\n", variationOfInformation);
 }
 
 int main() {
@@ -104,7 +144,7 @@ int main() {
     };
 
     VoronoiParams voronoiParams = {
-            .nInitialCells = 16,
+            .nInitialCells = 4,
             .nCells = 4,
             .imagePath = strdup("/Users/eriknikulski/CLionProjects/extremeImageSegmentation/images/voronoi/fin/"),
             .imagePathPre = strdup("/Users/eriknikulski/CLionProjects/extremeImageSegmentation/images/voronoi/pre/"),

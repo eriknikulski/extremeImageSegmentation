@@ -358,60 +358,158 @@ Bitmap* createVoronoiImage(Cell** cells, VoronoiParams* voronoiParams, ImagePara
  * *********************************************************************************************************************
  */
 
-double getRandsIndex(Bitmap* orig, Bitmap* srg) {
-    Pixel* pSRG;
-    Pixel* pOrig;
-    int counter = 0;
-    int n = orig->size * orig->size * orig->size;
+void setParticleIds(Bitmap* bitmap, int n) {
+    Vec** mapping = malloc(sizeof(Vec*) * n);
 
-    for (int z = 0; z < orig->size; ++z) {
-        for (int y = 0; y < orig->size; ++y) {
-            for (int x = 0; x < orig->size; ++x) {
-                pSRG = getPixel(srg, x, y, z);
-                pOrig = getPixel(orig, x, y, z);
-                if (pSRG->particle == pOrig->particle) ++counter;
-            }
-        }
+    for (int i = 0; i < n; ++i) {
+        mapping[i] = NULL;
     }
-    return (double)counter / (double)n;
-}
 
-double getVariationOfInformation(Bitmap* orig, Bitmap* srg, Vec** particles, int n) {
-    int *p = malloc(sizeof(int) * (n + 1));
-    int *q = malloc(sizeof(int) * (n + 1));
-    int *r = malloc(sizeof(int) * (n + 1));
-    memset(p, 0, sizeof(int) * (n + 1));
-    memset(q, 0, sizeof(int) * (n + 1));
-    memset(r, 0, sizeof(int) * (n + 1));
-    int size = orig->size * orig->size * orig->size;
-    double res = 0;
-    Pixel* pSRG;
-    Pixel* pOrig;
-
-    for (int z = 0; z < orig->size; ++z) {
-        for (int y = 0; y < orig->size; ++y) {
-            for (int x = 0; x < orig->size; ++x) {
-                pSRG = getPixel(srg, x, y, z);
-                pOrig = getPixel(orig, x, y, z);
-
-                if (!pOrig->particle) ++p[n];
-                if (!pOrig->particle && !pSRG->particle) ++r[n];
-                if (!pSRG->particle) ++q[n];
+    for (int z = 0; z < bitmap->size; ++z) {
+        for (int y = 0; y < bitmap->size; ++y) {
+            for (int x = 0; x < bitmap->size; ++x) {
+                Pixel* pixel = getPixel(bitmap, x, y, z);
 
                 for (int i = 0; i < n; ++i) {
-                    if (equalVecs(pSRG->particle, particles[i])) ++q[i];
-                    if (equalVecs(pOrig->particle, particles[i])) ++p[i];
-                    if (equalVecs(pOrig->particle, particles[i]) && equalVecs(pSRG->particle, particles[i]))
-                        ++r[i];
+                    if (mapping[i] == NULL) {
+                        mapping[i] = pixel->particle;
+                        pixel->particleId = i;
+                        break;
+                    }
+                    if (mapping[i] == pixel->particle) {
+                        pixel->particleId = i;
+                        break;
+                    }
                 }
             }
         }
     }
+    free(mapping);
+}
 
-    for (int i = 0; i < n + 1; ++i) {
-        if (r[i] == 0 || p[i] == 0 || q[i] == 0) continue;
-        res -= (double)r[i] / size * (log((double)r[i] / p[i]) + log((double)r[i] / q[i]));
+double getRandsIndex(Bitmap* orig, Bitmap* srg, int nParticles, int nSeeds) {
+    Pixel *pSRG, *pOrig;
+
+    size_t n = orig->size * orig->size * orig->size;
+    n = n * (n - 1) / 2;
+
+    size_t *nMap = malloc(sizeof(size_t) * nParticles * nSeeds);
+    memset(nMap, 0, sizeof(size_t) * nParticles * nSeeds);
+
+    size_t *truthSum = malloc(sizeof(size_t) * nParticles);
+    memset(truthSum, 0, sizeof(size_t) * nParticles);
+
+    size_t *predSum = malloc(sizeof(size_t) * nSeeds);
+    memset(predSum, 0, sizeof(size_t) * nSeeds);
+
+    size_t falseJoins = 0, falseCuts = 0, trueJoins = 0, trueCuts = 0;
+
+    for (int z = 0; z < orig->size; ++z) {
+        for (int y = 0; y < orig->size; ++y) {
+            for (int x = 0; x < orig->size; ++x) {
+
+                pOrig = getPixel(orig, x, y, z);
+                pSRG = getPixel(srg, x, y, z);
+
+                ++nMap[pOrig->particleId + nParticles * pSRG->particleId];
+                ++truthSum[pOrig->particleId];
+                ++predSum[pSRG->particleId];
+            }
+        }
     }
-    
-    return res;
+
+    for (int i = 0; i < nSeeds; ++i) {
+        falseJoins += predSum[i] * predSum[i];
+    }
+
+    for (int i = 0; i < nParticles; ++i) {
+        falseCuts += truthSum[i] * truthSum[i];
+    }
+
+    for (int i = 0; i < nParticles * nSeeds; ++i) {
+        size_t n_ij = nMap[i];
+        if (n_ij == 0) continue;
+
+        trueJoins += n_ij * (n_ij - 1) / 2;
+        falseCuts -= n_ij * n_ij;
+        falseJoins -= n_ij * n_ij;
+    }
+
+    falseJoins /= 2;
+    falseCuts /= 2;
+
+    trueCuts = n - (trueJoins + falseJoins) - falseCuts;
+
+    free(nMap);
+    free(truthSum);
+    free(predSum);
+
+    return (double)(trueJoins + trueCuts) / (double)n;
+}
+
+double getVariationOfInformation(Bitmap* orig, Bitmap* srg, int nParticles, int nSeeds) {
+
+    size_t n = orig->size * orig->size * orig->size;
+
+    double *nMap = malloc(sizeof(double) * nParticles * nSeeds);
+    memset(nMap, 0, sizeof(double) * nParticles * nSeeds);
+
+    double *truthSum = malloc(sizeof(double) * nParticles);
+    memset(truthSum, 0, sizeof(double) * nParticles);
+
+    double *predSum = malloc(sizeof(double) * nSeeds);
+    memset(predSum, 0, sizeof(double) * nSeeds);
+
+    double H0 = 0, H1 = 0, I = 0;
+    int l1, l2;
+
+
+    for (int z = 0; z < orig->size; ++z) {
+        for (int y = 0; y < orig->size; ++y) {
+            for (int x = 0; x < orig->size; ++x) {
+                Pixel *pSRG = getPixel(srg, x, y, z);
+                Pixel *pOrig = getPixel(orig, x, y, z);
+
+                ++nMap[pOrig->particleId + nParticles * pSRG->particleId];
+                ++truthSum[pOrig->particleId];
+                ++predSum[pSRG->particleId];
+            }
+        }
+    }
+
+    for (int i = 0; i < nParticles; ++i) {
+        truthSum[i] /= n;
+    }
+
+    for (int i = 0; i < nSeeds; ++i) {
+        predSum[i] /= n;
+    }
+
+    for (int i = 0; i < nParticles * nSeeds; ++i) {
+        nMap[i] /= n;
+    }
+
+
+    for (int i = 0; i < nParticles; ++i) {
+        H0 -= truthSum[i] * log2(truthSum[i]);
+    }
+
+    for (int i = 0; i < nSeeds; ++i) {
+        H1 -= predSum[i] * log2(predSum[i]);
+    }
+
+    for (int i = 0; i < nParticles * nSeeds; ++i) {
+        if (isZero(nMap[i])) continue;
+
+        l1 = i % nParticles;
+        l2 = i / nParticles;
+
+        I += nMap[i] * log2(nMap[i]  / (truthSum[l1] * predSum[l2]));
+    }
+
+    free(nMap);
+    free(truthSum);
+    free(predSum);
+
+    return H0 + H1 - 2.0 * I;
 }
