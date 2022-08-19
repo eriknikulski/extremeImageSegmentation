@@ -135,12 +135,12 @@ int main() {
     // distinct
     ImageParams imageParams = {
             .imageSize = 128,
-            .theta_0 = -3.0,
-            .theta_1 = 1,
-            .sigma_b = 5,
-            .mu_b = 3,
-            .sigma_c = 5,
-            .mu_c = -3,
+            .theta_0 = -2.0,
+            .theta_1 = 0.5,
+            .sigma_b = (double) 255 / 255,
+            .mu_b = (double) 434 / 255,
+            .sigma_c = sqrt((double) 70 / 255),
+            .mu_c = (double) 25.5 / 255,
     };
 
     VoronoiParams voronoiParams = {

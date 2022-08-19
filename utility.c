@@ -74,5 +74,5 @@ double normDist(double sigma, double mu) {
 
 double normalCDF(double value, double sigma, double mu) {
 //    return 0.5 * erfc((value - mu) / (sigma * M_SQRT2));
-    return 0.5 * erfc((mu - value) / (sqrt(2 * sigma)));
+    return 0.5 * erfc((mu - value) / (sigma * M_SQRT2));
 }
