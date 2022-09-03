@@ -11,6 +11,7 @@
 typedef struct SSL {
     struct SSL* next;
     struct SSL* nextHigher;
+    struct SSL* ultraHigher;
     Pixel* p;
     double delta;
 } SSL;

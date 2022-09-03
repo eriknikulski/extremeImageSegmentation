@@ -13,12 +13,50 @@
 #include "stdlib.h"
 #include "stdio.h"
 
+static int baseSSLCounter = 0;
+static int baseSSLCounterCeiling = 1000;
+
+static int SSLCounter = 0;
+static int SSLCounterCeiling = 1000;
+
 
 double calcDelta(Seed* s, uint8_t value, int precision) {
     return round(fabs(value - s->sum / s->count) * precision) / precision;
 }
 
+int getSSLLength(SSL *head) {
+    if (head == NULL) return 0;
+    int length = 1;
+    SSL *current = head;
+    while (current->nextHigher) {
+        current = current->nextHigher;
+        ++length;
+    }
+    return length;
+}
+
+SSL* setUltras(SSL *head) {
+    int logLength = (int)log10((double) getSSLLength(head));
+    if (logLength < 2) return head;
+
+    SSL *current = head;
+    SSL *prev = current;
+    int i = 0;
+
+    while (current->nextHigher) {
+        ++i;
+        if (i == logLength) {
+            prev->ultraHigher = current;
+            prev = current;
+            i = 0;
+        }
+        current = current->nextHigher;
+    }
+    return head;
+}
+
 SSL* insertSSL(SSL* head, Pixel* p, double delta) {
+    ++SSLCounter;
     p->inSSL = 1;
 
     SSL* current = head;
@@ -28,9 +66,16 @@ SSL* insertSSL(SSL* head, Pixel* p, double delta) {
     elem->delta = delta;
     elem->next = NULL;
     elem->nextHigher = NULL;
+    elem->ultraHigher = NULL;
 
     if (head == NULL)
         return elem;
+
+    if (SSLCounter >= SSLCounterCeiling) {
+        head = setUltras(head);
+        SSLCounter = 0;
+        SSLCounterCeiling *= 10;
+    }
 
     while (current) {
         if (delta == current->delta) {
@@ -52,7 +97,11 @@ SSL* insertSSL(SSL* head, Pixel* p, double delta) {
             return elem;
         }
         prev = current;
-        current = current->nextHigher;
+        if (current->ultraHigher && current->ultraHigher->delta <= delta) {
+            current = current->ultraHigher;
+        } else {
+            current = current->nextHigher;
+        }
     }
 
     current = prev;
@@ -61,6 +110,8 @@ SSL* insertSSL(SSL* head, Pixel* p, double delta) {
         current = current->next;
     }
     current->next = elem;
+    SSLCounter = baseSSLCounter;
+    SSLCounterCeiling = baseSSLCounterCeiling;
     return head;
 }
 
