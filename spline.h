@@ -2,6 +2,7 @@
 // Created by Erik Nikulski on 07.04.22.
 //
 
+#include "image.h"
 #include "params.h"
 #include "vec.h"
 
@@ -36,5 +37,7 @@ void discretizeSplines(Vec** splines, int n, int dim, int size);
 double splineDist(Vec* point, Vec* spline, int dim);
 
 double splinesDist(Vec* point, Vec** splines, SplineParams* splineParams, int* spline);
+
+Vec* getParticles(Vec **s, Bitmap *bitmapOrig, SplineParams *splineParams, ImageParams *imageParams);
 
 #endif //EXTREMEIMAGESEGMENTATION_SPLINE_H

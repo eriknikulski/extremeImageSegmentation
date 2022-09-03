@@ -190,3 +190,19 @@ double splinesDist(Vec* point, Vec** splines, SplineParams* splineParams, int* s
     }
     return sDist;
 }
+
+Vec* getParticles(Vec **s, Bitmap *bitmapOrig, SplineParams *splineParams, ImageParams *imageParams) {
+    int n = splineParams->nSplines + 1;
+    Vec* particles = malloc(sizeof(Vec) * n);
+    for (int i = 0; i < splineParams->nSplines; ++i) {
+        particles[i] = s[i][splineParams->nPoints / 2];
+    }
+    for (int i = 0; i < imageParams->imageSize; ++i) {
+        Pixel* p = getPixel(bitmapOrig, i, 0, 0);
+        if (p->particle == NULL) {
+            particles[n - 1] = *p->v;
+            break;
+        }
+    }
+    return particles;
+}

@@ -91,7 +91,7 @@ Vec** getSeeds(Bitmap* bitmap, uint8_t value, int* count) {
         for (int y = 0; y < bitmap->size; ++y) {
             for (int x = 0; x < bitmap->size; ++x) {
                 pixel = getPixel(bitmap, x, y, z);
-                if (pixel->value <= value) ++(*count);
+                if (pixel->value >= value) ++(*count);
             }
         }
     }
@@ -102,7 +102,7 @@ Vec** getSeeds(Bitmap* bitmap, uint8_t value, int* count) {
         for (int y = 0; y < bitmap->size; ++y) {
             for (int x = 0; x < bitmap->size; ++x) {
                 pixel = getPixel(bitmap, x, y, z);
-                if (pixel->value <= value) {
+                if (pixel->value >= value) {
                     seeds[i] = pixel->v;
                     ++i;
                 }
@@ -110,6 +110,32 @@ Vec** getSeeds(Bitmap* bitmap, uint8_t value, int* count) {
         }
     }
 
+    return seeds;
+}
+
+Vec** getSeedsWithBlockRad(Bitmap *bitmap, int value, int *count, double radius) {
+    Vec** seeds = getSeeds(bitmap, value, count);
+
+    for (int i = 0; i < *count; ++i) {
+        for (int j = 0; j < *count; ++j) {
+            if (getDist(seeds[i], seeds[j]) < radius) {
+                if (j != *count - 1) seeds[j] = seeds[(*count) - 1];
+                --(*count);
+            }
+        }
+    }
+
+    return seeds;
+}
+
+Vec** addBorderSeed(Vec** seeds, int *count) {
+    ++(*count);
+    seeds = realloc(seeds, sizeof(Vec*) * *count);
+    Vec* vec = malloc(sizeof(Vec));
+    vec->x = 0;
+    vec->y = 0;
+    vec->z = 0;
+    seeds[(*count) - 1] = vec;
     return seeds;
 }
 
@@ -125,6 +151,19 @@ Vec* getClosestParticle(Vec* v, Cell** cells, int nCells) {
         }
     }
     return closest;
+}
+
+double getLongestDist(Bitmap* bitmap) {
+    double dist = 0;
+    for (int z = 0; z < bitmap->size; ++z) {
+        for (int y = 0; y < bitmap->size; ++y) {
+            for (int x = 0; x < bitmap->size; ++x) {
+                Pixel* pixel = getPixel(bitmap, x, y, z);
+                if (pixel->dist < DBL_MAX && pixel->dist > dist) dist = pixel->dist;
+            }
+        }
+    }
+    return dist;
 }
 
 void setNoiseValuesBitmap(Bitmap* bitmap, ImageParams* imageParams) {
@@ -146,12 +185,13 @@ void setNoiseValuesBitmap(Bitmap* bitmap, ImageParams* imageParams) {
 void setValuesBitmap(Bitmap* bitmap, ImageParams* imageParams) {
     Pixel* pixel;
     double value;
+    int longest = (int)getLongestDist(bitmap) + 1;
 
     for (int z = 0; z < bitmap->size; ++z) {
         for (int y = 0; y < bitmap->size; ++y) {
             for (int x = 0; x < bitmap->size; ++x) {
                 pixel = getPixel(bitmap, x, y, z);
-                value = getPixelValue(pixel->dist, imageParams);
+                value = pixel->dist / longest * imageParams->distScalingFactor;
                 if (bitmap->reverse) value = 1 - value;
                 pixel->value = to8Bit(value);
             }
@@ -190,9 +230,9 @@ void writeBitmap(Bitmap* bitmap, char* fname) {
     char* activeName;
 
     for (int z = 0; z < bitmap->size; ++z) {
-        len = snprintf(NULL, 0, "%simg_%d.png", fname, z) + 1;
+        len = snprintf(NULL, 0, "%simg_%03d.png", fname, z) + 1;
         activeName = malloc(len);
-        snprintf(activeName, len, "%simg_%d.png", fname, z);
+        snprintf(activeName, len, "%simg_%03d.png", fname, z);
 
         if (save_bitmap_slice_to_file(bitmap, z, activeName)) {
             fprintf(stderr, "Error writing file %d.\n", z);
@@ -350,6 +390,28 @@ Bitmap* createVoronoiImage(Cell** cells, VoronoiParams* voronoiParams, ImagePara
     return bitmap;
 }
 
+void printBitmapPixelDist(Bitmap* bitmap) {
+    int *counts = malloc(sizeof(int) * 256);
+
+    for (int i = 0; i < 256; ++i) {
+        counts[i] = 0;
+    }
+
+    for (int z = 0; z < bitmap->size; ++z) {
+        for (int y = 0; y < bitmap->size; ++y) {
+            for (int x = 0; x < bitmap->size; ++x) {
+                Pixel *pixel = getPixel(bitmap, x, y, z);
+                ++counts[pixel->value];
+            }
+        }
+    }
+
+    printf("Bitmap pixel value counts: \n");
+    for (int i = 0; i < 256; ++i) {
+        printf("    %d :  %d\n", i, counts[i]);
+    }
+}
+
 
 /* *********************************************************************************************************************
  * *********************************************************************************************************************
@@ -491,12 +553,16 @@ double getVariationOfInformation(Bitmap* orig, Bitmap* srg, int nParticles, int 
 
 
     for (int i = 0; i < nParticles; ++i) {
+        if (isZero(truthSum[i])) continue;
         H0 -= truthSum[i] * log2(truthSum[i]);
     }
 
     for (int i = 0; i < nSeeds; ++i) {
+        if (isZero(predSum[i])) continue;
         H1 -= predSum[i] * log2(predSum[i]);
     }
+
+    double div;
 
     for (int i = 0; i < nParticles * nSeeds; ++i) {
         if (isZero(nMap[i])) continue;
@@ -504,7 +570,11 @@ double getVariationOfInformation(Bitmap* orig, Bitmap* srg, int nParticles, int 
         l1 = i % nParticles;
         l2 = i / nParticles;
 
-        I += nMap[i] * log2(nMap[i]  / (truthSum[l1] * predSum[l2]));
+        div = nMap[i]  / (truthSum[l1] * predSum[l2]);
+
+        if (isZero(div)) continue;
+
+        I += nMap[i] * log2(div);
     }
 
     free(nMap);

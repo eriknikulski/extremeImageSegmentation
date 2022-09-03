@@ -22,8 +22,11 @@ typedef struct Seed {
     Pixel* p;
 } Seed;
 
-Bitmap* srg(Bitmap* bitmap, Vec* vSeeds, int nSeeds, int precision, char* imagePath, ImageParams* imageParams);
+Bitmap* srg(Bitmap* bitmap, Vec** vSeeds, int nSeeds, int precision, char* imagePath, ImageParams* imageParams);
 
 void setGroupings(Bitmap* bitmap);
+
+void calcSeedValueMetrics(Bitmap *bitmapOrig, ImageParams *imageParams, char *statsPath, char* srgImagePath,
+                          char *imagePath, int nElements, double blockingRadius, int srgPrecision, Vec *particles);
 
 #endif //EXTREMEIMAGESEGMENTATION_SRG_H

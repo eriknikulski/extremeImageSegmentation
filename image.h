@@ -37,6 +37,10 @@ Pixel** getNeighbors(Bitmap* bitmap, Pixel* p, int* count);
 
 Vec** getSeeds(Bitmap* bitmap, uint8_t value, int* count);
 
+Vec** getSeedsWithBlockRad(Bitmap *bitmap, int value, int *count, double radius);
+
+Vec** addBorderSeed(Vec** seeds, int *count);
+
 void setNoiseValuesBitmap(Bitmap* bitmap, ImageParams* imageParams);
 
 void setValuesBitmap(Bitmap* bitmap, ImageParams* imageParams);
@@ -54,6 +58,8 @@ Bitmap* calcMissingDist(Bitmap* bitmap, Cell** cells, int nCells);
 Bitmap* createSplineImage(Vec** splines, SplineParams* splineParams, ImageParams* imageParams);
 
 Bitmap* createVoronoiImage(Cell** cells, VoronoiParams* voronoiParams, ImageParams* imageParams);
+
+void printBitmapPixelDist(Bitmap* bitmap);
 
 void setParticleIds(Bitmap* bitmap, int n);
 
