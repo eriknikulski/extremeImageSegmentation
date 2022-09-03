@@ -225,6 +225,14 @@ Bitmap* initializeBitmap(ImageParams* imageParams) {
     return bitmap;
 }
 
+void createAgif(char *path) {
+    char* command = malloc(sizeof(char) * (24 + 2 * strlen(path) + 1));
+    sprintf(command, "convert %s/*.png %s/anim.gif\n", path, path);
+
+    system(command);
+    free(command);
+}
+
 void writeBitmap(Bitmap* bitmap, char* fname) {
     size_t len;
     char* activeName;
@@ -239,6 +247,8 @@ void writeBitmap(Bitmap* bitmap, char* fname) {
         }
         free(activeName);
     }
+
+    createAgif(fname);
 
 }
 
