@@ -185,9 +185,6 @@ void applySRGWithMetricsF(Bitmap *bitmapOrig, Vec** seeds, int nSeeds, ImagePara
 
 void calcSeedValueMetrics(Bitmap *bitmapOrig, ImageParams *imageParams, char *statsPath, char* srgImagePath,
                           char *imagePath, int nElements, double blockingRadius, int srgPrecision, Vec *particles) {
-    // TODO: for each value write metrics with different seed selections in one line (auch Anzahl seeds)
-    // TODO: wenn fertig .csv mit python auslesen und diagramme erstellen. Eventuell auch für verschiedene 'Noise Level' testen
-
     FILE *fp = fopen(statsPath, "w");
     Vec** seeds;
     int nSeeds;
