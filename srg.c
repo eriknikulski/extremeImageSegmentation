@@ -134,6 +134,7 @@ Bitmap* srg(Bitmap* bitmap, Vec** vSeeds, int nSeeds, int precision, char* image
         seeds[i].sum = p->value;
         seeds[i].p = p;
         p->particle = vSeeds[i];
+        p->particleId = i;
         p->grouping = &seeds[i];
         p->inSSL = 1;
     }
@@ -175,6 +176,7 @@ Bitmap* srg(Bitmap* bitmap, Vec** vSeeds, int nSeeds, int precision, char* image
 
         current->p->grouping = label;
         current->p->particle = label->p->particle;
+        current->p->particleId = label->p->particleId;
         ++(label->count);
         label->sum += current->p->value;
 
@@ -189,6 +191,7 @@ Bitmap* srg(Bitmap* bitmap, Vec** vSeeds, int nSeeds, int precision, char* image
 
     printf("Setting grouping values\n");
     setGroupings(bitmap);
+    free(seeds);
 
     return bitmap;
 }
@@ -213,16 +216,13 @@ void applySRGWithMetricsF(Bitmap *bitmapOrig, Vec** seeds, int nSeeds, ImagePara
                           char *imagePath, char *srgImagePath, int nElements, FILE* file) {
     printf("Applying srg\n");
     printf("%d seeds\n", nSeeds);
-    Bitmap *bitmapSRG = initializeBitmap(imageParams);
-    bitmapSRG->pixels = memcpy(bitmapSRG->pixels, bitmapOrig->pixels,
-                               sizeof(Pixel) * imageParams->imageSize * imageParams->imageSize * imageParams->imageSize);
+
+    Bitmap *bitmapSRG = copyBitmap(bitmapOrig);
     bitmapSRG = srg(bitmapSRG, seeds, nSeeds, srgPrecision, imagePath, imageParams);
     printf("Writing bitmap\n");
     writeBitmap(bitmapSRG, srgImagePath);
 
     printf("Calculating Metrics: \n");
-    setParticleIds(bitmapOrig, nElements);
-    setParticleIds(bitmapSRG, nSeeds);
 
     double randsIndex = getRandsIndex(bitmapOrig, bitmapSRG, nElements, nSeeds);
     printf("Rands Index: %lf\n", randsIndex);
@@ -234,6 +234,7 @@ void applySRGWithMetricsF(Bitmap *bitmapOrig, Vec** seeds, int nSeeds, ImagePara
            variationOfInformation, falseJoins, falseCuts);
 
     fprintf(file, ",%d,%lf,%lf,%lf,%lf", nSeeds, randsIndex, variationOfInformation, falseJoins, falseCuts);
+    freeBitmap(bitmapSRG);
 }
 
 void calcSeedValueMetrics(Bitmap *bitmapOrig, ImageParams *imageParams, char *statsPath, char* srgImagePath,
@@ -241,6 +242,8 @@ void calcSeedValueMetrics(Bitmap *bitmapOrig, ImageParams *imageParams, char *st
     FILE *fp = fopen(statsPath, "w");
     Vec** seeds;
     int nSeeds;
+
+    setParticleIds(bitmapOrig, nElements);
 
     fprintf(fp, "threshold,"
                 "thresholdSeedNSeeds,thresholdSeedRands,thresholdSeedVI,thresholdSeedFalseJoins,thresholdSeedFalseCuts"
