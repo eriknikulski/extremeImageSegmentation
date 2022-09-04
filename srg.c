@@ -227,11 +227,13 @@ void applySRGWithMetricsF(Bitmap *bitmapOrig, Vec** seeds, int nSeeds, ImagePara
     double randsIndex = getRandsIndex(bitmapOrig, bitmapSRG, nElements, nSeeds);
     printf("Rands Index: %lf\n", randsIndex);
 
+    double falseJoins = 0, falseCuts = 0;
+    double variationOfInformation = getVariationOfInformation(bitmapOrig, bitmapSRG, nElements, nSeeds,
+                                                              &falseJoins, &falseCuts);
+    printf("Variation Of Information: %lf   False Joins: %lf   False Cuts: %lf\n",
+           variationOfInformation, falseJoins, falseCuts);
 
-    double variationOfInformation = getVariationOfInformation(bitmapOrig, bitmapSRG, nElements, nSeeds);
-    printf("Variation Of Information: %lf\n", variationOfInformation);
-
-    fprintf(file, ",%d,%f,%f", nSeeds, randsIndex, variationOfInformation);
+    fprintf(file, ",%d,%lf,%lf,%lf,%lf", nSeeds, randsIndex, variationOfInformation, falseJoins, falseCuts);
 }
 
 void calcSeedValueMetrics(Bitmap *bitmapOrig, ImageParams *imageParams, char *statsPath, char* srgImagePath,
@@ -241,10 +243,10 @@ void calcSeedValueMetrics(Bitmap *bitmapOrig, ImageParams *imageParams, char *st
     int nSeeds;
 
     fprintf(fp, "threshold,"
-                "thresholdSeedNSeeds,thresholdSeedRands,thresholdSeedVI,"
-                "thresholdSeedBorderNSeeds,thresholdSeedBorderRands,thresholdSeedBorderVI,"
-                "thresholdSeedBlockRadNSeeds,thresholdSeedBlockRadRands,thresholdSeedBlockRadVI,"
-                "thresholdSeedBlockRadBorderNSeeds,thresholdSeedBlockRadBorderRands,thresholdSeedBlockRadBorderVI\n");
+                "thresholdSeedNSeeds,thresholdSeedRands,thresholdSeedVI,thresholdSeedFalseJoins,thresholdSeedFalseCuts"
+                "thresholdSeedBorderNSeeds,thresholdSeedBorderRands,thresholdSeedBorderVI,thresholdSeedBorderFalseJoins,thresholdSeedBorderFalseCuts"
+                "thresholdSeedBlockRadNSeeds,thresholdSeedBlockRadRands,thresholdSeedBlockRadVI,thresholdSeedBlockRadFalseJoins,thresholdSeedBlockRadFalseCuts"
+                "thresholdSeedBlockRadBorderNSeeds,thresholdSeedBlockRadBorderRands,thresholdSeedBlockRadBorderVI,thresholdSeedBlockRadBorderFalseJoins,thresholdSeedBlockRadBorderFalseCuts\n");
 
     printf("\n\nparticles\n");
     nSeeds = nElements;
