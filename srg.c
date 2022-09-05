@@ -249,6 +249,7 @@ void calcSeedValueMetrics(Bitmap *bitmapOrig, ImageParams *imageParams, char *st
     FILE *fp = fopen(statsPath, "w");
     Vec** seeds;
     int nSeeds;
+    char *srgImagePath;
 
     setParticleIds(bitmapOrig, nElements);
 
