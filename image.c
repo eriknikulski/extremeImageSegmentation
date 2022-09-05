@@ -561,7 +561,7 @@ double getRandsIndex(Bitmap* orig, Bitmap* srg, int nParticles, int nSeeds) {
     return (double)(trueJoins + trueCuts) / (double)n;
 }
 
-double getVariationOfInformation(Bitmap* orig, Bitmap* srg, int nParticles, int nSeeds) {
+double getVariationOfInformation(Bitmap* orig, Bitmap* srg, int nParticles, int nSeeds, double *falseJoins, double *falseCuts) {
 
     size_t n = orig->size * orig->size * orig->size;
 
@@ -632,6 +632,9 @@ double getVariationOfInformation(Bitmap* orig, Bitmap* srg, int nParticles, int 
     free(nMap);
     free(truthSum);
     free(predSum);
+
+    *falseJoins = H0 - I;
+    *falseCuts = H1 - I;
 
     return H0 + H1 - 2.0 * I;
 }

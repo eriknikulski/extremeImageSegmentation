@@ -69,7 +69,7 @@ void setParticleIds(Bitmap* bitmap, int n);
 
 double getRandsIndex(Bitmap* orig, Bitmap* srg, int nParticles, int nSeeds);
 
-double getVariationOfInformation(Bitmap* orig, Bitmap* srg, int nParticles, int nSeeds);
+double getVariationOfInformation(Bitmap* orig, Bitmap* srg, int nParticles, int nSeeds, double *falseJoins, double *falseCuts);
 
 
 #endif //EXTREMEIMAGESEGMENTATION_IMAGE_H
