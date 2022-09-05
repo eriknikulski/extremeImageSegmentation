@@ -9,7 +9,6 @@
 #include "image.h"
 
 #include "math.h"
-#include "memory.h"
 #include "stdlib.h"
 #include "stdio.h"
 
@@ -18,6 +17,7 @@ static int baseSSLCounterCeiling = 1000;
 
 static int SSLCounter = 0;
 static int SSLCounterCeiling = 1000;
+static int SSLCounterCeilingTop = 100000;
 
 
 double calcDelta(Seed* s, uint8_t value, int precision) {
@@ -36,7 +36,7 @@ int getSSLLength(SSL *head) {
 }
 
 SSL* setUltras(SSL *head) {
-    int logLength = (int)log10((double) getSSLLength(head));
+    int logLength = (int)log2((double) getSSLLength(head));
     if (logLength < 2) return head;
 
     SSL *current = head;
@@ -45,6 +45,7 @@ SSL* setUltras(SSL *head) {
 
     while (current->nextHigher) {
         ++i;
+        current->ultraHigher = NULL;
         if (i == logLength) {
             prev->ultraHigher = current;
             prev = current;
@@ -75,6 +76,7 @@ SSL* insertSSL(SSL* head, Pixel* p, double delta) {
         head = setUltras(head);
         SSLCounter = 0;
         SSLCounterCeiling *= 10;
+        if (SSLCounterCeiling >= SSLCounterCeilingTop) SSLCounterCeiling = SSLCounterCeilingTop;
     }
 
     while (current) {
@@ -154,8 +156,10 @@ Bitmap* srg(Bitmap* bitmap, Vec** vSeeds, int nSeeds, int precision, char* image
         current = head;
         head = head->next;
 
-        if (head && head->delta == current->delta)
+        if (head && head->delta == current->delta) {
             head->nextHigher = current->nextHigher;
+            head->ultraHigher = current->ultraHigher;
+        }
 
         neighbors = getNeighbors(bitmap, current->p, &neighborCount);
         for (int i = 0; i < neighborCount; ++i) {
