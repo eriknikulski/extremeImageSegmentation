@@ -235,6 +235,7 @@ Bitmap* copyBitmap(Bitmap *orig) {
                 pixel->dist = pOrig->dist;
                 pixel->particle = pOrig->particle;
                 pixel->particleId = pOrig->particleId;
+                pixel->grouping = pOrig->grouping;
             }
         }
     }
@@ -260,6 +261,7 @@ Bitmap* initializeBitmap(ImageParams* imageParams) {
                 pixel->value = UINT8_MAX;
                 pixel->dist = DBL_MAX;
                 pixel->particle = NULL;
+                pixel->grouping = NULL;
             }
         }
     }
