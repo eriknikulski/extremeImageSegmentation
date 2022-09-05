@@ -45,6 +45,10 @@ void setNoiseValuesBitmap(Bitmap* bitmap, ImageParams* imageParams);
 
 void setValuesBitmap(Bitmap* bitmap, ImageParams* imageParams);
 
+void freeBitmap(Bitmap *bitmap);
+
+Bitmap* copyBitmap(Bitmap *orig);
+
 Bitmap* initializeBitmap(ImageParams* imageParams);
 
 void writeBitmap(Bitmap* bitmap, char* fname);

@@ -199,6 +199,48 @@ void setValuesBitmap(Bitmap* bitmap, ImageParams* imageParams) {
     }
 }
 
+void freeBitmap(Bitmap *bitmap) {
+    Pixel* pixel;
+    for (int z = 0; z < bitmap->size; ++z) {
+        for (int y = 0; y < bitmap->size; ++y) {
+            for (int x = 0; x < bitmap->size; ++x) {
+                pixel = getPixel(bitmap, x, y, z);
+                free(pixel->v);
+            }
+        }
+    }
+
+    free(bitmap->pixels);
+    free(bitmap);
+}
+
+Bitmap* copyBitmap(Bitmap *orig) {
+    Pixel *pixel, *pOrig;
+    Bitmap* bitmap = malloc(sizeof(Bitmap));
+    bitmap->reverse = 0;
+    bitmap->size = orig->size;
+    bitmap->size2 = orig->size * orig->size;
+    bitmap->pixels = malloc(sizeof(Pixel) * orig->size * orig->size * orig->size);
+
+    for (int z = 0; z < bitmap->size; ++z) {
+        for (int y = 0; y < bitmap->size; ++y) {
+            for (int x = 0; x < bitmap->size; ++x) {
+                pixel = getPixel(bitmap, x, y, z);
+                pOrig = getPixel(orig, x, y, z);
+                pixel->v = malloc(sizeof(Vec));
+                pixel->v->x = x;
+                pixel->v->y = y;
+                pixel->v->z = z;
+                pixel->value = pOrig->value;
+                pixel->dist = pOrig->dist;
+                pixel->particle = pOrig->particle;
+                pixel->particleId = pOrig->particleId;
+            }
+        }
+    }
+    return bitmap;
+}
+
 Bitmap* initializeBitmap(ImageParams* imageParams) {
     Pixel* pixel;
     Bitmap* bitmap = malloc(sizeof(Bitmap));
