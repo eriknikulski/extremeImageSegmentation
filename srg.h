@@ -27,7 +27,7 @@ Bitmap* srg(Bitmap* bitmap, Vec** vSeeds, int nSeeds, int precision, char* image
 
 void setGroupings(Bitmap* bitmap);
 
-void calcSeedValueMetrics(Bitmap *bitmapOrig, ImageParams *imageParams, char *statsPath, char* srgImagePath,
+void calcSeedValueMetrics(Bitmap *bitmapOrig, ImageParams *imageParams, char *statsPath, char* srgImagePathBase,
                           char *imagePath, int nElements, double blockingRadius, int srgPrecision, Vec *particles);
 
 #endif //EXTREMEIMAGESEGMENTATION_SRG_H

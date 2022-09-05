@@ -237,7 +237,14 @@ void applySRGWithMetricsF(Bitmap *bitmapOrig, Vec** seeds, int nSeeds, ImagePara
     freeBitmap(bitmapSRG);
 }
 
-void calcSeedValueMetrics(Bitmap *bitmapOrig, ImageParams *imageParams, char *statsPath, char* srgImagePath,
+char* strBuild(char *base, char *add) {
+    int n = sizeof(base) + sizeof(add);
+    char *str = malloc(n);
+    sprintf(str, "%s%s", base, add);
+    return str;
+}
+
+void calcSeedValueMetrics(Bitmap *bitmapOrig, ImageParams *imageParams, char *statsPath, char* srgImagePathBase,
                           char *imagePath, int nElements, double blockingRadius, int srgPrecision, Vec *particles) {
     FILE *fp = fopen(statsPath, "w");
     Vec** seeds;
@@ -255,11 +262,13 @@ void calcSeedValueMetrics(Bitmap *bitmapOrig, ImageParams *imageParams, char *st
     nSeeds = nElements;
     seeds = malloc(sizeof(Vec*) * nSeeds);
     for (int i = 0; i < nSeeds; ++i) seeds[i] = &particles[i];
-    applySRGWithMetricsF(bitmapOrig, seeds, nSeeds, imageParams, srgPrecision, imagePath, srgImagePath, nElements, fp);
+    applySRGWithMetricsF(bitmapOrig, seeds, nSeeds, imageParams, srgPrecision, imagePath, srgImagePathBase,
+                         nElements, fp);
 
     printf("\nparticles with border seed\n");
     seeds = addBorderSeed(seeds, &nSeeds);
-    applySRGWithMetricsF(bitmapOrig, seeds, nSeeds, imageParams, srgPrecision, imagePath, srgImagePath, nElements, fp);
+    applySRGWithMetricsF(bitmapOrig, seeds, nSeeds, imageParams, srgPrecision, imagePath, srgImagePathBase,
+                         nElements, fp);
     fprintf(fp, "\n");
     free(seeds);
 
@@ -271,26 +280,26 @@ void calcSeedValueMetrics(Bitmap *bitmapOrig, ImageParams *imageParams, char *st
         fprintf(fp, "%d", i);
 
         printf("\nthreshold Seed\n");
-        srgImagePath = strdup("/Users/eriknikulski/CLionProjects/extremeImageSegmentation/images/voronoi/srg/thresholdSeed/");
+        srgImagePath = strBuild(srgImagePathBase, "thresholdSeed/");
         seeds = getSeeds(bitmapOrig, i, &nSeeds);
         applySRGWithMetricsF(bitmapOrig, seeds, nSeeds, imageParams, srgPrecision, imagePath, srgImagePath, nElements, fp);
         free(seeds);
 
         printf("\nthreshold Seed with Border Seed\n");
-        srgImagePath = strdup("/Users/eriknikulski/CLionProjects/extremeImageSegmentation/images/voronoi/srg/thresholdSeedBorder/");
+        srgImagePath = strBuild(srgImagePathBase, "thresholdSeedBorder/");
         seeds = getSeeds(bitmapOrig, i, &nSeeds);
         seeds = addBorderSeed(seeds, &nSeeds);
         applySRGWithMetricsF(bitmapOrig, seeds, nSeeds, imageParams, srgPrecision, imagePath, srgImagePath, nElements, fp);
         free(seeds);
 
         printf("\nthreshold Seed with Blocking Radius\n");
-        srgImagePath = strdup("/Users/eriknikulski/CLionProjects/extremeImageSegmentation/images/voronoi/srg/thresholdSeedBlockRad/");
+        srgImagePath = strBuild(srgImagePathBase, "thresholdSeedBlockRad/");
         seeds = getSeedsWithBlockRad(bitmapOrig, i, &nSeeds, blockingRadius);
         applySRGWithMetricsF(bitmapOrig, seeds, nSeeds, imageParams, srgPrecision, imagePath, srgImagePath, nElements, fp);
         free(seeds);
 
         printf("\nthreshold Seed with Blocking Radius and Border Seed\n");
-        srgImagePath = strdup("/Users/eriknikulski/CLionProjects/extremeImageSegmentation/images/voronoi/srg/thresholdSeedBlockRadBorder/");
+        srgImagePath = strBuild(srgImagePathBase, "thresholdSeedBlockRadBorder/");
         seeds = getSeedsWithBlockRad(bitmapOrig, i, &nSeeds, blockingRadius);
         seeds = addBorderSeed(seeds, &nSeeds);
         applySRGWithMetricsF(bitmapOrig, seeds, nSeeds, imageParams, srgPrecision, imagePath, srgImagePath, nElements, fp);
