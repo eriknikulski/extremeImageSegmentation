@@ -11,6 +11,7 @@
 #include "math.h"
 #include "stdlib.h"
 #include "stdio.h"
+#include "string.h"
 
 static int baseSSLCounter = 0;
 static int baseSSLCounterCeiling = 1000;
@@ -175,8 +176,11 @@ Bitmap* srg(Bitmap* bitmap, Vec** vSeeds, int nSeeds, int precision, char* image
             }
         }
 
-        if (!label)
+        if (!label) {
+            free(neighbors);
+            free(current);
             continue;
+        }
 
         current->p->grouping = label;
         current->p->particle = label->p->particle;
@@ -242,9 +246,9 @@ void applySRGWithMetricsF(Bitmap *bitmapOrig, Vec** seeds, int nSeeds, ImagePara
 }
 
 char* strBuild(char *base, char *add) {
-    int n = sizeof(base) + sizeof(add);
+    int n = strlen(base) + strlen(add) + 1;
     char *str = malloc(n);
-    sprintf(str, "%s%s", base, add);
+    sprintf(str, "%s%s\0", base, add);
     return str;
 }
 
@@ -258,21 +262,23 @@ void calcSeedValueMetrics(Bitmap *bitmapOrig, ImageParams *imageParams, char *st
     setParticleIds(bitmapOrig, nElements);
 
     fprintf(fp, "threshold,"
-                "thresholdSeedNSeeds,thresholdSeedRands,thresholdSeedVI,thresholdSeedFalseJoins,thresholdSeedFalseCuts"
-                "thresholdSeedBorderNSeeds,thresholdSeedBorderRands,thresholdSeedBorderVI,thresholdSeedBorderFalseJoins,thresholdSeedBorderFalseCuts"
-                "thresholdSeedBlockRadNSeeds,thresholdSeedBlockRadRands,thresholdSeedBlockRadVI,thresholdSeedBlockRadFalseJoins,thresholdSeedBlockRadFalseCuts"
+                "thresholdSeedNSeeds,thresholdSeedRands,thresholdSeedVI,thresholdSeedFalseJoins,thresholdSeedFalseCuts,"
+                "thresholdSeedBorderNSeeds,thresholdSeedBorderRands,thresholdSeedBorderVI,thresholdSeedBorderFalseJoins,thresholdSeedBorderFalseCuts,"
+                "thresholdSeedBlockRadNSeeds,thresholdSeedBlockRadRands,thresholdSeedBlockRadVI,thresholdSeedBlockRadFalseJoins,thresholdSeedBlockRadFalseCuts,"
                 "thresholdSeedBlockRadBorderNSeeds,thresholdSeedBlockRadBorderRands,thresholdSeedBlockRadBorderVI,thresholdSeedBlockRadBorderFalseJoins,thresholdSeedBlockRadBorderFalseCuts\n");
 
     printf("\n\nparticles\n");
     nSeeds = nElements;
     seeds = malloc(sizeof(Vec*) * nSeeds);
     for (int i = 0; i < nSeeds; ++i) seeds[i] = &particles[i];
-    applySRGWithMetricsF(bitmapOrig, seeds, nSeeds, imageParams, srgPrecision, imagePath, srgImagePathBase,
+    srgImagePath = strBuild(srgImagePathBase, "norm/");
+    applySRGWithMetricsF(bitmapOrig, seeds, nSeeds, imageParams, srgPrecision, imagePath, srgImagePath,
                          nElements, fp);
 
     printf("\nparticles with border seed\n");
     seeds = addBorderSeed(seeds, &nSeeds);
-    applySRGWithMetricsF(bitmapOrig, seeds, nSeeds, imageParams, srgPrecision, imagePath, srgImagePathBase,
+    srgImagePath = strBuild(srgImagePathBase, "normBorder/");
+    applySRGWithMetricsF(bitmapOrig, seeds, nSeeds, imageParams, srgPrecision, imagePath, srgImagePath,
                          nElements, fp);
     fprintf(fp, "\n");
     free(seeds);
