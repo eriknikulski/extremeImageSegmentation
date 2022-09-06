@@ -70,7 +70,12 @@ void voronoi(VoronoiParams* voronoiParams, ImageParams* imageParams) {
                          voronoiParams->srgPrecision, particles);
 }
 
-int main() {
+int main(int argc, char *argv[]) {
+    if (argc != 2 || strcmp(argv[1], "spline") != 0 && strcmp(argv[1], "voronoi") != 0) {
+        fprintf(stderr, "either 'voronoi' or 'spline' needs to be supplied as argument\n");
+        exit(1);
+    }
+
     srand(time(0));
 
     // distinct
@@ -123,8 +128,11 @@ int main() {
 
     begin = clock();
 
-    spline(&splineParams, &imageParams);
-    voronoi(&voronoiParams, &imageParams);
+    if (strcmp(argv[1], "spline") == 0) {
+        spline(&splineParams, &imageParams);
+    } else {
+        voronoi(&voronoiParams, &imageParams);
+    }
 
     end = clock();
     time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
