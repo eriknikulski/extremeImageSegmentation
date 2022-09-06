@@ -292,7 +292,7 @@ void writeBitmap(Bitmap* bitmap, char* fname) {
         free(activeName);
     }
 
-    createAgif(fname);
+//    createAgif(fname);
 
 }
 
