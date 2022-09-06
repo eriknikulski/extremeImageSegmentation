@@ -113,7 +113,7 @@ int main() {
             .srgPrecision = 100,
             .seedThreshold = 80,
             .blockingRadius = 40,
-            .imageDistScalingFactor = 5.0,
+            .imageDistScalingFactor = 1.0,
     };
 
     clock_t begin;
