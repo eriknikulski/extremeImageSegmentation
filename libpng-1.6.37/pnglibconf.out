@@ -1,0 +1,1826 @@
+# 1 "pnglibconf.c"
+# 1 "<built-in>" 1
+# 1 "<built-in>" 3
+# 370 "<built-in>" 3
+# 1 "<command line>" 1
+# 1 "<built-in>" 2
+# 1 "pnglibconf.c" 2
+# 1 "./pnglibconf.dfn" 1
+
+
+
+ PNG_DFN "/* pnglibconf.h - library build configuration */"
+ PNG_DFN ""
+ PNG_DFN "/* libpng version 1.6.37 */"
+ PNG_DFN ""
+ PNG_DFN "/* Copyright (c) 2018-2019 Cosmin Truta */"
+ PNG_DFN "/* Copyright (c) 1998-2002,2004,2006-2018 Glenn Randers-Pehrson */"
+ PNG_DFN ""
+ PNG_DFN "/* This code is released under the libpng license. */"
+ PNG_DFN "/* For conditions of distribution and use, see the disclaimer */"
+ PNG_DFN "/* and license in png.h */"
+ PNG_DFN ""
+ PNG_DFN "/* pnglibconf.h */"
+ PNG_DFN "/* Machine generated file: DO NOT EDIT */"
+ PNG_DFN "/* Derived from: scripts/pnglibconf.dfa */"
+ PNG_DFN "#ifndef PNGLCONF_H"
+ PNG_DFN "#define PNGLCONF_H"
+# 34 "./pnglibconf.dfn"
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 1 3 4
+# 34 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zconf.h" 1 3 4
+# 247 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zconf.h" 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/13.1.6/include/stddef.h" 1 3 4
+# 35 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/13.1.6/include/stddef.h" 3 4
+typedef long int ptrdiff_t;
+# 46 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/13.1.6/include/stddef.h" 3 4
+typedef long unsigned int size_t;
+# 74 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/13.1.6/include/stddef.h" 3 4
+typedef int wchar_t;
+# 102 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/13.1.6/include/stddef.h" 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/13.1.6/include/__stddef_max_align_t.h" 1 3 4
+# 16 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/13.1.6/include/__stddef_max_align_t.h" 3 4
+typedef long double max_align_t;
+# 103 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/13.1.6/include/stddef.h" 2 3 4
+# 248 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zconf.h" 2 3 4
+ typedef size_t z_size_t;
+# 391 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zconf.h" 3 4
+typedef unsigned char Byte;
+
+typedef unsigned int uInt;
+typedef unsigned long uLong;
+
+
+
+
+
+   typedef Byte Bytef;
+
+typedef char charf;
+typedef int intf;
+typedef uInt uIntf;
+typedef uLong uLongf;
+
+
+   typedef void const *voidpc;
+   typedef void *voidpf;
+   typedef void *voidp;
+
+
+
+
+
+
+typedef unsigned long z_crc_t;
+# 431 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zconf.h" 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 1 3 4
+# 72 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/appleapiopts.h" 1 3 4
+# 73 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+
+
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 1 3 4
+# 659 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_symbol_aliasing.h" 1 3 4
+# 660 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 2 3 4
+# 725 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_posix_availability.h" 1 3 4
+# 726 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 2 3 4
+# 76 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+
+
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/types.h" 1 3 4
+# 35 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/types.h" 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/i386/types.h" 1 3 4
+# 73 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/i386/types.h" 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/i386/_types.h" 1 3 4
+# 39 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/i386/_types.h" 3 4
+typedef signed char __int8_t;
+
+
+
+typedef unsigned char __uint8_t;
+typedef short __int16_t;
+typedef unsigned short __uint16_t;
+typedef int __int32_t;
+typedef unsigned int __uint32_t;
+typedef long long __int64_t;
+typedef unsigned long long __uint64_t;
+
+typedef long __darwin_intptr_t;
+typedef unsigned int __darwin_natural_t;
+# 72 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/i386/_types.h" 3 4
+typedef int __darwin_ct_rune_t;
+
+
+
+
+
+typedef union {
+ char __mbstate8[128];
+ long long _mbstateL;
+} __mbstate_t;
+
+typedef __mbstate_t __darwin_mbstate_t;
+
+
+typedef long int __darwin_ptrdiff_t;
+
+
+
+
+
+
+
+typedef long unsigned int __darwin_size_t;
+
+
+
+
+
+typedef __builtin_va_list __darwin_va_list;
+
+
+
+
+
+typedef int __darwin_wchar_t;
+
+
+
+
+typedef __darwin_wchar_t __darwin_rune_t;
+
+
+typedef int __darwin_wint_t;
+
+
+
+
+typedef unsigned long __darwin_clock_t;
+typedef __uint32_t __darwin_socklen_t;
+typedef long __darwin_ssize_t;
+typedef long __darwin_time_t;
+# 74 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/i386/types.h" 2 3 4
+
+
+
+
+
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_int8_t.h" 1 3 4
+# 30 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_int8_t.h" 3 4
+typedef signed char int8_t;
+# 80 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/i386/types.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_int16_t.h" 1 3 4
+# 30 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_int16_t.h" 3 4
+typedef short int16_t;
+# 81 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/i386/types.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_int32_t.h" 1 3 4
+# 30 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_int32_t.h" 3 4
+typedef int int32_t;
+# 82 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/i386/types.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_int64_t.h" 1 3 4
+# 30 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_int64_t.h" 3 4
+typedef long long int64_t;
+# 83 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/i386/types.h" 2 3 4
+
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_int8_t.h" 1 3 4
+# 30 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_int8_t.h" 3 4
+typedef unsigned char u_int8_t;
+# 85 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/i386/types.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_int16_t.h" 1 3 4
+# 30 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_int16_t.h" 3 4
+typedef unsigned short u_int16_t;
+# 86 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/i386/types.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_int32_t.h" 1 3 4
+# 30 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_int32_t.h" 3 4
+typedef unsigned int u_int32_t;
+# 87 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/i386/types.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_int64_t.h" 1 3 4
+# 30 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_int64_t.h" 3 4
+typedef unsigned long long u_int64_t;
+# 88 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/i386/types.h" 2 3 4
+
+
+typedef int64_t register_t;
+
+
+
+
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_intptr_t.h" 1 3 4
+# 30 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_intptr_t.h" 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/types.h" 1 3 4
+# 31 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_intptr_t.h" 2 3 4
+
+typedef __darwin_intptr_t intptr_t;
+# 96 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/i386/types.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_uintptr_t.h" 1 3 4
+# 34 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_uintptr_t.h" 3 4
+typedef unsigned long uintptr_t;
+# 97 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/i386/types.h" 2 3 4
+
+
+
+typedef u_int64_t user_addr_t;
+typedef u_int64_t user_size_t;
+typedef int64_t user_ssize_t;
+typedef int64_t user_long_t;
+typedef u_int64_t user_ulong_t;
+typedef int64_t user_time_t;
+typedef int64_t user_off_t;
+
+
+
+
+
+
+
+typedef u_int64_t syscall_arg_t;
+# 36 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/types.h" 2 3 4
+# 79 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types.h" 1 3 4
+# 33 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types.h" 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/_types.h" 1 3 4
+# 34 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types.h" 2 3 4
+# 55 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types.h" 3 4
+typedef __int64_t __darwin_blkcnt_t;
+typedef __int32_t __darwin_blksize_t;
+typedef __int32_t __darwin_dev_t;
+typedef unsigned int __darwin_fsblkcnt_t;
+typedef unsigned int __darwin_fsfilcnt_t;
+typedef __uint32_t __darwin_gid_t;
+typedef __uint32_t __darwin_id_t;
+typedef __uint64_t __darwin_ino64_t;
+
+typedef __darwin_ino64_t __darwin_ino_t;
+
+
+
+typedef __darwin_natural_t __darwin_mach_port_name_t;
+typedef __darwin_mach_port_name_t __darwin_mach_port_t;
+typedef __uint16_t __darwin_mode_t;
+typedef __int64_t __darwin_off_t;
+typedef __int32_t __darwin_pid_t;
+typedef __uint32_t __darwin_sigset_t;
+typedef __int32_t __darwin_suseconds_t;
+typedef __uint32_t __darwin_uid_t;
+typedef __uint32_t __darwin_useconds_t;
+typedef unsigned char __darwin_uuid_t[16];
+typedef char __darwin_uuid_string_t[37];
+
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h" 1 3 4
+# 57 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h" 3 4
+struct __darwin_pthread_handler_rec {
+ void (*__routine)(void *);
+ void *__arg;
+ struct __darwin_pthread_handler_rec *__next;
+};
+
+struct _opaque_pthread_attr_t {
+ long __sig;
+ char __opaque[56];
+};
+
+struct _opaque_pthread_cond_t {
+ long __sig;
+ char __opaque[40];
+};
+
+struct _opaque_pthread_condattr_t {
+ long __sig;
+ char __opaque[8];
+};
+
+struct _opaque_pthread_mutex_t {
+ long __sig;
+ char __opaque[56];
+};
+
+struct _opaque_pthread_mutexattr_t {
+ long __sig;
+ char __opaque[8];
+};
+
+struct _opaque_pthread_once_t {
+ long __sig;
+ char __opaque[8];
+};
+
+struct _opaque_pthread_rwlock_t {
+ long __sig;
+ char __opaque[192];
+};
+
+struct _opaque_pthread_rwlockattr_t {
+ long __sig;
+ char __opaque[16];
+};
+
+struct _opaque_pthread_t {
+ long __sig;
+ struct __darwin_pthread_handler_rec *__cleanup_stack;
+ char __opaque[8176];
+};
+
+typedef struct _opaque_pthread_attr_t __darwin_pthread_attr_t;
+typedef struct _opaque_pthread_cond_t __darwin_pthread_cond_t;
+typedef struct _opaque_pthread_condattr_t __darwin_pthread_condattr_t;
+typedef unsigned long __darwin_pthread_key_t;
+typedef struct _opaque_pthread_mutex_t __darwin_pthread_mutex_t;
+typedef struct _opaque_pthread_mutexattr_t __darwin_pthread_mutexattr_t;
+typedef struct _opaque_pthread_once_t __darwin_pthread_once_t;
+typedef struct _opaque_pthread_rwlock_t __darwin_pthread_rwlock_t;
+typedef struct _opaque_pthread_rwlockattr_t __darwin_pthread_rwlockattr_t;
+typedef struct _opaque_pthread_t *__darwin_pthread_t;
+# 81 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types.h" 2 3 4
+# 80 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/endian.h" 1 3 4
+# 35 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/endian.h" 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/i386/endian.h" 1 3 4
+# 101 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/i386/endian.h" 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_endian.h" 1 3 4
+# 130 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_endian.h" 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h" 1 3 4
+# 76 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h" 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/i386/_OSByteOrder.h" 1 3 4
+# 44 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/i386/_OSByteOrder.h" 3 4
+static inline
+__uint16_t
+_OSSwapInt16(
+ __uint16_t _data
+ )
+{
+ return (__uint16_t)((_data << 8) | (_data >> 8));
+}
+
+static inline
+__uint32_t
+_OSSwapInt32(
+ __uint32_t _data
+ )
+{
+
+ return __builtin_bswap32(_data);
+
+
+
+
+}
+
+
+static inline
+__uint64_t
+_OSSwapInt64(
+ __uint64_t _data
+ )
+{
+ return __builtin_bswap64(_data);
+}
+# 77 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h" 2 3 4
+# 131 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_endian.h" 2 3 4
+# 102 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/i386/endian.h" 2 3 4
+# 36 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/endian.h" 2 3 4
+# 82 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+
+
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_char.h" 1 3 4
+# 30 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_char.h" 3 4
+typedef unsigned char u_char;
+# 85 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_short.h" 1 3 4
+# 30 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_short.h" 3 4
+typedef unsigned short u_short;
+# 86 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_int.h" 1 3 4
+# 30 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_int.h" 3 4
+typedef unsigned int u_int;
+# 87 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+
+typedef unsigned long u_long;
+
+
+typedef unsigned short ushort;
+typedef unsigned int uint;
+
+
+typedef u_int64_t u_quad_t;
+typedef int64_t quad_t;
+typedef quad_t * qaddr_t;
+
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_caddr_t.h" 1 3 4
+# 30 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_caddr_t.h" 3 4
+typedef char * caddr_t;
+# 100 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+
+typedef int32_t daddr_t;
+
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_dev_t.h" 1 3 4
+# 31 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_dev_t.h" 3 4
+typedef __darwin_dev_t dev_t;
+# 104 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+
+typedef u_int32_t fixpt_t;
+
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_blkcnt_t.h" 1 3 4
+# 31 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_blkcnt_t.h" 3 4
+typedef __darwin_blkcnt_t blkcnt_t;
+# 108 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_blksize_t.h" 1 3 4
+# 31 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_blksize_t.h" 3 4
+typedef __darwin_blksize_t blksize_t;
+# 109 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_gid_t.h" 1 3 4
+# 31 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_gid_t.h" 3 4
+typedef __darwin_gid_t gid_t;
+# 110 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_in_addr_t.h" 1 3 4
+# 31 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_in_addr_t.h" 3 4
+typedef __uint32_t in_addr_t;
+# 111 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_in_port_t.h" 1 3 4
+# 31 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_in_port_t.h" 3 4
+typedef __uint16_t in_port_t;
+# 112 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_ino_t.h" 1 3 4
+# 31 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_ino_t.h" 3 4
+typedef __darwin_ino_t ino_t;
+# 113 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+
+
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_ino64_t.h" 1 3 4
+# 31 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_ino64_t.h" 3 4
+typedef __darwin_ino64_t ino64_t;
+# 116 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+
+
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_key_t.h" 1 3 4
+# 31 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_key_t.h" 3 4
+typedef __int32_t key_t;
+# 119 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_mode_t.h" 1 3 4
+# 31 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_mode_t.h" 3 4
+typedef __darwin_mode_t mode_t;
+# 120 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_nlink_t.h" 1 3 4
+# 31 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_nlink_t.h" 3 4
+typedef __uint16_t nlink_t;
+# 121 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_id_t.h" 1 3 4
+# 31 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_id_t.h" 3 4
+typedef __darwin_id_t id_t;
+# 122 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_pid_t.h" 1 3 4
+# 31 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_pid_t.h" 3 4
+typedef __darwin_pid_t pid_t;
+# 123 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_off_t.h" 1 3 4
+# 31 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_off_t.h" 3 4
+typedef __darwin_off_t off_t;
+# 124 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+
+typedef int32_t segsz_t;
+typedef int32_t swblk_t;
+
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_uid_t.h" 1 3 4
+# 31 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_uid_t.h" 3 4
+typedef __darwin_uid_t uid_t;
+# 129 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+# 165 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_clock_t.h" 1 3 4
+# 31 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_clock_t.h" 3 4
+typedef __darwin_clock_t clock_t;
+# 166 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_size_t.h" 1 3 4
+# 167 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_ssize_t.h" 1 3 4
+# 31 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_ssize_t.h" 3 4
+typedef __darwin_ssize_t ssize_t;
+# 168 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_time_t.h" 1 3 4
+# 31 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_time_t.h" 3 4
+typedef __darwin_time_t time_t;
+# 169 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_useconds_t.h" 1 3 4
+# 31 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_useconds_t.h" 3 4
+typedef __darwin_useconds_t useconds_t;
+# 171 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_suseconds_t.h" 1 3 4
+# 31 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_suseconds_t.h" 3 4
+typedef __darwin_suseconds_t suseconds_t;
+# 172 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+
+
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_rsize_t.h" 1 3 4
+# 31 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_rsize_t.h" 3 4
+typedef __darwin_size_t rsize_t;
+# 175 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_errno_t.h" 1 3 4
+# 30 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_errno_t.h" 3 4
+typedef int errno_t;
+# 176 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+
+
+
+
+
+
+
+
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_fd_def.h" 1 3 4
+# 32 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_fd_def.h" 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h" 1 3 4
+# 135 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h" 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/AvailabilityVersions.h" 1 3 4
+# 136 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/AvailabilityInternal.h" 1 3 4
+# 137 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h" 2 3 4
+# 33 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_fd_def.h" 2 3 4
+# 50 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_fd_def.h" 3 4
+typedef struct fd_set {
+ __int32_t fds_bits[((((1024) % ((sizeof(__int32_t) * 8))) == 0) ? ((1024) / ((sizeof(__int32_t) * 8))) : (((1024) / ((sizeof(__int32_t) * 8))) + 1))];
+} fd_set;
+
+int __darwin_check_fd_set_overflow(int, const void *, int) __attribute__((availability(macosx,introduced=11.0))) __attribute__((availability(ios,introduced=14.0))) __attribute__((availability(tvos,introduced=14.0))) __attribute__((availability(watchos,introduced=7.0)));
+
+
+inline __attribute__ ((__always_inline__)) int
+__darwin_check_fd_set(int _a, const void *_b)
+{
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunguarded-availability-new"
+
+ if ((uintptr_t)&__darwin_check_fd_set_overflow != (uintptr_t) 0) {
+
+
+
+  return __darwin_check_fd_set_overflow(_a, _b, 0);
+
+ } else {
+  return 1;
+ }
+
+#pragma clang diagnostic pop
+
+}
+
+
+inline __attribute__ ((__always_inline__)) int
+__darwin_fd_isset(int _fd, const struct fd_set *_p)
+{
+ if (__darwin_check_fd_set(_fd, (const void *) _p)) {
+  return _p->fds_bits[(unsigned long)_fd / (sizeof(__int32_t) * 8)] & ((__int32_t)(((unsigned long)1) << ((unsigned long)_fd % (sizeof(__int32_t) * 8))));
+ }
+
+ return 0;
+}
+
+inline __attribute__ ((__always_inline__)) void
+__darwin_fd_set(int _fd, struct fd_set *const _p)
+{
+ if (__darwin_check_fd_set(_fd, (const void *) _p)) {
+  (_p->fds_bits[(unsigned long)_fd / (sizeof(__int32_t) * 8)] |= ((__int32_t)(((unsigned long)1) << ((unsigned long)_fd % (sizeof(__int32_t) * 8)))));
+ }
+}
+
+inline __attribute__ ((__always_inline__)) void
+__darwin_fd_clr(int _fd, struct fd_set *const _p)
+{
+ if (__darwin_check_fd_set(_fd, (const void *) _p)) {
+  (_p->fds_bits[(unsigned long)_fd / (sizeof(__int32_t) * 8)] &= ~((__int32_t)(((unsigned long)1) << ((unsigned long)_fd % (sizeof(__int32_t) * 8)))));
+ }
+}
+# 185 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+
+
+
+
+typedef __int32_t fd_mask;
+
+
+
+
+
+
+
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_fd_setsize.h" 1 3 4
+# 198 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_fd_set.h" 1 3 4
+# 199 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_fd_clr.h" 1 3 4
+# 200 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_fd_zero.h" 1 3 4
+# 201 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_fd_isset.h" 1 3 4
+# 202 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+
+
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_fd_copy.h" 1 3 4
+# 205 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+# 215 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_attr_t.h" 1 3 4
+# 31 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_attr_t.h" 3 4
+typedef __darwin_pthread_attr_t pthread_attr_t;
+# 216 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_cond_t.h" 1 3 4
+# 31 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_cond_t.h" 3 4
+typedef __darwin_pthread_cond_t pthread_cond_t;
+# 217 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_condattr_t.h" 1 3 4
+# 31 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_condattr_t.h" 3 4
+typedef __darwin_pthread_condattr_t pthread_condattr_t;
+# 218 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_mutex_t.h" 1 3 4
+# 31 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_mutex_t.h" 3 4
+typedef __darwin_pthread_mutex_t pthread_mutex_t;
+# 219 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_mutexattr_t.h" 1 3 4
+# 31 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_mutexattr_t.h" 3 4
+typedef __darwin_pthread_mutexattr_t pthread_mutexattr_t;
+# 220 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_once_t.h" 1 3 4
+# 31 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_once_t.h" 3 4
+typedef __darwin_pthread_once_t pthread_once_t;
+# 221 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_rwlock_t.h" 1 3 4
+# 31 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_rwlock_t.h" 3 4
+typedef __darwin_pthread_rwlock_t pthread_rwlock_t;
+# 222 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_rwlockattr_t.h" 1 3 4
+# 31 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_rwlockattr_t.h" 3 4
+typedef __darwin_pthread_rwlockattr_t pthread_rwlockattr_t;
+# 223 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_t.h" 1 3 4
+# 31 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_t.h" 3 4
+typedef __darwin_pthread_t pthread_t;
+# 224 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+
+
+
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_key_t.h" 1 3 4
+# 31 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_key_t.h" 3 4
+typedef __darwin_pthread_key_t pthread_key_t;
+# 228 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+
+
+
+
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_fsblkcnt_t.h" 1 3 4
+# 31 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_fsblkcnt_t.h" 3 4
+typedef __darwin_fsblkcnt_t fsblkcnt_t;
+# 233 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_fsfilcnt_t.h" 1 3 4
+# 31 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_fsfilcnt_t.h" 3 4
+typedef __darwin_fsfilcnt_t fsfilcnt_t;
+# 234 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/types.h" 2 3 4
+# 432 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zconf.h" 2 3 4
+
+
+
+
+
+# 1 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/13.1.6/include/stdarg.h" 1 3 4
+# 14 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/13.1.6/include/stdarg.h" 3 4
+typedef __builtin_va_list va_list;
+# 32 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/13.1.6/include/stdarg.h" 3 4
+typedef __builtin_va_list __gnuc_va_list;
+# 438 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zconf.h" 2 3 4
+# 462 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zconf.h" 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/unistd.h" 1 3 4
+# 71 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/unistd.h" 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types.h" 1 3 4
+# 40 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types.h" 3 4
+typedef int __darwin_nl_item;
+typedef int __darwin_wctrans_t;
+
+typedef __uint32_t __darwin_wctype_t;
+# 72 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/unistd.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/unistd.h" 1 3 4
+# 84 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/unistd.h" 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_posix_vdisable.h" 1 3 4
+# 85 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/unistd.h" 2 3 4
+# 122 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/unistd.h" 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_seek_set.h" 1 3 4
+# 123 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/unistd.h" 2 3 4
+# 132 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/unistd.h" 3 4
+struct accessx_descriptor {
+ unsigned int ad_name_offset;
+ int ad_flags;
+ int ad_pad[2];
+};
+# 180 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/unistd.h" 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_size_t.h" 1 3 4
+# 181 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/unistd.h" 2 3 4
+
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_uint64_t.h" 1 3 4
+# 31 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_uint64_t.h" 3 4
+typedef unsigned long long uint64_t;
+# 183 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/unistd.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_uint32_t.h" 1 3 4
+# 31 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_uint32_t.h" 3 4
+typedef unsigned int uint32_t;
+# 184 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/unistd.h" 2 3 4
+
+
+
+
+int getattrlistbulk(int, void *, void *, size_t, uint64_t) __attribute__((availability(macosx,introduced=10.10)));
+int getattrlistat(int, const char *, void *, void *, size_t, unsigned long) __attribute__((availability(macosx,introduced=10.10)));
+int setattrlistat(int, const char *, void *, void *, size_t, uint32_t) __attribute__((availability(macosx,introduced=10.13))) __attribute__((availability(ios,introduced=11.0))) __attribute__((availability(tvos,introduced=11.0))) __attribute__((availability(watchos,introduced=4.0)));
+# 199 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/unistd.h" 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_size_t.h" 1 3 4
+# 200 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/unistd.h" 2 3 4
+
+
+
+
+
+
+
+
+int faccessat(int, const char *, int, int) __attribute__((availability(macosx,introduced=10.10)));
+int fchownat(int, const char *, uid_t, gid_t, int) __attribute__((availability(macosx,introduced=10.10)));
+int linkat(int, const char *, int, const char *, int) __attribute__((availability(macosx,introduced=10.10)));
+ssize_t readlinkat(int, const char *, char *, size_t) __attribute__((availability(macosx,introduced=10.10)));
+int symlinkat(const char *, int, const char *) __attribute__((availability(macosx,introduced=10.10)));
+int unlinkat(int, const char *, int) __attribute__((availability(macosx,introduced=10.10)));
+# 73 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/unistd.h" 2 3 4
+
+
+
+
+
+
+
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_size_t.h" 1 3 4
+# 81 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/unistd.h" 2 3 4
+
+
+
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_null.h" 1 3 4
+# 85 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/unistd.h" 2 3 4
+# 430 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/unistd.h" 3 4
+void _exit(int) __attribute__((__noreturn__));
+int access(const char *, int);
+unsigned int
+  alarm(unsigned int);
+int chdir(const char *);
+int chown(const char *, uid_t, gid_t);
+
+int close(int) __asm("_" "close" );
+
+int dup(int);
+int dup2(int, int);
+int execl(const char * __path, const char * __arg0, ...) __attribute__((availability(watchos,unavailable))) __attribute__((availability(tvos,unavailable)));
+int execle(const char * __path, const char * __arg0, ...) __attribute__((availability(watchos,unavailable))) __attribute__((availability(tvos,unavailable)));
+int execlp(const char * __file, const char * __arg0, ...) __attribute__((availability(watchos,unavailable))) __attribute__((availability(tvos,unavailable)));
+int execv(const char * __path, char * const * __argv) __attribute__((availability(watchos,unavailable))) __attribute__((availability(tvos,unavailable)));
+int execve(const char * __file, char * const * __argv, char * const * __envp) __attribute__((availability(watchos,unavailable))) __attribute__((availability(tvos,unavailable)));
+int execvp(const char * __file, char * const * __argv) __attribute__((availability(watchos,unavailable))) __attribute__((availability(tvos,unavailable)));
+pid_t fork(void) __attribute__((availability(watchos,unavailable))) __attribute__((availability(tvos,unavailable)));
+long fpathconf(int, int);
+char *getcwd(char *, size_t);
+gid_t getegid(void);
+uid_t geteuid(void);
+gid_t getgid(void);
+
+
+
+int getgroups(int, gid_t []);
+
+char *getlogin(void);
+pid_t getpgrp(void);
+pid_t getpid(void);
+pid_t getppid(void);
+uid_t getuid(void);
+int isatty(int);
+int link(const char *, const char *);
+off_t lseek(int, off_t, int);
+long pathconf(const char *, int);
+
+int pause(void) __asm("_" "pause" );
+
+int pipe(int [2]);
+
+ssize_t read(int, void *, size_t) __asm("_" "read" );
+
+int rmdir(const char *);
+int setgid(gid_t);
+int setpgid(pid_t, pid_t);
+pid_t setsid(void);
+int setuid(uid_t);
+
+unsigned int
+  sleep(unsigned int) __asm("_" "sleep" );
+
+long sysconf(int);
+pid_t tcgetpgrp(int);
+int tcsetpgrp(int, pid_t);
+char *ttyname(int);
+
+
+int ttyname_r(int, char *, size_t) __asm("_" "ttyname_r" );
+
+
+
+
+int unlink(const char *);
+
+ssize_t write(int __fd, const void * __buf, size_t __nbyte) __asm("_" "write" );
+# 507 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/unistd.h" 3 4
+size_t confstr(int, char *, size_t) __asm("_" "confstr" );
+
+int getopt(int, char * const [], const char *) __asm("_" "getopt" );
+
+extern char *optarg;
+extern int optind, opterr, optopt;
+# 525 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/unistd.h" 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_ctermid.h" 1 3 4
+# 31 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_ctermid.h" 3 4
+char *ctermid(char *);
+# 526 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/unistd.h" 2 3 4
+# 538 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/unistd.h" 3 4
+__attribute__((__deprecated__)) __attribute__((availability(watchos,unavailable))) __attribute__((availability(tvos,unavailable)))
+
+void *brk(const void *);
+int chroot(const char *) ;
+
+
+char *crypt(const char *, const char *);
+
+void encrypt(char *, int) __asm("_" "encrypt" );
+
+
+
+int fchdir(int);
+long gethostid(void);
+pid_t getpgid(pid_t);
+pid_t getsid(pid_t);
+
+
+
+int getdtablesize(void) ;
+int getpagesize(void) __attribute__((__const__)) ;
+char *getpass(const char *) ;
+
+
+
+
+char *getwd(char *) ;
+
+
+int lchown(const char *, uid_t, gid_t) __asm("_" "lchown" );
+
+int lockf(int, int, off_t) __asm("_" "lockf" );
+
+int nice(int) __asm("_" "nice" );
+
+ssize_t pread(int __fd, void * __buf, size_t __nbyte, off_t __offset) __asm("_" "pread" );
+
+ssize_t pwrite(int __fd, const void * __buf, size_t __nbyte, off_t __offset) __asm("_" "pwrite" );
+
+
+
+
+
+
+__attribute__((__deprecated__)) __attribute__((availability(watchos,unavailable))) __attribute__((availability(tvos,unavailable)))
+
+void *sbrk(int);
+
+
+
+pid_t setpgrp(void) __asm("_" "setpgrp" );
+
+
+
+
+int setregid(gid_t, gid_t) __asm("_" "setregid" );
+
+int setreuid(uid_t, uid_t) __asm("_" "setreuid" );
+
+void swab(const void * restrict, void * restrict, ssize_t);
+void sync(void);
+int truncate(const char *, off_t);
+useconds_t ualarm(useconds_t, useconds_t);
+int usleep(useconds_t) __asm("_" "usleep" );
+
+
+__attribute__((__deprecated__("Use posix_spawn or fork")))
+
+pid_t vfork(void) __attribute__((availability(watchos,unavailable))) __attribute__((availability(tvos,unavailable)));
+
+
+int fsync(int) __asm("_" "fsync" );
+
+int ftruncate(int, off_t);
+int getlogin_r(char *, size_t);
+# 625 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/unistd.h" 3 4
+int fchown(int, uid_t, gid_t);
+int gethostname(char *, size_t);
+ssize_t readlink(const char * restrict, char * restrict, size_t);
+int setegid(gid_t);
+int seteuid(uid_t);
+int symlink(const char *, const char *);
+# 639 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/unistd.h" 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/select.h" 1 3 4
+# 76 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/select.h" 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_timespec.h" 1 3 4
+# 33 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_timespec.h" 3 4
+struct timespec
+{
+ __darwin_time_t tv_sec;
+ long tv_nsec;
+};
+# 77 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/select.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_timeval.h" 1 3 4
+# 34 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_timeval.h" 3 4
+struct timeval
+{
+ __darwin_time_t tv_sec;
+ __darwin_suseconds_t tv_usec;
+};
+# 78 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/select.h" 2 3 4
+
+
+
+
+
+
+
+
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_sigset_t.h" 1 3 4
+# 31 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_sigset_t.h" 3 4
+typedef __darwin_sigset_t sigset_t;
+# 87 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/select.h" 2 3 4
+# 114 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/select.h" 3 4
+int pselect(int, fd_set * restrict, fd_set * restrict,
+    fd_set * restrict, const struct timespec * restrict,
+    const sigset_t * restrict)
+
+
+
+
+__asm("_" "pselect" "$1050")
+
+
+
+
+;
+
+
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_select.h" 1 3 4
+# 43 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_select.h" 3 4
+int select(int, fd_set * restrict, fd_set * restrict,
+    fd_set * restrict, struct timeval * restrict)
+
+
+
+
+
+__asm("_" "select" "$1050")
+
+
+
+
+;
+# 130 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/select.h" 2 3 4
+# 640 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/unistd.h" 2 3 4
+
+
+
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_uuid_t.h" 1 3 4
+# 31 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_uuid_t.h" 3 4
+typedef __darwin_uuid_t uuid_t;
+# 644 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/unistd.h" 2 3 4
+
+
+void _Exit(int) __attribute__((__noreturn__));
+int accessx_np(const struct accessx_descriptor *, size_t, int *, uid_t);
+int acct(const char *);
+int add_profil(char *, size_t, unsigned long, unsigned int) __attribute__((availability(watchos,unavailable))) __attribute__((availability(tvos,unavailable)));
+void endusershell(void);
+int execvP(const char * __file, const char * __searchpath, char * const * __argv) __attribute__((availability(watchos,unavailable))) __attribute__((availability(tvos,unavailable)));
+char *fflagstostr(unsigned long);
+int getdomainname(char *, int);
+int getgrouplist(const char *, int, int *, int *);
+
+
+
+
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/gethostuuid.h" 1 3 4
+# 39 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/gethostuuid.h" 3 4
+int gethostuuid(uuid_t, const struct timespec *) __attribute__((availability(macos,introduced=10.5))) __attribute__((availability(ios,unavailable))) __attribute__((availability(tvos,unavailable))) __attribute__((availability(watchos,unavailable)));
+# 660 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/unistd.h" 2 3 4
+
+
+
+
+mode_t getmode(const void *, mode_t);
+int getpeereid(int, uid_t *, gid_t *);
+int getsgroups_np(int *, uuid_t);
+char *getusershell(void);
+int getwgroups_np(int *, uuid_t);
+int initgroups(const char *, int);
+int issetugid(void);
+char *mkdtemp(char *);
+int mknod(const char *, mode_t, dev_t);
+int mkpath_np(const char *path, mode_t omode) __attribute__((availability(macosx,introduced=10.8)));
+int mkpathat_np(int dfd, const char *path, mode_t omode)
+  __attribute__((availability(macosx,introduced=10.12))) __attribute__((availability(ios,introduced=10.0)))
+  __attribute__((availability(tvos,introduced=10.0))) __attribute__((availability(watchos,introduced=3.0)));
+int mkstemp(char *);
+int mkstemps(char *, int);
+char *mktemp(char *);
+int mkostemp(char *path, int oflags)
+  __attribute__((availability(macosx,introduced=10.12))) __attribute__((availability(ios,introduced=10.0)))
+  __attribute__((availability(tvos,introduced=10.0))) __attribute__((availability(watchos,introduced=3.0)));
+int mkostemps(char *path, int slen, int oflags)
+  __attribute__((availability(macosx,introduced=10.12))) __attribute__((availability(ios,introduced=10.0)))
+  __attribute__((availability(tvos,introduced=10.0))) __attribute__((availability(watchos,introduced=3.0)));
+
+int mkstemp_dprotected_np(char *path, int dpclass, int dpflags)
+  __attribute__((availability(macosx,unavailable))) __attribute__((availability(ios,introduced=10.0)))
+  __attribute__((availability(tvos,introduced=10.0))) __attribute__((availability(watchos,introduced=3.0)));
+char *mkdtempat_np(int dfd, char *path)
+  __attribute__((availability(macosx,introduced=10.13))) __attribute__((availability(ios,introduced=11.0)))
+  __attribute__((availability(tvos,introduced=11.0))) __attribute__((availability(watchos,introduced=4.0)));
+int mkstempsat_np(int dfd, char *path, int slen)
+  __attribute__((availability(macosx,introduced=10.13))) __attribute__((availability(ios,introduced=11.0)))
+  __attribute__((availability(tvos,introduced=11.0))) __attribute__((availability(watchos,introduced=4.0)));
+int mkostempsat_np(int dfd, char *path, int slen, int oflags)
+  __attribute__((availability(macosx,introduced=10.13))) __attribute__((availability(ios,introduced=11.0)))
+  __attribute__((availability(tvos,introduced=11.0))) __attribute__((availability(watchos,introduced=4.0)));
+int nfssvc(int, void *);
+int profil(char *, size_t, unsigned long, unsigned int);
+
+__attribute__((__deprecated__("Use of per-thread security contexts is error-prone and discouraged.")))
+int pthread_setugid_np(uid_t, gid_t);
+int pthread_getugid_np( uid_t *, gid_t *);
+
+int reboot(int);
+int revoke(const char *);
+
+__attribute__((__deprecated__)) int rcmd(char **, int, const char *, const char *, const char *, int *);
+__attribute__((__deprecated__)) int rcmd_af(char **, int, const char *, const char *, const char *, int *,
+  int);
+__attribute__((__deprecated__)) int rresvport(int *);
+__attribute__((__deprecated__)) int rresvport_af(int *, int);
+__attribute__((__deprecated__)) int iruserok(unsigned long, int, const char *, const char *);
+__attribute__((__deprecated__)) int iruserok_sa(const void *, int, int, const char *, const char *);
+__attribute__((__deprecated__)) int ruserok(const char *, int, const char *, const char *);
+
+int setdomainname(const char *, int);
+int setgroups(int, const gid_t *);
+void sethostid(long);
+int sethostname(const char *, int);
+
+void setkey(const char *) __asm("_" "setkey" );
+
+
+
+int setlogin(const char *);
+void *setmode(const char *) __asm("_" "setmode" );
+int setrgid(gid_t);
+int setruid(uid_t);
+int setsgroups_np(int, const uuid_t);
+void setusershell(void);
+int setwgroups_np(int, const uuid_t);
+int strtofflags(char **, unsigned long *, unsigned long *);
+int swapon(const char *);
+int ttyslot(void);
+int undelete(const char *);
+int unwhiteout(const char *);
+void *valloc(size_t);
+
+__attribute__((availability(watchos,unavailable))) __attribute__((availability(tvos,unavailable)))
+__attribute__((availability(ios,deprecated=10.0,message="syscall(2) is unsupported; " "please switch to a supported interface. For SYS_kdebug_trace use kdebug_signpost().")))
+
+__attribute__((availability(macosx,deprecated=10.12,message="syscall(2) is unsupported; " "please switch to a supported interface. For SYS_kdebug_trace use kdebug_signpost().")))
+
+int syscall(int, ...);
+
+extern char *suboptarg;
+int getsubopt(char **, char * const *, char **);
+
+
+
+int fgetattrlist(int,void*,void*,size_t,unsigned int) __attribute__((availability(macosx,introduced=10.6)));
+int fsetattrlist(int,void*,void*,size_t,unsigned int) __attribute__((availability(macosx,introduced=10.6)));
+int getattrlist(const char*,void*,void*,size_t,unsigned int) __asm("_" "getattrlist" );
+int setattrlist(const char*,void*,void*,size_t,unsigned int) __asm("_" "setattrlist" );
+int exchangedata(const char*,const char*,unsigned int) __attribute__((availability(watchos,unavailable))) __attribute__((availability(tvos,unavailable)));
+int getdirentriesattr(int,void*,void*,size_t,unsigned int*,unsigned int*,unsigned int*,unsigned int) __attribute__((availability(watchos,unavailable))) __attribute__((availability(tvos,unavailable)));
+# 773 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/unistd.h" 3 4
+struct fssearchblock;
+struct searchstate;
+
+int searchfs(const char *, struct fssearchblock *, unsigned long *, unsigned int, unsigned int, struct searchstate *) __attribute__((availability(watchos,unavailable))) __attribute__((availability(tvos,unavailable)));
+int fsctl(const char *,unsigned long,void*,unsigned int);
+int ffsctl(int,unsigned long,void*,unsigned int) __attribute__((availability(macosx,introduced=10.6)));
+
+
+
+
+int fsync_volume_np(int, int) __attribute__((availability(macosx,introduced=10.8)));
+int sync_volume_np(const char *, int) __attribute__((availability(macosx,introduced=10.8)));
+
+extern int optreset;
+# 463 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zconf.h" 2 3 4
+# 35 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 2 3 4
+# 86 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+typedef voidpf (*alloc_func) (voidpf opaque, uInt items, uInt size);
+typedef void (*free_func) (voidpf opaque, voidpf address);
+
+struct internal_state;
+
+typedef struct z_stream_s {
+            Bytef *next_in;
+    uInt avail_in;
+    uLong total_in;
+
+    Bytef *next_out;
+    uInt avail_out;
+    uLong total_out;
+
+            char *msg;
+    struct internal_state *state;
+
+    alloc_func zalloc;
+    free_func zfree;
+    voidpf opaque;
+
+    int data_type;
+
+    uLong adler;
+    uLong reserved;
+} z_stream;
+
+typedef z_stream *z_streamp;
+
+
+
+
+
+typedef struct gz_header_s {
+    int text;
+    uLong time;
+    int xflags;
+    int os;
+    Bytef *extra;
+    uInt extra_len;
+    uInt extra_max;
+    Bytef *name;
+    uInt name_max;
+    Bytef *comment;
+    uInt comm_max;
+    int hcrc;
+    int done;
+
+} gz_header;
+
+typedef gz_header *gz_headerp;
+# 225 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern const char * zlibVersion (void);
+# 255 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern int deflate (z_streamp strm, int flush);
+# 368 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern int deflateEnd (z_streamp strm);
+# 405 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern int inflate (z_streamp strm, int flush);
+# 525 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern int inflateEnd (z_streamp strm);
+# 616 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern int deflateSetDictionary (z_streamp strm, const Bytef *dictionary, uInt dictLength);
+# 660 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern int deflateGetDictionary (z_streamp strm, Bytef *dictionary, uInt *dictLength)
+
+
+                                             __attribute__((availability(macos,introduced=10.13))) __attribute__((availability(ios,introduced=11.0)));
+# 683 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern int deflateCopy (z_streamp dest, z_streamp source);
+# 701 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern int deflateReset (z_streamp strm);
+# 712 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern int deflateParams (z_streamp strm, int level, int strategy);
+# 749 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern int deflateTune (z_streamp strm, int good_length, int max_lazy, int nice_length, int max_chain);
+# 766 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern uLong deflateBound (z_streamp strm, uLong sourceLen);
+# 781 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern int deflatePending (z_streamp strm, unsigned *pending, int *bits)
+
+
+                                       __attribute__((availability(macos,introduced=10.10))) __attribute__((availability(ios,introduced=8.0)));
+# 797 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern int deflatePrime (z_streamp strm, int bits, int value);
+# 814 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern int deflateSetHeader (z_streamp strm, gz_headerp head);
+# 891 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern int inflateSetDictionary (z_streamp strm, const Bytef *dictionary, uInt dictLength);
+# 914 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern int inflateGetDictionary (z_streamp strm, Bytef *dictionary, uInt *dictLength)
+
+
+                                             __attribute__((availability(macos,introduced=10.10))) __attribute__((availability(ios,introduced=8.0)));
+# 930 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern int inflateSync (z_streamp strm);
+# 949 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern int inflateCopy (z_streamp dest, z_streamp source);
+# 965 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern int inflateReset (z_streamp strm);
+# 975 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern int inflateReset2 (z_streamp strm, int windowBits)
+
+                                      __attribute__((availability(macos,introduced=10.7))) __attribute__((availability(ios,introduced=5.0)));
+# 990 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern int inflatePrime (z_streamp strm, int bits, int value);
+# 1011 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern long inflateMark (z_streamp strm)
+                                     __attribute__((availability(macos,introduced=10.7))) __attribute__((availability(ios,introduced=5.0)));
+# 1040 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern int inflateGetHeader (z_streamp strm, gz_headerp head);
+# 1102 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+typedef unsigned (*in_func) (void *, unsigned char * *);
+
+typedef int (*out_func) (void *, unsigned char *, unsigned);
+
+extern int inflateBack (z_streamp strm, in_func in, void *in_desc, out_func out, void *out_desc);
+# 1176 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern int inflateBackEnd (z_streamp strm);
+
+
+
+
+
+
+
+extern uLong zlibCompileFlags (void);
+# 1237 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern int compress (Bytef *dest, uLongf *destLen, const Bytef *source, uLong sourceLen);
+# 1252 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern int compress2 (Bytef *dest, uLongf *destLen, const Bytef *source, uLong sourceLen, int level);
+# 1268 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern uLong compressBound (uLong sourceLen);
+
+
+
+
+
+
+extern int uncompress (Bytef *dest, uLongf *destLen, const Bytef *source, uLong sourceLen);
+# 1293 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern int uncompress2 (Bytef *dest, uLongf *destLen, const Bytef *source, uLong *sourceLen)
+
+                                    __attribute__((availability(macos,introduced=10.13))) __attribute__((availability(ios,introduced=11.0)));
+# 1311 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+typedef struct gzFile_s *gzFile;
+# 1351 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern gzFile gzdopen (int fd, const char *mode);
+# 1374 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern int gzbuffer (gzFile file, unsigned size)
+                                 __attribute__((availability(macos,introduced=10.7))) __attribute__((availability(ios,introduced=5.0)));
+# 1391 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern int gzsetparams (gzFile file, int level, int strategy);
+# 1402 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern int gzread (gzFile file, voidp buf, unsigned len);
+# 1432 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern z_size_t gzfread (voidp buf, z_size_t size, z_size_t nitems, gzFile file)
+
+                                     __attribute__((availability(macos,introduced=10.13))) __attribute__((availability(ios,introduced=11.0)));
+# 1459 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern int gzwrite (gzFile file, voidpc buf, unsigned len);
+
+
+
+
+
+
+
+extern z_size_t gzfwrite (voidpc buf, z_size_t size, z_size_t nitems, gzFile file)
+
+                                      __attribute__((availability(macos,introduced=10.13))) __attribute__((availability(ios,introduced=11.0)));
+# 1482 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern int gzprintf (gzFile file, const char *format, ...);
+# 1497 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern int gzputs (gzFile file, const char *s);
+
+
+
+
+
+
+
+extern char * gzgets (gzFile file, char *buf, int len);
+# 1518 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern int gzputc (gzFile file, int c);
+
+
+
+
+
+extern int gzgetc (gzFile file);
+# 1533 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern int gzungetc (int c, gzFile file);
+# 1545 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern int gzflush (gzFile file, int flush);
+# 1580 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern int gzrewind (gzFile file);
+# 1608 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern int gzeof (gzFile file);
+# 1623 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern int gzdirect (gzFile file);
+# 1644 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern int gzclose (gzFile file);
+# 1657 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern int gzclose_r (gzFile file)
+                                  __attribute__((availability(macos,introduced=10.7))) __attribute__((availability(ios,introduced=5.0)));
+extern int gzclose_w (gzFile file)
+                                  __attribute__((availability(macos,introduced=10.7))) __attribute__((availability(ios,introduced=5.0)));
+# 1675 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern const char * gzerror (gzFile file, int *errnum);
+# 1691 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern void gzclearerr (gzFile file);
+# 1708 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern uLong adler32 (uLong adler, const Bytef *buf, uInt len);
+# 1727 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern uLong adler32_z (uLong adler, const Bytef *buf, z_size_t len)
+
+                                    __attribute__((availability(macos,introduced=10.13))) __attribute__((availability(ios,introduced=11.0)));
+# 1746 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern uLong crc32 (uLong crc, const Bytef *buf, uInt len);
+# 1763 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern uLong crc32_z (uLong adler, const Bytef *buf, z_size_t len)
+
+                                  __attribute__((availability(macos,introduced=10.13))) __attribute__((availability(ios,introduced=11.0)));
+# 1786 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern int deflateInit_ (z_streamp strm, int level, const char *version, int stream_size);
+
+extern int inflateInit_ (z_streamp strm, const char *version, int stream_size);
+
+extern int deflateInit2_ (z_streamp strm, int level, int method, int windowBits, int memLevel, int strategy, const char *version, int stream_size);
+
+
+
+extern int inflateInit2_ (z_streamp strm, int windowBits, const char *version, int stream_size);
+
+extern int inflateBackInit_ (z_streamp strm, int windowBits, unsigned char *window, const char *version, int stream_size);
+# 1839 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+struct gzFile_s {
+    unsigned have;
+    unsigned char *next;
+    off_t pos;
+};
+extern int gzgetc_ (gzFile file)
+                                __attribute__((availability(macos,introduced=10.10))) __attribute__((availability(ios,introduced=8.0)));
+# 1895 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+   extern gzFile gzopen (const char *, const char *);
+   extern long gzseek (gzFile, long, int);
+   extern long gztell (gzFile);
+   extern long gzoffset (gzFile)
+                                        __attribute__((availability(macos,introduced=10.7))) __attribute__((availability(ios,introduced=5.0)));
+   extern uLong adler32_combine (uLong, uLong, long);
+   extern uLong crc32_combine (uLong, uLong, long);
+# 1912 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/zlib.h" 3 4
+extern const char * zError (int);
+extern int inflateSyncPoint (z_streamp);
+extern const z_crc_t * get_crc_table (void);
+extern int inflateUndermine (z_streamp, int)
+                                                    __attribute__((availability(macos,introduced=10.7))) __attribute__((availability(ios,introduced=5.0)));
+extern int inflateValidate (z_streamp, int)
+                                                    __attribute__((availability(macos,introduced=10.13))) __attribute__((availability(ios,introduced=11.0)));
+extern unsigned long inflateCodesUsed (z_streamp)
+                                                    __attribute__((availability(macos,introduced=10.13))) __attribute__((availability(ios,introduced=11.0)));
+extern int inflateResetKeep (z_streamp)
+                                                    __attribute__((availability(macos,introduced=10.10))) __attribute__((availability(ios,introduced=8.0)));
+extern int deflateResetKeep (z_streamp)
+                                                    __attribute__((availability(macos,introduced=10.10))) __attribute__((availability(ios,introduced=8.0)));
+
+
+
+
+
+
+extern int gzvprintf (gzFile file, const char *format, va_list va)
+
+
+                                                  __attribute__((availability(macos,introduced=10.10))) __attribute__((availability(ios,introduced=8.0)));
+# 35 "./pnglibconf.dfn" 2
+# 61 "./pnglibconf.dfn"
+ PNG_DFN "/* options */"
+PNG_DFN_START_SORT 2
+# 95 "./pnglibconf.dfn"
+ PNG_DFN "/*#undef PNG_POWERPC_VSX_CHECK_SUPPORTED*/"
+# 124 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_IO_STATE_SUPPORTED"
+# 157 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_BENIGN_ERRORS_SUPPORTED"
+# 190 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_WRITE_SUPPORTED"
+# 223 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_EASY_ACCESS_SUPPORTED"
+# 256 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_INFO_IMAGE_SUPPORTED"
+# 292 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_WRITE_CUSTOMIZE_COMPRESSION_SUPPORTED"
+# 325 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_TIME_RFC1123_SUPPORTED"
+# 361 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_WRITE_FILTER_SUPPORTED"
+# 394 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_FIXED_POINT_SUPPORTED"
+# 430 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_BENIGN_READ_ERRORS_SUPPORTED"
+# 463 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_SUPPORTED"
+# 499 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_WRITE_OPTIMIZE_CMF_SUPPORTED"
+# 535 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_WRITE_FLUSH_SUPPORTED"
+# 571 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_WRITE_INTERLACING_SUPPORTED"
+# 607 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_USER_LIMITS_SUPPORTED"
+# 643 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_WRITE_TRANSFORMS_SUPPORTED"
+# 676 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_UNKNOWN_CHUNKS_SUPPORTED"
+# 712 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_SET_USER_LIMITS_SUPPORTED"
+# 745 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_INCH_CONVERSIONS_SUPPORTED"
+# 778 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_USER_MEM_SUPPORTED"
+# 811 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_SETJMP_SUPPORTED"
+# 844 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_ALIGNED_MEMORY_SUPPORTED"
+# 877 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_WARNINGS_SUPPORTED"
+# 910 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_FLOATING_POINT_SUPPORTED"
+# 946 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_WRITE_CUSTOMIZE_ZTXT_COMPRESSION_SUPPORTED"
+# 982 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_QUANTIZE_SUPPORTED"
+# 1018 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_16BIT_SUPPORTED"
+# 1059 "./pnglibconf.dfn"
+ PNG_DFN "/*#undef PNG_ARM_NEON_CHECK_SUPPORTED*/"
+# 1087 "./pnglibconf.dfn"
+ PNG_DFN "/*#undef PNG_ERROR_NUMBERS_SUPPORTED*/"
+# 1116 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_CHECK_FOR_INVALID_INDEX_SUPPORTED"
+# 1151 "./pnglibconf.dfn"
+ PNG_DFN "/*#undef PNG_BENIGN_WRITE_ERRORS_SUPPORTED*/"
+# 1183 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_SEQUENTIAL_READ_SUPPORTED"
+# 1221 "./pnglibconf.dfn"
+ PNG_DFN "/*#undef PNG_POWERPC_VSX_API_SUPPORTED*/"
+# 1250 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_BUILD_GRAYSCALE_PALETTE_SUPPORTED"
+# 1286 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_WRITE_SHIFT_SUPPORTED"
+# 1319 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_ERROR_TEXT_SUPPORTED"
+# 1355 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_WRITE_FILLER_SUPPORTED"
+# 1391 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_WRITE_WEIGHTED_FILTER_SUPPORTED"
+# 1432 "./pnglibconf.dfn"
+ PNG_DFN "/*#undef PNG_ARM_NEON_API_SUPPORTED*/"
+# 1461 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_GET_PALETTE_MAX_SUPPORTED"
+# 1497 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_WRITE_16BIT_SUPPORTED"
+# 1533 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_WRITE_SWAP_ALPHA_SUPPORTED"
+# 1566 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_POINTER_INDEXING_SUPPORTED"
+# 1599 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_FLOATING_ARITHMETIC_SUPPORTED"
+# 1641 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_WRITE_CHECK_FOR_INVALID_INDEX_SUPPORTED"
+# 1674 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_MNG_FEATURES_SUPPORTED"
+# 1708 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_WRITE_GET_PALETTE_MAX_SUPPORTED"
+# 1744 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_SET_UNKNOWN_CHUNKS_SUPPORTED"
+# 1777 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_STDIO_SUPPORTED"
+# 1808 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_WRITE_INT_FUNCTIONS_SUPPORTED"
+# 1844 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_WRITE_PACKSWAP_SUPPORTED"
+# 1875 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_INTERLACING_SUPPORTED"
+# 1911 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_COMPOSITE_NODIV_SUPPORTED"
+# 1947 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_PROGRESSIVE_READ_SUPPORTED"
+# 1983 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_INT_FUNCTIONS_SUPPORTED"
+# 2019 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_HANDLE_AS_UNKNOWN_SUPPORTED"
+# 2055 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_WRITE_INVERT_SUPPORTED"
+# 2091 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_WRITE_PACK_SUPPORTED"
+# 2127 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_WRITE_ANCILLARY_CHUNKS_SUPPORTED"
+# 2161 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_16BIT_SUPPORTED"
+# 2203 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_CHECK_FOR_INVALID_INDEX_SUPPORTED"
+# 2242 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_SAVE_UNKNOWN_CHUNKS_SUPPORTED"
+# 2278 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_WRITE_cHRM_SUPPORTED"
+# 2314 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_ANCILLARY_CHUNKS_SUPPORTED"
+# 2350 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_WRITE_BGR_SUPPORTED"
+# 2386 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_WRITE_sBIT_SUPPORTED"
+# 2422 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_sBIT_SUPPORTED"
+# 2458 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_TRANSFORMS_SUPPORTED"
+# 2497 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_WRITE_UNKNOWN_CHUNKS_SUPPORTED"
+# 2536 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_WRITE_SWAP_SUPPORTED"
+# 2572 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_WRITE_oFFs_SUPPORTED"
+# 2611 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_SWAP_SUPPORTED"
+# 2647 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_oFFs_SUPPORTED"
+# 2683 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_WRITE_USER_TRANSFORM_SUPPORTED"
+# 2719 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_WRITE_tIME_SUPPORTED"
+# 2755 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_WRITE_INVERT_ALPHA_SUPPORTED"
+# 2791 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_WRITE_TEXT_SUPPORTED"
+# 2827 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_tIME_SUPPORTED"
+# 2863 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_TEXT_SUPPORTED"
+# 2899 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_PACKSWAP_SUPPORTED"
+# 2935 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_STRIP_ALPHA_SUPPORTED"
+# 2971 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_GRAY_TO_RGB_SUPPORTED"
+# 3007 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_STRIP_16_TO_8_SUPPORTED"
+# 3043 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_SCALE_16_TO_8_SUPPORTED"
+# 3082 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_USER_CHUNKS_SUPPORTED"
+# 3118 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_OPT_PLTE_SUPPORTED"
+# 3155 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_UNKNOWN_CHUNKS_SUPPORTED"
+# 3191 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_WRITE_gAMA_SUPPORTED"
+# 3227 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_gAMA_SUPPORTED"
+# 3264 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_STORE_UNKNOWN_CHUNKS_SUPPORTED"
+# 3300 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_WRITE_iCCP_SUPPORTED"
+# 3336 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_iCCP_SUPPORTED"
+# 3372 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_SHIFT_SUPPORTED"
+# 3408 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_EXPAND_SUPPORTED"
+# 3444 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_WRITE_iTXt_SUPPORTED"
+# 3480 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_WRITE_eXIf_SUPPORTED"
+# 3516 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_iTXt_SUPPORTED"
+# 3552 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_eXIf_SUPPORTED"
+# 3588 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_SWAP_ALPHA_SUPPORTED"
+# 3624 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_CONSOLE_IO_SUPPORTED"
+# 3658 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_sBIT_SUPPORTED"
+# 3694 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_WRITE_sRGB_SUPPORTED"
+# 3730 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_sRGB_SUPPORTED"
+# 3764 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_GET_PALETTE_MAX_SUPPORTED"
+# 3800 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_WRITE_sCAL_SUPPORTED"
+# 3836 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_sCAL_SUPPORTED"
+# 3867 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_USER_CHUNKS_SUPPORTED"
+# 3901 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_oFFs_SUPPORTED"
+# 3943 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_GAMMA_SUPPORTED"
+# 3979 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_WRITE_pHYs_SUPPORTED"
+# 4015 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_WRITE_tRNS_SUPPORTED"
+# 4051 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_pHYs_SUPPORTED"
+# 4087 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_tRNS_SUPPORTED"
+# 4126 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_RGB_TO_GRAY_SUPPORTED"
+# 4160 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_tIME_SUPPORTED"
+# 4196 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_WRITE_bKGD_SUPPORTED"
+# 4232 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_bKGD_SUPPORTED"
+# 4268 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_WRITE_zTXt_SUPPORTED"
+# 4304 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_WRITE_pCAL_SUPPORTED"
+# 4340 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_zTXt_SUPPORTED"
+# 4376 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_pCAL_SUPPORTED"
+# 4433 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_SIMPLIFIED_WRITE_SUPPORTED"
+# 4469 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_WRITE_hIST_SUPPORTED"
+# 4505 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_hIST_SUPPORTED"
+# 4541 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_WRITE_sPLT_SUPPORTED"
+# 4575 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_gAMA_SUPPORTED"
+# 4611 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_sPLT_SUPPORTED"
+# 4647 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_INVERT_ALPHA_SUPPORTED"
+# 4681 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_iCCP_SUPPORTED"
+# 4717 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_CONVERT_tIME_SUPPORTED"
+# 4753 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_FILLER_SUPPORTED"
+# 4789 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_USER_TRANSFORM_SUPPORTED"
+# 4825 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_PACK_SUPPORTED"
+# 4867 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_BACKGROUND_SUPPORTED"
+# 4906 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_WRITE_tEXt_SUPPORTED"
+# 4945 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_tEXt_SUPPORTED"
+# 4984 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_SIMPLIFIED_WRITE_STDIO_SUPPORTED"
+# 5018 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_iTXt_SUPPORTED"
+# 5052 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_eXIf_SUPPORTED"
+# 5088 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_cHRM_SUPPORTED"
+# 5132 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_USER_TRANSFORM_INFO_SUPPORTED"
+# 5166 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_sRGB_SUPPORTED"
+# 5210 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_USER_TRANSFORM_PTR_SUPPORTED"
+# 5244 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_sCAL_SUPPORTED"
+# 5280 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_BGR_SUPPORTED"
+# 5316 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_INVERT_SUPPORTED"
+# 5358 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_EXPAND_16_SUPPORTED"
+# 5395 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_COMPRESSED_TEXT_SUPPORTED"
+# 5429 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_pHYs_SUPPORTED"
+# 5463 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_tRNS_SUPPORTED"
+# 5497 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_bKGD_SUPPORTED"
+# 5531 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_pCAL_SUPPORTED"
+# 5565 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_zTXt_SUPPORTED"
+# 5599 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_hIST_SUPPORTED"
+# 5636 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_WRITE_COMPRESSED_TEXT_SUPPORTED"
+# 5670 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_sPLT_SUPPORTED"
+# 5713 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_SET_OPTION_SUPPORTED"
+# 5750 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_SAVE_INT_32_SUPPORTED"
+# 5799 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_COLORSPACE_SUPPORTED"
+# 5833 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_tEXt_SUPPORTED"
+# 5867 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_cHRM_SUPPORTED"
+# 5906 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_READ_ALPHA_MODE_SUPPORTED"
+# 5945 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_SIMPLIFIED_WRITE_BGR_SUPPORTED"
+# 5984 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_SIMPLIFIED_WRITE_AFIRST_SUPPORTED"
+# 6030 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_TEXT_SUPPORTED"
+# 6079 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_GAMMA_SUPPORTED"
+# 6181 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_SIMPLIFIED_READ_SUPPORTED"
+# 6220 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_SIMPLIFIED_READ_BGR_SUPPORTED"
+# 6254 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_FORMAT_BGR_SUPPORTED"
+# 6293 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_SIMPLIFIED_READ_AFIRST_SUPPORTED"
+# 6327 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_FORMAT_AFIRST_SUPPORTED"
+
+
+
+
+
+PNG_DFN_END_SORT
+ PNG_DFN "/* end of options */"
+
+
+ PNG_DFN "/* settings */"
+PNG_DFN_START_SORT 2
+# 6350 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_USER_HEIGHT_MAX 1000000"
+# 6365 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_USER_CHUNK_MALLOC_MAX 8000000"
+# 6380 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_Z_DEFAULT_COMPRESSION @" (-1) "@"
+# 6395 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_TEXT_Z_DEFAULT_STRATEGY @" 0 "@"
+# 6446 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_Z_DEFAULT_NOFILTER_STRATEGY @" 0 "@"
+# 6473 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_GAMMA_THRESHOLD_FIXED 5000"
+# 6488 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_QUANTIZE_BLUE_BITS 5"
+# 6503 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_sRGB_PROFILE_CHECKS 2"
+# 6518 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_LINKAGE_API extern"
+# 6533 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_Z_DEFAULT_STRATEGY @" 1 "@"
+# 6548 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_INFLATE_BUF_SIZE 1024"
+# 6563 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_API_RULE 0"
+# 6578 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_IDAT_READ_SIZE PNG_ZBUF_SIZE"
+# 6617 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_ZBUF_SIZE 8192"
+# 6632 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_QUANTIZE_GREEN_BITS 5"
+# 6647 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_sCAL_PRECISION 5"
+# 6662 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_ZLIB_VERNUM @" 0x12b0 "@"
+# 6677 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_USER_WIDTH_MAX 1000000"
+# 6692 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_TEXT_Z_DEFAULT_COMPRESSION @" (-1) "@"
+# 6707 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_LINKAGE_CALLBACK extern"
+# 6722 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_QUANTIZE_RED_BITS 5"
+# 6737 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_DEFAULT_READ_MACROS 1"
+# 6752 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_MAX_GAMMA_8 11"
+# 6779 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_LINKAGE_DATA extern"
+# 6794 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_LINKAGE_FUNCTION extern"
+# 6821 "./pnglibconf.dfn"
+ PNG_DFN "#define PNG_USER_CHUNK_CACHE_MAX 1000"
+# 6837 "./pnglibconf.dfn"
+PNG_DFN_END_SORT
+ PNG_DFN "/* end of settings */"
+ PNG_DFN "#endif /* PNGLCONF_H */"
+# 2 "pnglibconf.c" 2
+
