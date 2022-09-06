@@ -13,6 +13,9 @@
 
 void spline(SplineParams* splineParams, ImageParams* imageParams) {
     imageParams->distScalingFactor = splineParams->imageDistScalingFactor;
+    imageParams->thresholdUpper = splineParams->seedThresholdUpper;
+    imageParams->thresholdLower = splineParams->seedThresholdLower;
+
     Vec** s = getNSplines(splineParams);
     printf("Created splines\n");
     Bitmap* bitmapOrig = createSplineImage(s, splineParams, imageParams);
@@ -32,6 +35,8 @@ void spline(SplineParams* splineParams, ImageParams* imageParams) {
 
 void voronoi(VoronoiParams* voronoiParams, ImageParams* imageParams) {
     imageParams->distScalingFactor = voronoiParams->imageDistScalingFactor;
+    imageParams->thresholdUpper = voronoiParams->seedThresholdUpper;
+    imageParams->thresholdLower = voronoiParams->seedThresholdLower;
 
     Vec* particles = malloc(sizeof(Vec) * voronoiParams->nInitialCells);
     printf("Creating cells\n");
@@ -101,7 +106,8 @@ int main(int argc, char *argv[]) {
             .srgImagePath = strdup("/Users/eriknikulski/CLionProjects/extremeImageSegmentation/images/voronoi/srg/"),
             .statsPath = strdup("/Users/eriknikulski/CLionProjects/extremeImageSegmentation/voronoi_stats.csv"),
             .srgPrecision = 100,
-            .seedThreshold = 54,
+            .seedThresholdUpper = 244,
+            .seedThresholdLower = 244,
             .blockingRadius = 40,
             .imageDistScalingFactor = 1.0,
     };
@@ -116,7 +122,8 @@ int main(int argc, char *argv[]) {
             .srgImagePath = strdup("/Users/eriknikulski/CLionProjects/extremeImageSegmentation/images/spline/srg/"),
             .statsPath = strdup("/Users/eriknikulski/CLionProjects/extremeImageSegmentation/spline_stats.csv"),
             .srgPrecision = 100,
-            .seedThreshold = 80,
+            .seedThresholdUpper = 243,
+            .seedThresholdLower = 243,
             .blockingRadius = 40,
             .imageDistScalingFactor = 1.0,
     };

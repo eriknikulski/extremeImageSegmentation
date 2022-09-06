@@ -18,6 +18,8 @@ typedef struct ImageParams {
     double sigma_c;
     double mu_c;
     double distScalingFactor;
+    uint8_t thresholdUpper;
+    uint8_t thresholdLower;
 } ImageParams;
 
 typedef struct VoronoiParams {
@@ -31,7 +33,8 @@ typedef struct VoronoiParams {
     char* srgImagePath;
     char* srgImagePathBase;
     char* statsPath;
-    uint8_t seedThreshold;
+    uint8_t seedThresholdUpper;
+    uint8_t seedThresholdLower;
     double blockingRadius;
     double imageDistScalingFactor;
 } VoronoiParams;
@@ -46,7 +49,8 @@ typedef struct SplineParams {
     char* srgImagePath;
     char* srgImagePathBase;
     char* statsPath;
-    uint8_t seedThreshold;
+    uint8_t seedThresholdUpper;
+    uint8_t seedThresholdLower;
     double blockingRadius;
     double imageDistScalingFactor;
 } SplineParams;

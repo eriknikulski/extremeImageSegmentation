@@ -277,10 +277,7 @@ void calcSeedValueMetrics(Bitmap *bitmapOrig, ImageParams *imageParams, char *st
     fprintf(fp, "\n");
     free(seeds);
 
-    // 244 - 240
-
-//    for (int i = 255; i >= 0; --i) {
-    for (int i = 244; i >= 244; --i) {
+    for (int i = imageParams->thresholdUpper; i >= imageParams->thresholdLower; --i) {
         printf("\n\nThreshold: %d\n", i);
         fprintf(fp, "%d", i);
 
