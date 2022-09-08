@@ -15,3 +15,4 @@ set_target_properties(libpng PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE
 add_executable(extremeImageSegmentation ${SOURCE_FILES} ${SOURCES} ${HEADER_FILES})
 target_link_libraries (extremeImageSegmentation libpng)
 target_link_libraries (extremeImageSegmentation z)
+target_link_libraries (extremeImageSegmentation m)
