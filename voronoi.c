@@ -192,7 +192,7 @@ Cell** readCells(int n, char* fname) {
     char* saveptr;
 
     for (int i = 0; getline(&linetmp, &len, fp) != -1; ++i) {
-        line = realloc(line, sizeof(char) * strlen(linetmp));
+        line = realloc(line, sizeof(char) * strlen(linetmp) + 1);
         strcpy(line, linetmp);
         line[strlen(line) - 1] = 0;     // strip new line
 
