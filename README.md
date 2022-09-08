@@ -1,5 +1,9 @@
+zLib needs to be installed.
+
+libpng needs to be build inside the ```libpng-1.6.37``` folder. Just run ```make``` inside that folder.
 
 The program should be build into the ```build/``` directory, else the relative paths don't point to the correct locations.
+To do this first run ```cmake -S . -B build``` inside the source directory. Then run ```make``` inside the ```build/``` directory.
 
 Necessary for the Voronoi tesselation, download and install the following library:
 - [http://math.lbl.gov/voro++/download/](http://math.lbl.gov/voro++/download/)
